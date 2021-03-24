@@ -1,0 +1,199 @@
+<section id="cart_items">
+	<div class="container">
+		<div class="breadcrumbs">
+			<ol class="breadcrumb">
+				<li><a href="#">Home</a></li>
+				<li class="active">Check out</li>
+			</ol>
+		</div>
+
+		<div class="shopper-informations">
+			<div class="row">
+				<div class="col-sm-8">
+					<form id="checkout" action="" method="post">
+						<div class="form-group col-sm-6">
+							<label>Name</label>
+							<input type="text" class="form-control" id="name" name="Name" placeholder=" Name">
+						</div>
+						<div class="form-group col-sm-6">
+							<label>Phone Number</label>
+							<input type="number" class="form-control" id="phoneNumber" name="Phone"
+								placeholder="Phone Number">
+						</div>
+						<div class="form-group col-sm-6">
+							<label>Email</label>
+							<input type="email" class="form-control" id="email" name="Email"
+								placeholder=" Email Address">
+						</div>
+						<div class="form-group col-sm-6">
+							<label>Country</label>
+							<input type="text" class="form-control" id="country" name="Country" placeholder=" Country">
+						</div>
+						<div class="form-group col-sm-6">
+							<label>State</label>
+							<input type="text" class="form-control" id="state" name="State" placeholder=" State">
+						</div>
+						<div class="form-group col-sm-6">
+							<label>Pin Code</label>
+							<input type="number" class="form-control" id="pincode" name="Pincode"
+								placeholder=" Enter Pincode">
+							<input type="text" name="UserId" id="" value="{{user._id}}" hidden>
+						</div><br>
+						<div class="form-group">
+							<h4><b>Payment Method</b></h4>
+							<span>
+								<label><input type="radio" name="Payment" value="COD"> Cash on Delivery</label>
+							</span>
+							<span>
+								<label><input type="radio" name="Payment" value="RAZORPAY"> Razorpay</label>
+							</span>
+							<span>
+								<label><input type="radio" name="Payment" value="PAYPAL"> Paypal</label>
+							</span>
+						</div>
+				</div>
+				<div class="col-sm-4">
+					<h3>Your Bill Summary</h3>
+					<table class="table table-condensed total-result">
+						<tr>
+							<td>Cart Sub Total</td>
+							<td>₹{{total}}</td>
+						</tr>
+						<tr class="shipping-cost">
+							<td>Shipping Cost</td>
+							<td>Free</td>
+						</tr>
+						<tr>
+							<td>Total</td>
+							<td><span>₹{{total}}</span></td>
+						</tr>
+					</table><br><br>
+					<a class="btn btn-warning" href="/add-address">Add New Address</a>
+					<button type="submit" class="btn btn-success">Continue to Payment</button>
+				</div>
+				</form>
+				<hr>
+				{{#each address}}
+				<div class="col-sm-6">
+					<h3 style="color:darkblue;">Your Address</h3>
+					<h5>{{this.Name}}</h5>
+					<h5>{{this.Phone}}</h5>
+					<h5>{{this.Email}}, {{this.Country}}, {{this.State}}, Pin - {{this.Pincode}}</h5>
+					<button type="submit" class="btn btn-info text-success"
+						onclick="changeAddress('{{this.Name}}','{{this.Phone}}','{{this.Email}}','{{this.Country}}','{{this.State}}','{{this.Pincode}}')"
+						style="font-weight: bolder;">Use this Address</button>
+				</div>
+				{{/each}}
+			</div>
+		</div>
+	</div>
+	</div><br><br>
+</section>
+<!--/#cart_items-->
+
+<script>
+	$(document).ready(function () {
+		$(document).ready(() => {
+			$("#checkout").validate({
+				rules: {
+					Name: {
+						required: true
+					},
+					Phone: {
+						required: true
+					},
+					Email: {
+						required: true
+					},
+					Country: {
+						required: true
+					},
+					State: {
+						required: true
+					},
+					Pincode: {
+						required: true
+					},
+					Payment: {
+						required: true
+					}
+				}
+			});
+		});
+	});
+</script>
+
+<script>
+	function changeAddress(Name, Phone, Email, Country, State, Pincode) {
+		document.getElementById('name').value = Name
+		document.getElementById('phoneNumber').value = Phone
+		document.getElementById('email').value = Email
+		document.getElementById('country').value = Country
+		document.getElementById('state').value = State
+		document.getElementById('pincode').value = Pincode
+	}
+</script>
+
+<script>
+	$("#checkout").submit((e) => {
+		e.preventDefault()
+		$.ajax({
+			url: '/place-order',
+			method: 'post',
+			data: $('#checkout').serialize(),
+			success: (response) => {
+				alert(response)
+				if (response.codSuccess) {
+					location.href = '/order-success'
+				} else {
+					razorpayPayment(response)
+				}
+			}
+		})
+	})
+
+	function razorpayPayment(order) {
+		var options = {
+			"key": "rzp_test_XyxrCNSUqYCkHE", // Enter the Key ID generated from the Dashboard
+			"amount": order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+			"currency": "INR",
+			"name": "TrendZStation",
+			"description": "Test Transaction",
+			"image": "https://example.com/your_logo",
+			"order_id": order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+			"handler": function (response) {
+				verifyPayment(response, order)
+			},
+			"prefill": {
+				"name": "Rahul Karuvadath",
+				"email": "rahulraghav093@gmail.com",
+				"contact": "9633405594"
+			},
+			"notes": {
+				"address": "Razorpay Corporate Office"
+			},
+			"theme": {
+				"color": "#3399cc"
+			}
+		};
+		var rzp1 = new Razorpay(options);
+		rzp1.open();
+	}
+	function verifyPayment(payment, order) {
+		$.ajax({
+			url: '/verify-payment',
+			data: {
+				payment,
+				order
+			},
+			method:'post',
+			success:(response)=>{
+				if(response.status){
+					location.href = '/order-success'
+				}else{
+					alert('Payment Failed')
+				}
+			}
+		})
+	}
+</script>

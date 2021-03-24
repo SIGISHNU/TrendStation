@@ -1,0 +1,108 @@
+<div class="container col-md-6">
+    <div class="card" style="margin-top: 12rem;">
+        <div class="header">
+            <p class="lead">Add Products</p>
+        </div>
+        <div class="body ml-5">
+            <form class="form-auth-small" id="add-product" action="/addProduct" method="post"
+                enctype="multipart/form-data">
+                <div class="form-group">
+                    <label>Name</label>
+                    <input type="text" class="form-control" name="Name" placeholder="Name">
+                </div>
+                <div class="form-group">
+                    <label>Category</label>
+                    <select id="Category" name="Category" class="form-control" placeholder="Category">
+                        {{#each category}}
+                        <option value="{{this.Category}}">{{this.Category}}</option>
+                        {{/each}}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <input type="text" class="form-control" name="Description" placeholder="Description">
+                </div>
+
+                <h4>Upload ,Crop and save.</h4>
+                <!-- input file -->
+                <div class="form-group">
+                    <label>Image 1</label>
+                    <img src="" alt="" style="width: 100px; height: auto;" id="viewImg1" class="pt-2 pb-4">
+                    <input type="file" class="form-control" name="Image1" placeholder="Image1"
+                        onchange="viewImage1(event)" accept="image/*">
+                </div>
+
+                <!-- input file -->
+                <div class="form-group">
+                    <label>Image 2</label>
+                    <img src="" alt="" style="width: 100px; height: auto;" id="viewImg2" class="pt-2 pb-4">
+                    <input type="file" class="form-control" name="Image2" placeholder="Image2"
+                        onchange="viewImage2(event)" accept="image/*">
+                </div>
+
+                <!-- input file -->
+                <div class="form-group">
+                    <label>Image 3</label>
+                    <img src="" alt="" style="width: 100px; height: auto;" id="viewImg3" class="pt-2 pb-4">
+                    <input type="file" class="form-control" name="Image3" placeholder="Image3"
+                        onchange="viewImage3(event)" accept="image/*">
+                </div>
+
+                <div class="form-group">
+                    <label>Price</label>
+                    <input type="number" class="form-control" name="Price" placeholder="Price">
+                </div>
+                <button type="submit" class="btn btn-primary btn-lg btn-block">Add Product</button><br>
+                <div class="bottom">
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <script>
+        function viewImage1(event) {
+            console.log(document.getElementById('viewImg'))
+            document.getElementById('viewImg1').src = URL.createObjectURL(event.target.files[0])
+        }
+        function viewImage2(event) {
+            console.log(document.getElementById('viewImg'))
+            document.getElementById('viewImg2').src = URL.createObjectURL(event.target.files[0])
+        }
+        function viewImage3(event) {
+            console.log(document.getElementById('viewImg'))
+            document.getElementById('viewImg3').src = URL.createObjectURL(event.target.files[0])
+        }
+    </script>
+
+     <script>
+        $(document).ready(function(){
+            $(document).ready(() => {
+			$("#add-product").validate({
+				rules: {
+					Name: {
+						required: true
+					},
+                    Category: {
+						required: true
+					},
+                    Description: {
+						required: true
+					},
+                    Image1: {
+						required: true
+					},
+                     Image2: {
+						required: true
+					},
+                     Image3: {
+						required: true
+					},
+					Price: {
+						required: true
+					}
+				}
+			});
+		});
+        });
+    </script>

@@ -1,0 +1,45 @@
+<section>
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-12 padding-right">
+				<div class="features_items">
+					<!--features_items-->
+					<h2 class="title text-center">New Items</h2>
+					{{#each products}}
+					<div class="col-sm-3">
+						<div class="product-image-wrapper">
+							<div class="single-products">
+								<div class="productinfo text-center">
+									<img style="width: 180px; height:250px;" src="/product-images/{{this._id}}1.jpg"
+										alt="" />
+									<img src="../images/product-details/new.jpg" class="newarrival"
+										style="height: 20px; width: 35px;" alt="" />
+									<h2>₹{{this.Price}}</h2>
+									<p>{{this.Name}}</p>
+									<p>{{this.Category}}</p>
+									<button class="btn btn-default add-to-cart" onclick="addToCart('{{this._id}}')">Add
+										to Cart</button>
+								</div>
+								<div class="product-overlay">
+									<div class="overlay-content">
+										<h2>₹{{this.Price}}</h2>
+										<p>{{this.Name}}</p>
+										<p>{{this.Category}}</p>
+										<button class="btn btn-default add-to-cart"
+											onclick="addToCart('{{this._id}}')">Add to Cart</button>
+									</div>
+								</div>
+							</div>
+							<div class="choose">
+								<ul class="nav nav-pills nav-justified">
+									<li><a href="/productDetails/{{this._id}}"><i class="fa fa-eye"></i>View Product</a>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+					{{/each}}
+				</div>
+			</div>
+		</div>
+</section>
