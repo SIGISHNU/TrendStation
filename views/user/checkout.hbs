@@ -68,8 +68,11 @@
 							<td><span>₹{{total}}</span></td>
 						</tr>
 					</table><br><br>
-					<a class="btn btn-warning" href="/add-address">Add New Address</a>
-					<button type="submit" class="btn btn-success">Continue to Payment</button>
+					<div>
+						<a class="btn btn-warning" href="/add-address">Add New Address</a>
+						<button type="submit" class="btn btn-success">Continue to Payment</button>
+					</div><br>
+					<div class="mt-5" name="paypal" id="paypal-button-container"> </div>
 				</div>
 				</form>
 				<hr>
@@ -144,7 +147,32 @@
 			success: (response) => {
 				alert(response)
 				if (response.codSuccess) {
-					location.href = '/order-success'
+					alert('Order Placed Successfuly!');
+					window.location.href = ('/order-success')
+				} else if (response.paypal) {
+					console.log('response', response.paypal)
+					// Render the PayPal button into #paypal-button-container
+					paypal.Buttons({
+						// Set up the transaction
+						createOrder: function (data, actions) {
+							return actions.order.create({
+								purchase_units: [{
+									amount: {
+										value: response.total
+									}
+								}]
+							});
+						},
+						// Finalize the transaction
+						onApprove: function (data, actions) {
+							return actions.order.capture().then(function (details) {
+								// Show a success message to the buyer
+								alert('Transaction Completed Successfuly!');
+								window.location.href = ('/change-status/'+response.orderId);
+							});
+						}
+					}).render('#paypal-button-container');
+
 				} else {
 					razorpayPayment(response)
 				}
@@ -159,7 +187,7 @@
 			"currency": "INR",
 			"name": "TrendZStation",
 			"description": "Test Transaction",
-			"image": "https://example.com/your_logo",
+			"image": "../images/home/logo.png",
 			"order_id": order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
 			"handler": function (response) {
 				verifyPayment(response, order)
@@ -186,11 +214,12 @@
 				payment,
 				order
 			},
-			method:'post',
-			success:(response)=>{
-				if(response.status){
-					location.href = '/order-success'
-				}else{
+			method: 'post',
+			success: (response) => {
+				if (response.status) {
+					alert('Transaction Completed Successfuly!');
+					window.location.href = ('/order-success')
+				} else {
 					alert('Payment Failed')
 				}
 			}

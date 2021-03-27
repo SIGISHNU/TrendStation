@@ -5,6 +5,7 @@ var objectId = require('mongodb').ObjectID
 const { response, checkout } = require('../app')
 const { ORDER_COLLECTION } = require('../config/collection')
 const Razorpay = require('razorpay')
+const { resolve } = require('path')
 var instance = new Razorpay({
     key_id: 'rzp_test_XyxrCNSUqYCkHE',
     key_secret: 'HbS57r59yrx2Yh45EPbN1afg',
@@ -13,10 +14,16 @@ var instance = new Razorpay({
 module.exports = {
     doSignup: (userData) => {
         return new Promise(async (resolve, reject) => {
-            userData.Password = await bcrypt.hash(userData.Password, 10)
-            db.get().collection(collection.USER_COLLECTION).insertOne(userData).then((data) => {
-                resolve(data.ops[0])
-            })
+            let emailExist = await db.get().collection(collection.USER_COLLECTION).findOne({ Email: userData.Email })
+            if (!emailExist) {
+                userData.Password = await bcrypt.hash(userData.Password, 10)
+                db.get().collection(collection.USER_COLLECTION).insertOne(userData).then((data) => {
+                    resolve(data.ops[0])
+                })
+            } else {
+                reject()
+            }
+            console.log(userData);
         })
     },
     doLogin: (userData) => {
@@ -334,7 +341,7 @@ module.exports = {
             db.get().collection(collection.ORDER_COLLECTION).insertOne(orderObj).then((response) => {
                 console.log(order);
                 db.get().collection(collection.CART_COLLECTION).removeOne({ user: objectId(order.UserId) }).then(() => {
-                    console.log('order Id: ',response.ops[0]._id);
+                    console.log('order Id: ', response.ops[0]._id);
                     resolve(response.ops[0]._id);
                 })
             })
@@ -398,9 +405,9 @@ module.exports = {
     genarateRazorpay: (orderId, total) => {
         return new Promise((resolve, reject) => {
             var options = {
-                amount: total*100,  // amount in the smallest currency unit
+                amount: total * 100,  // amount in the smallest currency unit
                 currency: "INR",
-                receipt: ""+orderId
+                receipt: "" + orderId
             };
             instance.orders.create(options, function (err, order) {
                 if (err) {
@@ -412,32 +419,54 @@ module.exports = {
             });
         })
     },
-    verifyPayment:(details)=>{
-        return new Promise((resolve,reject)=>{
-            const crypto=   require ('crypto');
+    verifyPayment: (details) => {
+        return new Promise((resolve, reject) => {
+            const crypto = require('crypto');
             let hmac = crypto.createHmac('sha256', 'HbS57r59yrx2Yh45EPbN1afg');
-            hmac.update(details['payment[razorpay_order_id]']+'|'+details['payment[razorpay_payment_id]'])
-            hmac=hmac.digest('hex')
-            if(hmac===details['payment[razorpay_signature]']){
+            hmac.update(details['payment[razorpay_order_id]'] + '|' + details['payment[razorpay_payment_id]'])
+            hmac = hmac.digest('hex')
+            if (hmac === details['payment[razorpay_signature]']) {
                 resolve()
-            }else{
+            } else {
                 reject()
             }
         })
     },
-    changePaymentStatus:(orderId)=>{
-        console.log('eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee');
+    changePaymentStatus: (orderId) => {
         console.log(orderId);
-        return new Promise((resolve,reject)=>{
+        return new Promise((resolve, reject) => {
             db.get().collection(collection.ORDER_COLLECTION)
-            .updateOne({_id:objectId(orderId)},
-            {
-                $set:{
-                    status:'placed'
-                }
-            }).then(()=>{
-                resolve()
-            })
+                .updateOne({ _id: objectId(orderId) },
+                    {
+                        $set: {
+                            status: 'placed'
+                        }
+                    }).then(() => {
+                        resolve()
+                    })
+        })
+    },
+    checkPhone: (Mobile) => {
+        console.log(Mobile)
+        return new Promise(async (resolve, reject) => {
+            let mobile = await db.get().collection(collection.USER_COLLECTION).findOne({ Mobile: Mobile })
+            resolve(mobile)
+        })
+    },
+    OtpLog: (Mobile) => {
+        console.log("MOB", Mobile);
+        return new Promise(async (resolve, reject) => {
+            let user = await db.get().collection(collection.USER_COLLECTION).findOne({ Mobile: Mobile })
+            if (user) {
+                console.log('reached')
+                console.log('login success');
+                user.status = true
+                resolve(user)
+            }
+            else {
+                console.log('login failed');
+                resolve({ status: false })
+            }
         })
     }
 }

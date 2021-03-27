@@ -28,43 +28,37 @@
                                     <tr>
                                         <th>No</th>
                                         <th>Date</th>
+                                        <th>Name</th>
                                         <th>Address</th>
                                         <th>Pincode</th>
                                         <th>Phone Number</th>
                                         <th>Price</th>
                                         <th>Payment</th>
                                         <th>Status</th>
+                                        <th>Change Order Status</th>
                                     </tr>
                                 </thead>
-                                <tfoot>
-                                    <tr>
-                                        <th>No</th>
-                                        <th>Date</th>
-                                        <th>Address</th>
-                                        <th>Pincode</th>
-                                        <th>Phone Number</th>
-                                        <th>Price</th>
-                                        <th>Payment</th>
-                                        <th>Status</th>
-                                    </tr>
-                                </tfoot>
                                 <tbody>
                                     {{#each orders}}
                                     <tr>
                                         <td></td>
                                         <td>{{this.date}}</td>
+                                        <td>{{this.deliveryDetails.Name}}</td>
                                         <td>{{this.deliveryDetails.Country}}
                                             {{this.deliveryDetails.State}}</td>
                                         <td>{{this.deliveryDetails.Pincode}}</td>
                                         <td>{{this.deliveryDetails.Phone}}</td>
                                         <td>{{this.totalAmount}}</td>
                                         <td>{{this.paymentMethod}}</td>
+                                        <td>{{this.status}}</td>
                                         <td>
                                             <select id="status" name="status">
-                                                <option value="pending">pending</option>
-                                                <option value="shipped">shipped</option>
-                                                <option value="delivered">delivered</option>
+                                                <option value="shipped">Shipped</option>
+                                                <option value="delivered">Delivered</option>
+                                                <option value="shipped">Cancelled</option>
                                             </select>
+                                            <a class="btn" id="btn"><span class="badge badge-success">Change
+                                                    Status</span></a>
                                         </td>
                                     </tr>
                                     {{/each}}
@@ -74,20 +68,23 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+</div>
 
-            <script>
-                $(document).ready(function () {
-                    $('#view-product').DataTable();
-                });
-            </script>
+<script>
+    $(document).ready(function () {
+        $('#view-product').DataTable();
+    });
+</script>
 
-            <style>
-                .css-serial {
-                    counter-reset: serial-number;
-                }
+<style>
+    .css-serial {
+        counter-reset: serial-number;
+    }
 
-                .css-serial td:first-child:before {
-                    counter-increment: serial-number;
-                    content: counter(serial-number);
-                }
-            </style>
+    .css-serial td:first-child:before {
+        counter-increment: serial-number;
+        content: counter(serial-number);
+    }
+</style>
