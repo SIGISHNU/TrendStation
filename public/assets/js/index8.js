@@ -8,40 +8,40 @@ function MorrisArea() {
     Morris.Area({
         element: 'area_chart',
         data: [{
-            period: '2011',
+            period: '2020',
             Sales: 5,
             Revenue: 12,
-            Profit: 5
+            // Profit: 5
         }, {
-            period: '2012',
+            period: '2021',
             Sales: 62,
             Revenue: 10,
-            Profit: 5
+            // Profit: 5
         }, {
-            period: '2013',
+            period: '2022',
             Sales: 20,
             Revenue: 84,
-            Profit: 36
+            // Profit: 36
         }, {
-            period: '2014',
+            period: '2023',
             Sales: 108,
             Revenue: 12,
-            Profit: 7
+            // Profit: 7
         }, {
-            period: '2015',
+            period: '2024',
             Sales: 30,
             Revenue: 95,
-            Profit: 19
+            // Profit: 19
         }, {
-            period: '2016',
+            period: '2025',
             Sales: 25,
             Revenue: 25,
-            Profit: 67
+            // Profit: 67
         }, {
-            period: '2017',
+            period: '2026',
             Sales: 135,
             Revenue: 12,
-            Profit: 28
+            // Profit: 28
         }
 
     ],

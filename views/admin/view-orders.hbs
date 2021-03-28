@@ -50,15 +50,74 @@
                                         <td>{{this.deliveryDetails.Phone}}</td>
                                         <td>{{this.totalAmount}}</td>
                                         <td>{{this.paymentMethod}}</td>
-                                        <td>{{this.status}}</td>
+                                        <td id="{{this._id}}">
+
+                                            {{#ifEquals this.status "placed"}}
+                                            Order Placed
+                                            {{/ifEquals}}
+                                            {{#ifEquals this.status "Confirm"}}
+                                            Order Shipped
+                                            {{/ifEquals}}
+                                            {{#ifEquals this.status "Deliver"}}
+                                            Order Delivered
+                                            {{/ifEquals}}
+                                            {{#ifEquals this.status "Ship"}}
+                                            Order dispatched
+                                            {{/ifEquals}}
+                                            {{#ifEquals this.status "Cancel"}}
+                                            Order Cancelled
+                                            {{/ifEquals}}
+                                        </td>
                                         <td>
-                                            <select id="status" name="status">
-                                                <option value="shipped">Shipped</option>
-                                                <option value="delivered">Delivered</option>
-                                                <option value="shipped">Cancelled</option>
-                                            </select>
-                                            <a class="btn" id="btn"><span class="badge badge-success">Change
-                                                    Status</span></a>
+                                            {{#ifEquals this.status "placed"}}
+                                            <div class="input-group">
+                                                <select class="badge badge-info" id="status"
+                                                    aria-label="Example select with button addon">
+
+                                                    <option value="placed">Placed</option>
+                                                    <option value="confirm">Confirm</option>
+                                                    <option value="cancel">Cancel</option>
+                                                </select>
+                                                <div class="input-group-append mt-2">
+                                                    <button class="badge badge-dark" type="button"
+                                                        onclick="status('{{_id}}')">Submit</button>
+                                                </div>
+                                            </div>
+                                            {{/ifEquals}}
+                                            {{#ifEquals this.status "Confirm"}}
+                                            <div class="input-group">
+                                                <select class="badge badge-warning" id="status"
+                                                    aria-label="Example select with button addon">
+                                                    <option value="confirm">Confirm</option>
+                                                    <option value="ship">Ship</option>
+                                                    <option value="cancel">Cancel</option>
+                                                </select>
+                                                <div class="input-group-append mt-2">
+                                                    <button class="badge badge-dark" type="button"
+                                                        onclick="status('{{_id}}')">Submit</button>
+                                                </div>
+                                            </div>
+                                            {{/ifEquals}}
+                                            {{#ifEquals this.status "Ship"}}
+                                            <div class="input-group">
+                                                <select class="badge badge-success" id="status"
+                                                    aria-label="Example select with button addon">
+                                                    <option value="ship">Ship</option>
+                                                    <option value="deliver">Deliver</option>
+                                                    <option value="cancel">Cancel</option>
+                                                </select>
+                                                <div class="input-group-append mt-2">
+                                                    <button class="badge badge-dark" type="button"
+                                                        onclick="status('{{_id}}')">Submit</button>
+                                                </div>
+                                            </div>
+                                            {{/ifEquals}}
+                                            {{#ifEquals this.status "Deliver"}}
+                                            <h4 class="text-white badge btn-success">Delivered</h4>
+                                            {{/ifEquals}}
+                                            {{#ifEquals this.status "Cancel"}}
+                                            <h4 class="text-white badge btn-danger">Cancelled</h4>
+                                            {{/ifEquals}}
                                         </td>
                                     </tr>
                                     {{/each}}
@@ -72,12 +131,6 @@
     </div>
 </div>
 
-<script>
-    $(document).ready(function () {
-        $('#view-product').DataTable();
-    });
-</script>
-
 <style>
     .css-serial {
         counter-reset: serial-number;
@@ -88,3 +141,40 @@
         content: counter(serial-number);
     }
 </style>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    function status(id) {
+        var e = document.getElementById('status')
+        var status = e.options[e.selectedIndex].text;
+        $.ajax({
+            method: 'post',
+            url: '/changeStatus',
+            data: { status, id },
+            success: (response) => {
+                if (response.order.status === 'Confirm') {
+                    document.getElementById(id).innerHTML = "Order Ready to be shipped"
+                    location.reload()
+                }
+                else if (response.order.status === 'Deliver') {
+                    document.getElementById(id).innerHTML = "Order delivered"
+                    location.reload()
+                }
+                else if (response.order.status === 'Ship') {
+                    document.getElementById(id).innerHTML = " Order dispatched"
+                    location.reload()
+                }
+                else if (response.order.status === 'Cancel') {
+                    document.getElementById(id).innerHTML = "Order Cancelled"
+                    location.reload()
+                }
+            }
+        })
+    }
+</script>
+
+<script>
+    $(document).ready(function () {
+        $('#view-product').DataTable();
+    });
+</script>

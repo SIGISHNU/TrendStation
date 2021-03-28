@@ -15,9 +15,11 @@ const verifyLogin = (req, res, next) => {
 }
 
 /* GET users listing. */
-router.get('/admin', verifyLogin, (req, res) => {
+router.get('/admin', verifyLogin, async (req, res) => {
   req.session.admin = true
-  res.render('admin/index', { admin: true })
+  let orders = await adminHelpers.dashboardDetails()
+  let report = await adminHelpers.graphSalesData()
+  res.render('admin/index', { admin: true, orders, report })
 });
 
 router.get('/admin-login', (req, res) => {
@@ -199,10 +201,24 @@ router.post('/editCategory/:id', (req, res) => {
   })
 });
 
-router.get('/view-orders', verifyLogin, async(req, res) => {
+router.get('/view-orders', verifyLogin, async (req, res) => {
   req.session.admin = true
-  let orders= await adminHelpers.getAllOrders()
-  res.render('admin/view-orders', { admin: true ,orders})
-})
+  let orders = await adminHelpers.getAllOrders()
+  res.render('admin/view-orders', { admin: true, orders })
+});
 
+router.post("/changeStatus", (req, res) => {
+  adminHelpers.changeStatus(req.body).then((response) => {
+    adminHelpers.getOrderId(req.body.id).then((order) => {
+      res.json({ order });
+    })
+      .catch(() => {
+        console.log("err");
+      });
+  });
+});
+
+router.get('/viewReport',(req,res)=>{
+  res.render('admin/viewReport')
+})
 module.exports = router;

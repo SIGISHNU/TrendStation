@@ -6,6 +6,7 @@ const { response, checkout } = require('../app')
 const { ORDER_COLLECTION } = require('../config/collection')
 const Razorpay = require('razorpay')
 const { resolve } = require('path')
+const moment=require('moment')
 var instance = new Razorpay({
     key_id: 'rzp_test_XyxrCNSUqYCkHE',
     key_secret: 'HbS57r59yrx2Yh45EPbN1afg',
@@ -335,7 +336,7 @@ module.exports = {
                 products: products,
                 totalAmount: total,
                 status: status,
-                date: new Date()
+                date:moment(new Date).format('L')
             }
 
             db.get().collection(collection.ORDER_COLLECTION).insertOne(orderObj).then((response) => {

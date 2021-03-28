@@ -1,0 +1,94 @@
+<div class="content-wrapper">
+    <div class="content">
+        <div class="info-box">
+            <div class="row">
+                <div class="col-lg-12 m-b-3">
+                    <h4 class="text-black">Report</h4>
+                    <br>
+                    <div class="table-responsive ">
+                        <div class="container">
+                            <form>
+                                <input type="date" class="mb-3" id="start" name="start"> to <input type="date" id="end"
+                                    class="mb-3" name="end">
+                                <button class="btn btn-primary" type="submit" id="submit">Submit</button>
+                            </form>
+                            <table class="table " id="records_table">
+                                <thead class="bg-inverse text-white">
+                                    <tr>
+                                        <th scope="col">No</th>
+                                        <th scope="col">Name</th>
+                                        <th scope="col">Date</th>
+                                        <th scope="col">Payment method</th>
+                                        <th scope="col">Status</th>
+                                        <th scope="col">Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {{#each product}}
+                                    <tr>
+                                        <td scope="row" id="count">{{math @index "+" 1}}</td>
+                                        <td><img src="../product-images/{{this._id}}1.jpg"
+                                                style="height: 100px; width:100px;"
+                                                class="d-flex justify-content-center" alt=""></td>
+                                        <td>{{this.Name}}</td>
+                                        <td>{{this.Description}}</td>
+                                        <td>{{this.Price}}</td>
+                                        <td>{{this.quantity}}</td>
+                                        <td><a href="/editProd/{{this._id}}" class="text-white"
+                                                style="text-decoration: none;"><button
+                                                    class="btn btn-primary">Edit</button></td></a>
+                                        <td><a href="/deleteProd/{{this._id}}" class="text-white"
+                                                style="text-decoration: none;"><button
+                                                    class="btn btn-danger">Delete</button></td></a>
+                                    </tr>
+                                    {{/each}}
+                                </tbody>
+                                <tbody id="tbody">
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $('#example').DataTable();
+    });
+    $('#submit').click(function (e) {
+        e.preventDefault()
+        let start = $('#start').val()
+        var end = $('#end').val()
+        $('#records_table').val('')
+        $.ajax({
+            method: 'post',
+            url: '/salesReport',
+            data: {
+                start,
+                end
+            },
+            success: (response) => {
+                console.log(response)
+                
+                $(function () {
+                    $(function () {
+                        $.each(response, function (i, item) {
+                            $('<tr>').append(
+                                $('<td>').text(i+1),
+                                $('<td>').text(item.deliveryAdrress.fname),
+                                $('<td>').text(item.date),
+                                $('<td>').text(item.paymentMethod),
+                                $('<td>').text(item.status),
+                                $('<td>').text("Rs."+item.total)).appendTo('#records_table');
+                        });
+                    });
+                });
+            }
+        })
+    })
+</script>
