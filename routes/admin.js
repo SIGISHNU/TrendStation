@@ -16,10 +16,15 @@ const verifyLogin = (req, res, next) => {
 
 /* GET users listing. */
 router.get('/admin', verifyLogin, async (req, res) => {
-  req.session.admin = true
-  let orders = await adminHelpers.dashboardDetails()
-  let report = await adminHelpers.graphSalesData()
-  res.render('admin/index', { admin: true, orders, report })
+  req.session.admin =true
+  let Revenue = await adminHelpers.totalRevenue()
+  let monthsales = await adminHelpers.ordersGraph()
+  let completed_orders = await adminHelpers.completed_orders()
+  let canceled_orders=await adminHelpers.canceled_orders()
+  let totalProducts = await adminHelpers.totalProducts()
+  let ordercount = await adminHelpers.ordercount()
+  let usercount = await adminHelpers.usercount()
+  res.render('admin/index', { admin: true, Revenue, monthsales,completed_orders,canceled_orders, ordercount, totalProducts, usercount })
 });
 
 router.get('/admin-login', (req, res) => {
@@ -218,7 +223,19 @@ router.post("/changeStatus", (req, res) => {
   });
 });
 
-router.get('/viewReport',(req,res)=>{
-  res.render('admin/viewReport')
+router.get('/viewReport',verifyLogin, async(req, res) => {
+ admin = req.session.admin
+ let monthsales = await adminHelpers.ordersGraph()
+  res.render('admin/viewReport', { admin: true ,monthsales})
+});
+
+router.post('/findReportbyDate', verifyLogin, (req, res) => {
+  adminHelpers.getOrderByDate(req.body).then((response) => {
+    console.log("yeah its wrking", response);
+    res.render('admin/viewSalesByDate', { admin: true, response })
+  })
+
 })
+
+
 module.exports = router;

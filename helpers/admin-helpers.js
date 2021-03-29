@@ -3,6 +3,7 @@ var collection = require('../config/collection')
 const bcrypt = require('bcrypt')
 const { response } = require('express')
 var objectId = require('mongodb').ObjectID
+const moment = require('moment')
 module.exports = {
     getAllUsers: () => {
         return new Promise(async (resolve, reject) => {
@@ -139,79 +140,125 @@ module.exports = {
             })
         })
     },
-    dashboardDetails: () => {
-        let response = {}
+    totalRevenue: () => {
         return new Promise(async (resolve, reject) => {
-            response.allUsers = await db.get().collection(collection.USER_COLLECTION).find().count()
-            response.totalOrders = await db.get().collection(collection.ORDER_COLLECTION).find().count()
-            response.totalRevenew = await db.get().collection(collection.ORDER_COLLECTION).aggregate([
-                {
-                    $match: {
-                        status: 'Deliver'
-                    }
-                },
-                {
-                    $project: {
-                        totalAmount: 1
-                    }
-                },
-                {
-                    $group: {
-                        _id: null,
-                        totalAmount: {
-                            $sum: "$totalAmount"
-                        }
+            let y = await db.get().collection(collection.ORDER_COLLECTION).aggregate([{
+                $group: {
+                    _id: null,
+                    totalAmount: {
+                        $sum: "$totalAmount"
                     }
                 }
-            ]).toArray()
-            response.completedOrders = await db.get().collection(collection.ORDER_COLLECTION).find({ status: 'Deliver' }).count()
-            response.totalRevenew = response.totalRevenew[0].totalAmount
-            resolve(response)
+            }]).toArray()
+            resolve(y)
         })
     },
-    graphSalesData:()=>{
-        return new Promise(async(resolve,reject)=>{
-            let graphData = await db.get().collection(collection.ORDER_COLLECTION).aggregate([
-                {
-                    $match:{
-                        status:'Deliver'
-                    }
-                },
-                {
-                    $project:{
-                        date:1,
-                        _id:0,
-                        totalAmount:1
-                    }
-                },
-                {
-                    $group:{
-                        _id:{month:"$date"},
-                        count:{$sum:1},
-                        total:{$sum:"$totalAmount"},
-
-                    }
-                },
-                
-                {
-                    $project:{
-                        _id:1,
-                        total:1,
-                       
-                    }
-                },
-                
+    completed_orders: () => {
+        return new Promise(async (resolve, reject) => {
+            let i = await db.get().collection(collection.ORDER_COLLECTION).find({ status: "Deliver" }).count()
+            resolve(i)
+        })
+    },
+    canceled_orders: () => {
+        return new Promise(async (resolve, reject) => {
+            let cancel = await db.get().collection(collection.ORDER_COLLECTION).find({ status: "Cancel" }).count()
+            resolve(cancel)
+        })
+    },
+    totalProducts: () => {
+        return new Promise(async (resolve, reject) => {
+            let totalpdt = await db.get().collection(collection.PRODUCT_COLLECTOION).find().count()
+            resolve(totalpdt)
+        })
+    },
+    usercount: () => {
+        return new Promise(async (resolve, reject) => {
+            let usercount = await db.get().collection(collection.USER_COLLECTION).count()
+            if (usercount) {
+                resolve(usercount)
+            }
+            else {
+                reject()
+            }
+        })
+    },
+    ordercount: () => {
+        return new Promise(async (resolve, reject) => {
+            let ordercount = await db.get().collection(collection.ORDER_COLLECTION).count()
+            if (ordercount) {
+                resolve(ordercount)
+            }
+        })
+    },
+    ordersGraph: () => {
+        return new Promise(async (resolve, reject) => {
+            let graphData = await db.get().collection(collection.ORDER_COLLECTION).aggregate([{
+                $match: {
+                    status: "Deliver"
+                }
+            },
+            {
+                $project: {
+                    date: 1,
+                    _id: 0,
+                    totalAmount: 1
+                }
+            },
+            {
+                $group: {
+                    _id: { month: "$date" },
+                    count: { $sum: 1 },
+                    total: { $sum: "$totalAmount" }
+                }
+            },
+            {
+                $project: {
+                    _id: 1,
+                    total: 1
+                }
+            }
             ]).toArray()
-           var response={
-                date:[],
-                total:[]
-           }
-            for(i=0;i<graphData.length;i++){
-                response.date[i]=graphData[i]._id.month
-                response.total[i]=graphData[i].total
+            var response = {
+                date: [],
+                total: []
+            }
+            for (i = 0; i < graphData.length; i++) {
+                response.date[i] = graphData[i]._id.month
+                response.total[i] = graphData[i].total
             }
             resolve(response)
+            console.log("ReS IS", response);
         })
     },
-    
+    getOrderByDate: (req) => {
+        return new Promise(async (resolve, reject) => {
+           let from = req.fromDate
+           let to = req.toDate
+           let dfrom = moment(from).format("MM/DD/YYYY");
+           let dto = moment(to).format("MM/DD/YYYY");
+           let salesReport = await db.get().collection(collection.ORDER_COLLECTION).aggregate([
+              {
+                 $match: {
+                    date: {
+                       $gte: dfrom,
+                       $lte: dto
+                    }
+                 }
+              },
+              {
+                 $project: {
+                    totalAmount: 1,
+                    paymentMethod: 1,
+                    status: 1,
+                    date: 1,
+                    _id: 1
+  
+                 }
+              }
+           ]).toArray()
+           resolve(salesReport)
+        })
+  
+     },
+  
 }
