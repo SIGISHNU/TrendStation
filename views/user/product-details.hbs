@@ -6,17 +6,16 @@
 			<section class="content">
 				<article class="demo-area">
 					<div class="col-md-2">
-							{{!-- <div class="carousel-inner" style="margin-top: 10%;"> --}}
-								<a href=""><img src="../product-images/{{product._id}}1.jpg"
-										style="width: 150px; height:150px;" id="img1" alt=""></a>
-								<a href=""><img src="../product-images/{{product._id}}2.jpg"
-										style="width: 150px; height:150px;" id="img2" alt=""></a>
-								<a href=""><img src="../product-images/{{product._id}}3.jpg"
-										style="width: 150px; height:150px;" id="img3" alt=""></a>
-						</div>
+						<a href=""><img src="../product-images/{{product._id}}1.jpg" style="width: 150px; height:150px;"
+								id="img1" alt=""></a>
+						<a href=""><img src="../product-images/{{product._id}}2.jpg" style="width: 150px; height:150px;"
+								id="img2" alt=""></a>
+						<a href=""><img src="../product-images/{{product._id}}3.jpg" style="width: 150px; height:150px;"
+								id="img3" alt=""></a>
+					</div>
 					<div class="col-md-4">
-							<img class="demo-trigger" src="../product-images/{{product._id}}1.jpg"
-								data-zoom="../product-images/{{product._id}}1.jpg" style="height: 300px; width:250px;">
+						<img class="demo-trigger" src="../product-images/{{product._id}}1.jpg"
+							data-zoom="../product-images/{{product._id}}1.jpg" style="height: 300px; width:250px;">
 					</div>
 					<div class="detail col-md-6">
 						<section>
@@ -26,7 +25,8 @@
 							<img src="../images/product-details/rating.png" alt="" />
 							<span>
 								<span>₹{{product.Price}}</span>
-								<button type="button" class="btn btn-fefault cart" onclick="addToCart('{{product._id}}')">
+								<button type="button" class="btn btn-fefault cart"
+									onclick="addToCart('{{product._id}}')">
 									<i class="fa fa-shopping-cart"></i>
 									Add to cart
 								</button>

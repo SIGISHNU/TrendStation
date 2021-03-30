@@ -36,6 +36,9 @@
 						<form id="verifyotp" action="/verify-otp" method="POST">
 							<h2>Enter your OTP</h2>
 							<input type="number" name="OTP" id="OTP" placeholder="Enter OTP" />
+							<div id="showErrOTP" style="display: none;">
+								<p style="color: red;">OTP is not Valid</p>
+							</div>
 							<button type="submit" class="btn btn-default" id="butt2">Verify</button>
 						</form>
 					</div>
@@ -168,6 +171,8 @@
 			success: (response) => {
 				if (response) {
 					window.location.href = ('/')
+				}else{
+					$('#showErrOTP').show()
 				}
 			}
 		})

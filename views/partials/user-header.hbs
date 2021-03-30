@@ -102,7 +102,10 @@
 				</div>
 				<div class="col-sm-3">
 					<div class="search_box pull-right">
-						<input type="text" placeholder="Search" />
+						<form class="form-inline" action="/search" method="POST">
+								<input class="form-control mr-sm-2" type="search" name="search" placeholder="Search" aria-label="Search" required>
+								<button class="btn my-2 my-sm-0 btn-success" type="submit">Search</button>
+							</form>
 					</div>
 				</div>
 			</div>

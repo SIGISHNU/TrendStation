@@ -1,3 +1,14 @@
+<style>
+    .image_container {
+        padding: 0.5em;
+        width: calc(100%/4);
+    }
+
+    img {
+        max-width: 100%;
+    }
+</style>
+
 <div class="container col-md-6">
     <div class="card" style="margin-top: 12rem;">
         <div class="header">
@@ -25,27 +36,51 @@
 
                 <h4>Upload ,Crop and save.</h4>
                 <!-- input file -->
-                <div class="form-group">
-                    <label>Image 1</label>
-                    <img src="" alt="" style="width: 100px; height: auto;" id="viewImg1" class="pt-2 pb-4">
-                    <input type="file" class="form-control" name="Image1" placeholder="Image1"
-                        onchange="viewImage1(event)" accept="image/*">
+
+                <div class="form-control">
+                    <input type="file" name="Image1" src="#" class="form-control" id="Image1" onchange="readURL1(this);"
+                        accept="image/*" />
+                    <div class="image_container" id="cp1">
+                        <img id="blah1" style="height:300px;" src="#" alt="" />
+                    </div>
+                    <div id="crop1" style="display: none;">
+                        <div id="cropped_result1" class="mt-5 image_container">
+                            <img src="" id="cropped_results1" alt="">
+                        </div>
+                        <a class="badge btn-info w-25 text-white" id="crop_button1">Crop</a>
+                    </div>
                 </div>
 
                 <!-- input file -->
-                <div class="form-group">
-                    <label>Image 2</label>
-                    <img src="" alt="" style="width: 100px; height: auto;" id="viewImg2" class="pt-2 pb-4">
-                    <input type="file" class="form-control" name="Image2" placeholder="Image2"
-                        onchange="viewImage2(event)" accept="image/*">
+
+                <div class="form-control">
+                    <input type="file" name="Image2" src="#" class="form-control" id="Image2" onchange="readURL2(this);"
+                        accept="image/*" />
+                    <div class="image_container" id="cp2">
+                        <img id="blah2" style="height:300px;" src="#" alt="" />
+                    </div>
+                    <div id="crop2" style="display: none;">
+                        <div id="cropped_result2" class="mt-5 image_container">
+                            <img src="" id="cropped_results2" alt="">
+                        </div>
+                        <a class="badge btn-info w-25 text-white" id="crop_button2">Crop</a>
+                    </div>
                 </div>
 
                 <!-- input file -->
-                <div class="form-group">
-                    <label>Image 3</label>
-                    <img src="" alt="" style="width: 100px; height: auto;" id="viewImg3" class="pt-2 pb-4">
-                    <input type="file" class="form-control" name="Image3" placeholder="Image3"
-                        onchange="viewImage3(event)" accept="image/*">
+
+                <div class="form-control">
+                    <input type="file" name="Image3" src="#" class="form-control" id="Image3" onchange="readURL3(this);"
+                        accept="image/*" />
+                    <div class="image_container" id="cp3">
+                        <img id="blah3" style="height:300px;" src="#" alt="" />
+                    </div>
+                    <div id="crop3" style="display: none;">
+                        <div id="cropped_result3" class="mt-5 image_container">
+                            <img src="" id="cropped_results3" alt="">
+                        </div>
+                        <a class="badge btn-info w-25 text-white" id="crop_button3">Crop</a>
+                    </div>
                 </div>
 
                 <div class="form-group">
@@ -53,56 +88,148 @@
                     <input type="number" class="form-control" name="Price" placeholder="Price">
                 </div>
                 <button type="submit" class="btn btn-primary btn-lg btn-block">Add Product</button><br>
-                <div class="bottom">
-                </div>
             </form>
         </div>
     </div>
+</div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.0.0/cropper.min.js"></script>
 
-    <script>
-        function viewImage1(event) {
-            console.log(document.getElementById('viewImg'))
-            document.getElementById('viewImg1').src = URL.createObjectURL(event.target.files[0])
-        }
-        function viewImage2(event) {
-            console.log(document.getElementById('viewImg'))
-            document.getElementById('viewImg2').src = URL.createObjectURL(event.target.files[0])
-        }
-        function viewImage3(event) {
-            console.log(document.getElementById('viewImg'))
-            document.getElementById('viewImg3').src = URL.createObjectURL(event.target.files[0])
-        }
-    </script>
-
-     <script>
-        $(document).ready(function(){
-            $(document).ready(() => {
-			$("#add-product").validate({
-				rules: {
-					Name: {
-						required: true
-					},
+<script>
+    $(document).ready(function () {
+        $(document).ready(() => {
+            $("#add-product").validate({
+                rules: {
+                    Name: {
+                        required: true
+                    },
                     Category: {
-						required: true
-					},
+                        required: true
+                    },
                     Description: {
-						required: true
-					},
+                        required: true
+                    },
                     Image1: {
-						required: true
-					},
-                     Image2: {
-						required: true
-					},
-                     Image3: {
-						required: true
-					},
-					Price: {
-						required: true
-					}
-				}
-			});
-		});
+                        required: true
+                    },
+                    Image2: {
+                        required: true
+                    },
+                    Image3: {
+                        required: true
+                    },
+                    Price: {
+                        required: true
+                    }
+                }
+            });
         });
-    </script>
+    });
+</script>
+
+<script>
+    function readURL1(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $("#blah1").attr("src", e.target.result);
+            };
+            reader.readAsDataURL(input.files[0]);
+            setTimeout(initCropper1, 1000);
+            $('#crop1').show()
+        }
+    }
+
+    function initCropper1() {
+        console.log("Came here");
+        var image = document.getElementById("blah1");
+        var cropper = new Cropper(image, {
+            viewMode: 3,
+            aspectRatio: 24 / 36,
+            crop: function (e) {
+                console.log(e.detail.x);
+                console.log(e.detail.y);
+            }
+        });
+
+        // On crop button clicked
+        document.getElementById("crop_button1").addEventListener("click", function () {
+            var imgurl1 = cropper.getCroppedCanvas().toDataURL();
+            console.log('hai')
+            document.getElementById("cropped_results1").src = imgurl1
+            document.["#Image1"].src = imgurl1
+        });
+    }
+</script>
+
+<script>
+    function readURL2(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $("#blah2").attr("src", e.target.result);
+            };
+            reader.readAsDataURL(input.files[0]);
+            setTimeout(initCropper2, 1000);
+            $('#crop2').show()
+        }
+    }
+
+    function initCropper2() {
+        console.log("Came here");
+        var image = document.getElementById("blah2");
+        var cropper = new Cropper(image, {
+            viewMode: 3,
+            aspectRatio: 24 / 36,
+            crop: function (e) {
+                console.log(e.detail.x);
+                console.log(e.detail.y);
+            }
+        });
+
+        // On crop button clicked
+        document.getElementById("crop_button2").addEventListener("click", function () {
+            var imgurl2 = cropper.getCroppedCanvas().toDataURL();
+            console.log('hai')
+            document.getElementById("cropped_results2").src = imgurl2
+            document.["#Image2"].src = imgurl2
+        });
+    }
+</script>
+
+<script>
+    function readURL3(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $("#blah3").attr("src", e.target.result);
+            };
+            reader.readAsDataURL(input.files[0]);
+            setTimeout(initCropper3, 1000);
+            $('#crop3').show()
+        }
+    }
+
+    function initCropper3() {
+        console.log("Came here");
+        var image = document.getElementById("blah3");
+        var cropper = new Cropper(image, {
+            viewMode: 3,
+            aspectRatio: 24 / 36,
+            crop: function (e) {
+                console.log(e.detail.x);
+                console.log(e.detail.y);
+            }
+        });
+
+        // On crop button clicked
+        document.getElementById("crop_button3").addEventListener("click", function () {
+            var imgurl3 = cropper.getCroppedCanvas().toDataURL();
+            document.getElementById("cropped_results3").src = imgurl3
+            document.["#Image3"].src = imgurl3
+        });
+    }
+</script>
+
+

@@ -110,12 +110,13 @@ router.get('/logout', (req, res) => {
 router.get('/productDetails/:id', verifyBlock, async (req, res) => {
   let user = req.session.user
   let userPage = true
-  // if (user) {
-  //   cartCount = await userHelpers.getCartCount(req.session.user._id)
-  // }
+  let cartCount = null
+  if (user) {
+    cartCount = await userHelpers.getCartCount(req.session.user._id)
+  }
   let product = await adminHelpers.getProductDetails(req.params.id)
   let category = await adminHelpers.getAllCategory(req.params.id)
-  res.render('user/product-details', { user, userPage, product, category })
+  res.render('user/product-details', { user, userPage,cartCount, product, category })
 });
 
 router.get('/add-to-cart/:id', (req, res) => {
@@ -129,6 +130,7 @@ router.get('/cart', verifyBlock, verifyLogin, async (req, res) => {
   let user = req.session.user
   let cart = req.session.cart
   let userPage = true
+  let cartCount = null
   if (user) {
     cartCount = await userHelpers.getCartCount(req.session.user._id)
   }
@@ -204,6 +206,23 @@ router.get('/add-address', verifyLogin, verifyBlock, async (req, res) => {
 router.post('/add-address', async (req, res) => {
   userHelpers.addAddress(req.body).then((address) => {
     res.redirect('/place-order')
+  })
+});
+
+router.get('/add-user-address', verifyLogin, verifyBlock, async (req, res) => {
+  let user = req.session.user
+  let userPage = true
+  if (user) {
+    cartCount = await userHelpers.getCartCount(req.session.user._id)
+  }
+  let category = await adminHelpers.getAllCategory(req.params.id)
+  let profile = await userHelpers.userProfile(req.session.user._id)
+  res.render('user/add-user-address', { user, userPage, cartCount,profile, category })
+});
+
+router.post('/add-user-address',(req, res) => {
+  userHelpers.addAddress(req.body).then((address) => {
+    res.redirect('/user-profile')
   })
 });
 
@@ -337,13 +356,15 @@ router.post('/verify-otp', async (req, res) => {
         console.log(req.session.userLoggedIn)
         req.session.user = response.user
         res.json({ response })
+      }else{
+        res.json({response})
       }
     }).catch((err) => {
       console.log(err)
     })
 });
 
-router.get('/user-profile', async (req, res) => {
+router.get('/user-profile', verifyLogin,verifyBlock, async (req, res) => {
   let user = req.session.user
   let userPage = true
   let cartCount = null
