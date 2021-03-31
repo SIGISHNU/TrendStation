@@ -128,7 +128,7 @@ router.get('/deleteProduct/:id', (req, res) => {
   let proId = req.params.id
   console.log(proId)
   adminHelpers.deleteProduct(proId).then((response) => {
-    res.redirect('/viewProduct')
+    res.redirect('/viewProduct');
   })
 });
 
@@ -145,14 +145,26 @@ router.post('/editProduct/:id', (req, res) => {
   console.log(req.params.id)
   let id = req.params.id
   adminHelpers.updateProduct(req.params.id, req.body).then(() => {
-    res.redirect('/viewProduct')
-    let Image1 = req.files.Image1
-    let Image2 = req.files.Image2
-    let Image3 = req.files.Image3
-    Image1.mv('./public/product-images/' + id + '1.jpg')
-    Image2.mv('./public/product-images/' + id + '2.jpg')
-    Image3.mv('./public/product-images/' + id + '3.jpg')
 
+    var base64Str1 = req.body.imageBase64Data1
+    console.log(base64Str1);
+    var path = "./public/product-images/";
+    var optionalObj = { fileName: id + '1', type: "jpg" };
+    base64ToImage(base64Str1, path, optionalObj);
+
+    var base64Str2 = req.body.imageBase64Data2
+    console.log(base64Str2);
+    var path = "./public/product-images/";
+    var optionalObj = { fileName: id + '2', type: "jpg" };
+    base64ToImage(base64Str2, path, optionalObj);
+
+    var base64Str3 = req.body.imageBase64Data3
+    console.log(base64Str3);
+    var path = "./public/product-images/";
+    var optionalObj = { fileName: id + '3', type: "jpg" };
+    base64ToImage(base64Str3, path, optionalObj);
+
+    res.redirect('/viewProduct')
   })
 });
 
