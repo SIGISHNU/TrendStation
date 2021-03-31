@@ -102,19 +102,15 @@ router.get('/addProduct', verifyLogin, (req, res) => {
 router.post('/addProduct', (req, res) => {
   adminHelpers.addProduct(req.body, (id) => {
 
-    // let image1 = req.files.image1
-    // let image2 = req.files.image2
-    // let image3 = req.files.image3
-
     var base64Str1 = req.body.imageBase64Data1
     console.log(base64Str1);
-    var path = "./public//product-images/";
+    var path = "./public/product-images/";
     var optionalObj = { fileName: id + '1', type: "jpg" };
     base64ToImage(base64Str1, path, optionalObj);
 
     var base64Str2 = req.body.imageBase64Data2
     console.log(base64Str2);
-    var path = "./public//product-images/";
+    var path = "./public/product-images/";
     var optionalObj = { fileName: id + '2', type: "jpg" };
     base64ToImage(base64Str2, path, optionalObj);
 

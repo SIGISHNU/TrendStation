@@ -4,7 +4,8 @@
             <p class="lead">Edit Product</p>
         </div>
         <div class="body ml-5">
-            <form class="form-auth-small" id="edit-product" action="/editProduct/{{product._id}}" method="post" enctype="multipart/form-data">
+            <form class="form-auth-small" id="edit-product" action="/editProduct/{{product._id}}" method="post"
+                enctype="multipart/form-data">
                 <div class="form-group">
                     <label>Name</label>
                     <input type="text" class="form-control" name="Name" placeholder="Name" value="{{product.Name}}">
@@ -19,26 +20,34 @@
                 </div>
                 <div class="form-group">
                     <label>Description</label>
-                    <input type="text" class="form-control" name="Description" placeholder="Description" value="{{product.Description}}">
+                    <input type="text" class="form-control" name="Description" placeholder="Description"
+                        value="{{product.Description}}">
                 </div>
                 <div class="form-group">
                     <label>Image</label>
-                    <img src="/product-images/{{product._id}}1.jpg" alt="" style="width: 100px; height: auto;" id="viewImg1" class="pt-2 pb-4">
-                    <input type="file" class="form-control" name="Image1" placeholder="Image" onchange="viewImage1(event)" accept="image/*">
+                    <img src="/product-images/{{product._id}}1.jpg" alt="" style="width: 100px; height: auto;"
+                        id="viewImg1" class="pt-2 pb-4">
+                    <input type="file" class="form-control" name="Image1" placeholder="Image"
+                        onchange="viewImage1(event)" accept="image/*">
                 </div>
                 <div class="form-group">
                     <label>Image</label>
-                    <img src="/product-images/{{product._id}}2.jpg" alt="" style="width: 100px; height: auto;" id="viewImg2" class="pt-2 pb-4">
-                    <input type="file" class="form-control" name="Image2" placeholder="Image" onchange="viewImage2(event)" accept="image/*">
+                    <img src="/product-images/{{product._id}}2.jpg" alt="" style="width: 100px; height: auto;"
+                        id="viewImg2" class="pt-2 pb-4">
+                    <input type="file" class="form-control" name="Image2" placeholder="Image"
+                        onchange="viewImage2(event)" accept="image/*">
                 </div>
                 <div class="form-group">
                     <label>Image</label>
-                    <img src="/product-images/{{product._id}}3.jpg" alt="" style="width: 100px; height: auto;" id="viewImg3" class="pt-2 pb-4">
-                    <input type="file" class="form-control" name="Image3" placeholder="Image" onchange="viewImage3(event)" accept="image/*">
+                    <img src="/product-images/{{product._id}}3.jpg" alt="" style="width: 100px; height: auto;"
+                        id="viewImg3" class="pt-2 pb-4">
+                    <input type="file" class="form-control" name="Image3" placeholder="Image"
+                        onchange="viewImage3(event)" accept="image/*">
                 </div>
                 <div class="form-group">
                     <label>Price</label>
-                    <input type="number" class="form-control" name="Price" placeholder="Price" value="{{product.Price}}">
+                    <input type="number" class="form-control" name="Price" placeholder="Price"
+                        value="{{product.Price}}">
                 </div>
                 <button type="submit" class="btn btn-primary btn-lg btn-block">Edit Product</button><br>
                 <div class="bottom">
@@ -47,49 +56,37 @@
         </div>
     </div>
 
-    <script>
-        function viewImage1(event){
-            console.log(document.getElementById('viewImg'))
-            document.getElementById('viewImg1').src=URL.createObjectURL(event.target.files[0])
-        }
-        function viewImage2(event){
-            console.log(document.getElementById('viewImg'))
-            document.getElementById('viewImg2').src=URL.createObjectURL(event.target.files[0])
-        }
-        function viewImage3(event){
-            console.log(document.getElementById('viewImg'))
-            document.getElementById('viewImg3').src=URL.createObjectURL(event.target.files[0])
-        }
-    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.0.0/cropper.min.js"></script>
 
     <script>
-        $(document).ready(function(){
+        $(document).ready(function () {
             $(document).ready(() => {
-			$("#edit-product").validate({
-				rules: {
-					Name: {
-						required: true
-					},
-                    Category: {
-						required: true
-					},
-                    Description: {
-						required: true
-					},
-                    Image1: {
-						required: true
-					},
-                     Image2: {
-						required: true
-					},
-                     Image3: {
-						required: true
-					},
-					Price: {
-						required: true
-					}
-				}
-			});
-		});
+                $("#edit-product").validate({
+                    rules: {
+                        Name: {
+                            required: true
+                        },
+                        Category: {
+                            required: true
+                        },
+                        Description: {
+                            required: true
+                        },
+                        Image1: {
+                            required: true
+                        },
+                        Image2: {
+                            required: true
+                        },
+                        Image3: {
+                            required: true
+                        },
+                        Price: {
+                            required: true
+                        }
+                    }
+                });
+            });
         });
     </script>
