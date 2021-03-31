@@ -469,6 +469,29 @@ module.exports = {
                 resolve({ status: false })
             }
         })
+    },
+    editAddress: (AddressId) => {
+        return new Promise((resolve, reject) => {
+            let address = db.get().collection(collection.ADDRESS_COLLECTION).findOne({ _id:objectId(AddressId) })
+            resolve(address)
+        })
+    },
+    updateAddress:(Id,Address)=>{
+        return new Promise((resolve, reject) => {
+            db.get().collection(collection.ADDRESS_COLLECTION)
+                .updateOne({ _id: objectId(Id) }, {
+                    $set: {
+                        Name: Address.Name,
+                        Phone: Address.Phone,
+                        Email: Address.Email,
+                        Country: Address.Country,
+                        State: Address.State,
+                        Pincode: Address.Pincode
+                    }
+                }).then((response) => {
+                    resolve()
+                })
+        })
     }
 }
 
