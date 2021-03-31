@@ -4,6 +4,7 @@ const adminHelpers = require('../helpers/admin-helpers');
 const { ReplSet } = require('mongodb');
 const session = require('express-session');
 var router = express.Router();
+var base64ToImage = require('base64-to-image');
 const verifyLogin = (req, res, next) => {
   res.header('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
   let admin = req.session.adminloggedIn
@@ -16,15 +17,15 @@ const verifyLogin = (req, res, next) => {
 
 /* GET users listing. */
 router.get('/admin', verifyLogin, async (req, res) => {
-  req.session.admin =true
+  req.session.admin = true
   let Revenue = await adminHelpers.totalRevenue()
   let monthsales = await adminHelpers.ordersGraph()
   let completed_orders = await adminHelpers.completed_orders()
-  let canceled_orders=await adminHelpers.canceled_orders()
+  let canceled_orders = await adminHelpers.canceled_orders()
   let totalProducts = await adminHelpers.totalProducts()
   let ordercount = await adminHelpers.ordercount()
   let usercount = await adminHelpers.usercount()
-  res.render('admin/index', { admin: true, Revenue, monthsales,completed_orders,canceled_orders, ordercount, totalProducts, usercount })
+  res.render('admin/index', { admin: true, Revenue, monthsales, completed_orders, canceled_orders, ordercount, totalProducts, usercount })
 });
 
 router.get('/admin-login', (req, res) => {
@@ -100,21 +101,30 @@ router.get('/addProduct', verifyLogin, (req, res) => {
 
 router.post('/addProduct', (req, res) => {
   adminHelpers.addProduct(req.body, (id) => {
-    let image1 = req.files.Image1
-    let image2 = req.files.Image2
-    let image3 = req.files.Image3
-    image1.mv('./public/product-images/' + id + '1.jpg', (err, done) => {
-      image2.mv('./public/product-images/' + id + '2.jpg', (err, done) => {
-        image3.mv('./public/product-images/' + id + '3.jpg', (err, done) => {
-          if (!err) {
-            res.redirect('/viewProduct')
-          } else {
-            console.log(err)
-            res.redirect('/viewProduct')
-          }
-        })
-      })
-    })
+
+    // let image1 = req.files.image1
+    // let image2 = req.files.image2
+    // let image3 = req.files.image3
+
+    var base64Str1 = req.body.imageBase64Data1
+    console.log(base64Str1);
+    var path = "./public//product-images/";
+    var optionalObj = { fileName: id + '1', type: "jpg" };
+    base64ToImage(base64Str1, path, optionalObj);
+
+    var base64Str2 = req.body.imageBase64Data2
+    console.log(base64Str2);
+    var path = "./public//product-images/";
+    var optionalObj = { fileName: id + '2', type: "jpg" };
+    base64ToImage(base64Str2, path, optionalObj);
+
+    var base64Str3 = req.body.imageBase64Data3
+    console.log(base64Str3);
+    var path = "./public/product-images/";
+    var optionalObj = { fileName: id + '3', type: "jpg" };
+    base64ToImage(base64Str3, path, optionalObj);
+
+    res.redirect('/viewProduct');
   })
 });
 
@@ -223,10 +233,10 @@ router.post("/changeStatus", (req, res) => {
   });
 });
 
-router.get('/viewReport',verifyLogin, async(req, res) => {
- admin = req.session.admin
- let monthsales = await adminHelpers.ordersGraph()
-  res.render('admin/viewReport', { admin: true ,monthsales})
+router.get('/viewReport', verifyLogin, async (req, res) => {
+  admin = req.session.admin
+  let monthsales = await adminHelpers.ordersGraph()
+  res.render('admin/viewReport', { admin: true, monthsales })
 });
 
 router.post('/findReportbyDate', verifyLogin, (req, res) => {
