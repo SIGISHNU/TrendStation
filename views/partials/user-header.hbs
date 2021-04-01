@@ -1,34 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <title>Home | TrendZStation</title>
-		{{!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"> --}}
 
-    <link href="../css/bootstrap.min.css" rel="stylesheet">
-    <link href="../css/font-awesome.min.css" rel="stylesheet">
-    <link href="../css/prettyPhoto.css" rel="stylesheet">
-    <link href="../css/price-range.css" rel="stylesheet">
-    <link href="../css/animate.css" rel="stylesheet">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="">
+	<meta name="author" content="">
+	<title>Home | TrendZStation</title>
+	{{!--
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+		integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	--}}
+
+	<link href="../css/bootstrap.min.css" rel="stylesheet">
+	<link href="../css/font-awesome.min.css" rel="stylesheet">
+	<link href="../css/prettyPhoto.css" rel="stylesheet">
+	<link href="../css/price-range.css" rel="stylesheet">
+	<link href="../css/animate.css" rel="stylesheet">
 	<link href="../css/main.css" rel="stylesheet">
 	<link href="../css/responsive.css" rel="stylesheet">
-    <!--[if lt IE 9]>
+	<!--[if lt IE 9]>
     <script src="js/html5shiv.js"></script>
     <script src="js/respond.min.js"></script>
     <![endif]-->
-    <link rel="shortcut icon" href="../images/ico/favicon.ico">
-    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="../images/ico/apple-touch-icon-144-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../images/ico/apple-touch-icon-114-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../images/ico/apple-touch-icon-72-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" href="../images/ico/apple-touch-icon-57-precomposed.png">
+	<link rel="shortcut icon" href="../images/ico/favicon.ico">
+	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../images/ico/apple-touch-icon-144-precomposed.png">
+	<link rel="apple-touch-icon-precomposed" sizes="114x114" href="../images/ico/apple-touch-icon-114-precomposed.png">
+	<link rel="apple-touch-icon-precomposed" sizes="72x72" href="../images/ico/apple-touch-icon-72-precomposed.png">
+	<link rel="apple-touch-icon-precomposed" href="../images/ico/apple-touch-icon-57-precomposed.png">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-	<script src="https://www.paypal.com/sdk/js?client-id=AeC6h1Z_jtuQGQxv4L-wdDLDfLalBtvgalRLgfiJGrWBYCaJkWMbgMX5PAwpHz8-twb2YAHEYuoHj92f&disable-funding=credit,card"></script>
+	<script
+		src="https://www.paypal.com/sdk/js?client-id=AeC6h1Z_jtuQGQxv4L-wdDLDfLalBtvgalRLgfiJGrWBYCaJkWMbgMX5PAwpHz8-twb2YAHEYuoHj92f&disable-funding=credit,card"></script>
 
-</head><!--/head-->
+</head>
+<!--/head-->
 
 <body>
 	<div class="header-middle">
@@ -44,12 +50,13 @@
 					<div class="shop-menu clearfix pull-right">
 						<class class="nav navbar-nav">
 							{{#if user}}
-							<li><a href="/user-profile"><i class="fa fa-user"></i>{{user.Name}}</a></li>
+							<li><a href="/profile"><i class="fa fa-user"></i>{{user.Name}}</a></li>
 							{{else}}
 							<li><a href="/login"><i class="fa fa-user"></i> Account</a></li>
 							{{/if}}
 							<li><a href="/orders"><i class="fa fa-crosshairs"></i> Orders</a></li>
-							<li><a href="/cart"><i class="fa fa-shopping-cart"></i> Cart<span class="badge badge-success" id="cart-count">{{cartCount}}</span></a></li>
+							<li><a href="/cart"><i class="fa fa-shopping-cart"></i> Cart<span
+										class="badge badge-success" id="cart-count">{{cartCount}}</span></a></li>
 							{{#if user}}
 							<li><a href="/logout"><i class="fa fa-unlock"></i> Logout</a></li>
 							{{else}}
@@ -102,18 +109,13 @@
 						</ul>
 					</div>
 				</div>
-				<div class="col-sm-3">
-					<div class="search_box pull-right">
-						<form class="form-inline" action="/search" method="POST">
-								<input class="form-control mr-sm-2" type="search" name="search" placeholder="Search" aria-label="Search" required>
-								<button class="btn my-2 my-sm-0 btn-success" type="submit">Search</button>
-							</form>
-					</div>
+
+				<div class="col-sm-3 pull-right">
+					<input type="text" id="myFilter" class="form-control" onkeyup="myFunction()" placeholder="Search here...">
 				</div>
 			</div>
 		</div>
-	</div>
-	<!--/header-bottom-->
-</header>
+		<!--/header-bottom-->
+		</header>
 
-
+		

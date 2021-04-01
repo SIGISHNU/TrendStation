@@ -1,42 +1,73 @@
 <section>
-	<div class="container">
+	<div class="container" style="margin-bottom: 31%;">
 		<div class="row">
 			<div class="col-sm-12 padding-right">
-				<div class="features_items">
+				<div class="features_items" id="MyItems">
 					<!--features_items-->
 					<h2 class="title text-center">New Items</h2>
 					{{#each products}}
-					<div class="col-sm-3">
+					<div class="col-sm-3 myProd">
 						<div class="product-image-wrapper">
-							<div class="single-products">
-								<div class="productinfo text-center">
+							<div class="single-products  product-item">
+								<div class="product-info text-center" id="productinfo">
 									<img style="width: 180px; height:250px;" src="/product-images/{{this._id}}1.jpg"
 										alt="" />
 									<img src="../images/product-details/new.jpg" class="newarrival"
 										style="height: 20px; width: 35px;" alt="" />
-									<h2>₹{{this.Price}}</h2>
-									<p>{{this.Name}}</p>
-									<p>{{this.Category}}</p>
+									<h2 class="price" id="price">₹{{this.Price}}</h2>
+									<p class="name" id="name">{{this.Name}}</p>
+									<p class="category" id="category">{{this.Category}}</p>
 									<button class="btn btn-default add-to-cart" onclick="addToCart('{{this._id}}')">Add
 										to Cart</button>
 								</div>
 								<div class="product-overlay">
 									<div class="overlay-content">
-										<h2>₹{{this.Price}}</h2>
-										<p>{{this.Name}}</p>
-										<p>{{this.Category}}</p>
+										<h2 class="price" id="price">₹{{this.Price}}</h2>
+										<p class="name" id="name">{{this.Name}}</p>
+										<p class="category" id="category">{{this.Category}}</p>
 										<button class="btn btn-default add-to-cart"
 											onclick="addToCart('{{this._id}}')">Add to Cart</button>
 									</div>
 								</div>
 							</div>
 							<div class="choose">
-								<a style="margin-left: 30%;" href="/productDetails/{{this._id}}"><i class="fa fa-eye"></i>View Product</a>
+								<a style="margin-left: 30%;" href="/productDetails/{{this._id}}"><i
+										class="fa fa-eye"></i>View Product</a>
 							</div>
 						</div>
+					</div>
+					<div class="noItems" style="display: none;">
+						<h5 class="text-center">No Item Matches for your Search</h5>
 					</div>
 					{{/each}}
 				</div>
 			</div>
 		</div>
 </section>
+
+
+<script>
+	function myFunction() {
+		var input, filter, cards, cardContainer, p, title, i;
+		input = document.getElementById("myFilter");
+		filter = input.value.toUpperCase();
+		cardContainer = document.getElementById("MyItems");
+		cards = cardContainer.getElementsByClassName("product-item");
+		myProd = document.getElementsByClassName("myProd")
+		console.log('input' + input)
+		console.log('filter' + filter)
+		console.log('cardContainer' + cardContainer)
+		console.log('cards' + cards)
+
+
+		for (i = 0; i < cards.length; i++) {
+			title = cards[i].querySelector(".product-info p.name");
+			console.log('title' + title)
+			if (title.innerText.toUpperCase().indexOf(filter) > -1) {
+				myProd[i].style.display = "";
+			} else {
+				myProd[i].style.display = "none";
+			}
+		}
+	}
+</script>

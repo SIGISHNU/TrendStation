@@ -1,4 +1,3 @@
-
 <div class="container col-md-6">
     <div class="card" style="margin-top: 12rem;">
         <div class="header">
@@ -33,8 +32,8 @@
                             <div class="col-md-5">
                                 <span class="btn vd_btn vd_bg-green fileinput-button">
                                     <!-- The file input field used as target for the file upload widget -->
-                                    <input type="file" accept="image/*" name="image1" id="fileupload1"
-                                        class="js-photo-upload" onchange="viewImage1(event)" required>
+                                    <input type="file" accept="image/*" name="image1"
+                                        id="fileupload1" class="js-photo-upload" onchange="viewImage1(event)" onclick="firstImage()" required>
                                 </span>
                             </div>
                             <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
@@ -155,47 +154,60 @@
 </script>
 
 <script>
-    $("#fileupload1").click();
-    let result = document.querySelector('.result'),
-        save = document.querySelector('.save'),
-        cropped = document.querySelector('.img1Disp'),
-        upload = document.querySelector('#fileupload1'),
-        cropper = '';
-    upload.addEventListener('change', (e) => {
-        if (e.target.files.length) {
-            // start file reader
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                if (e.target.result) {
-                    // create new image
-                    $("#exampleModalCenter").modal("show");
-                    let img = document.createElement('img');
-                    img.id = 'image';
-                    img.src = e.target.result
-                    // clean result before
-                    result.innerHTML = '';
-                    // append new image
-                    result.appendChild(img);
-                    // init cropper
-                    cropper = new Cropper(img);
-                }
-            };
-            reader.readAsDataURL(e.target.files[0]);
-        }
-    });
-    save.addEventListener('click', (e) => {
-        e.preventDefault();
-        // get result to data uri
-        let imgSrc = cropper.getCroppedCanvas({
-            width: 300 // img disp value
-        }).toDataURL();
-        $("#exampleModalCenter").modal("hide");
-        console.log('src', imgSrc)
-        console.log('image', cropped.src)
-        cropped.src = imgSrc;
-        console.log('imagee', cropped.src)
-        $("#imageBase64Data1").val(imgSrc);
-    });
+    function firstImage() {
+        let result = document.querySelector('.result'),
+            save = document.querySelector('.save'),
+            cropped = document.querySelector('.img1Disp'),
+            upload = document.querySelector('#fileupload1'),
+            cropper = '';
+        upload.addEventListener('change', (e) => {
+            if (e.target.files.length) {
+                // start file reader
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    if (e.target.result) {
+                        // create new image
+                        $("#exampleModalCenter").modal("show");
+                        let img = document.createElement('img');
+                        img.id = 'image';
+                        img.src = e.target.result
+                        // clean result before
+                        result.innerHTML = '';
+                        // append new image
+                        result.appendChild(img);
+                        // init cropper
+                        cropper = new Cropper(img, {
+                            viewMode: 2,
+                            aspectRatio: 5 / 7,
+                            autoCropArea: 1,
+                            cropBoxResizable: false,
+                            crop: function (e) {
+                                console.log(e.detail.x);
+                                console.log(e.detail.y);
+                            }
+
+                        });
+                    }
+                };
+                reader.readAsDataURL(e.target.files[0]);
+            }
+        });
+        save.addEventListener('click', (e) => {
+            e.preventDefault();
+            // get result to data uri
+            let imgSrc = cropper.getCroppedCanvas({
+                width: 300 // img disp value
+            }).toDataURL();
+            $("#exampleModalCenter").modal("hide");
+            console.log('src', imgSrc)
+            console.log('image', cropped.src)
+            cropped.src = imgSrc;
+            console.log('imagee', cropped.src)
+            $("#imageBase64Data1").val(imgSrc);
+            var base = document.getElementById('imageBase64Data1').value
+            console.log(base)
+        });
+    }
 </script>
 
 <script>
@@ -221,7 +233,16 @@
                         // append new image
                         result.appendChild(img);
                         // init cropper
-                        cropper = new Cropper(img);
+                        cropper = new Cropper(img, {
+                            viewMode: 2,
+                            aspectRatio: 5 / 7,
+                            autoCropArea: 1,
+                            cropBoxResizable: false,
+                            crop: function (e) {
+                                console.log(e.detail.x);
+                                console.log(e.detail.y);
+                            }
+                        });
                     }
                 };
                 reader.readAsDataURL(e.target.files[0]);
@@ -267,7 +288,17 @@
                         // append new image
                         result.appendChild(img);
                         // init cropper
-                        cropper = new Cropper(img);
+                        cropper = new Cropper(img, {
+                            viewMode: 2,
+                            aspectRatio: 5 / 7,
+                            autoCropArea: 1,
+                            cropBoxResizable: false,
+                            crop: function (e) {
+                                console.log(e.detail.x);
+                                console.log(e.detail.y);
+                            }
+
+                        });
                     }
                 };
                 reader.readAsDataURL(e.target.files[0]);

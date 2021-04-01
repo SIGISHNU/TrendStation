@@ -15,7 +15,6 @@ module.exports = {
         console.log(product)
         product.Price = parseInt(product.Price)
         db.get().collection('product').insertOne(product).then((data) => {
-
             callback(data.ops[0]._id)
         })
     },

@@ -383,7 +383,19 @@ router.post('/verify-otp', async (req, res) => {
     })
 });
 
-router.get('/user-profile', verifyLogin, verifyBlock, async (req, res) => {
+router.get('/edit-profile', verifyLogin, verifyBlock, async (req, res) => {
+  let user = req.session.user
+  let userPage = true
+  let cartCount = null
+  if (user) {
+    cartCount = await userHelpers.getCartCount(req.session.user._id)
+  }
+  let category = await adminHelpers.getAllCategory(req.params.id)
+  let profile = await userHelpers.userProfile(req.session.user._id)
+  res.render('user/edit-profile', { user, userPage, cartCount, category, profile })
+});
+
+router.get('/profile', verifyLogin, verifyBlock, async (req, res) => {
   let user = req.session.user
   let userPage = true
   let cartCount = null
@@ -393,7 +405,7 @@ router.get('/user-profile', verifyLogin, verifyBlock, async (req, res) => {
   let category = await adminHelpers.getAllCategory(req.params.id)
   let profile = await userHelpers.userProfile(req.session.user._id)
   let address = await userHelpers.getAddress(req.session.user._id)
-  res.render('user/user-profile', { user, userPage, cartCount, category, address, profile })
+  res.render('user/profile', { user, userPage, cartCount, category, address, profile })
 });
 
 module.exports = router;
