@@ -85,9 +85,10 @@ router.get('/viewUsers', verifyLogin, (req, res) => {
 
 router.get('/viewProduct', verifyLogin, (req, res) => {
   req.session.admin = true
-  adminHelpers.getAllProducts().then((products) => {
+  adminHelpers.getAllProducts().then(async (products) => {
+    let product = await adminHelpers.getProductDetails(req.params.id)
     console.log('products')
-    res.render('admin/view-products', { admin: true, products })
+    res.render('admin/view-products', { admin: true, products, product })
   })
 });
 
@@ -253,7 +254,25 @@ router.post('/findReportbyDate', verifyLogin, (req, res) => {
     res.render('admin/viewSalesByDate', { admin: true, response })
   })
 
+});
+
+router.post('/createDiscount', (req, res) => {
+  let id=req.body.proId
+  let price=req.body.proPrice
+  let discount=req.body.proDiscount
+  adminHelpers.createOffer(id,price,discount).then((response) => {
+    console.log(response)
+    res.redirect('/viewProduct')
+  })
 })
 
+router.post('/catDiscount',(req,res)=>{
+  let catName=req.body.catName
+  let catDiscount=req.body.catDiscount
+  adminHelpers.catOffer(catName,catDiscount).then((response) => {
+    console.log(response)
+    res.redirect('/viewCategory')
+  })
+})
 
 module.exports = router;

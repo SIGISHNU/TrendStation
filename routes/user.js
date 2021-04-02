@@ -7,6 +7,7 @@ const session = require('express-session');
 var router = express.Router();
 const config = require('../config/config');
 const client = require('twilio')(config.accountSID, config.authToken);
+const referal = require('voucher-code-generator');
 let phone
 const verifyLogin = (req, res, next) => {
   res.header('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
@@ -38,7 +39,7 @@ const verifyBlock = (req, res, next) => {
 /* GET home page. */
 router.get('/', verifyBlock, async (req, res) => {
   let user = req.session.user
-  console.log(req.session.user + '11111111111111111111111111111111111111111111111111111111111111')
+  console.log(req.session.user)
   let userPage = true
   let cartCount = null
   if (user) {
@@ -47,7 +48,7 @@ router.get('/', verifyBlock, async (req, res) => {
   let category = await adminHelpers.getAllCategory(req.params.id)
   adminHelpers.getAllProducts().then((products) => {
     console.log(products)
-    res.render('index', { user, products, userPage, category, cartCount })
+    res.render('index', { user, products, userPage, category, cartCount})
   })
 });
 
@@ -69,6 +70,8 @@ router.get('/login', async (req, res) => {
 
 router.post('/signup', (req, res) => {
   console.log(req.body);
+  // let referalcodeis = referal.generate({ length: 8, count: 1 })
+  // let referalcode = referalcodeis[0]
   userHelpers.doSignup(req.body).then((response) => {
     console.log(response);
     req.session.userLoggedIn = true

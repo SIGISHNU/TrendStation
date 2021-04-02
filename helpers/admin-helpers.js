@@ -4,6 +4,7 @@ const bcrypt = require('bcrypt')
 const { response } = require('express')
 var objectId = require('mongodb').ObjectID
 const moment = require('moment')
+const { PRODUCT_COLLECTOION } = require('../config/collection')
 module.exports = {
     getAllUsers: () => {
         return new Promise(async (resolve, reject) => {
@@ -231,33 +232,78 @@ module.exports = {
     },
     getOrderByDate: (req) => {
         return new Promise(async (resolve, reject) => {
-           let from = req.fromDate
-           let to = req.toDate
-           let dfrom = moment(from).format("MM/DD/YYYY");
-           let dto = moment(to).format("MM/DD/YYYY");
-           let salesReport = await db.get().collection(collection.ORDER_COLLECTION).aggregate([
-              {
-                 $match: {
-                    date: {
-                       $gte: dfrom,
-                       $lte: dto
+            let from = req.fromDate
+            let to = req.toDate
+            let dfrom = moment(from).format("MM/DD/YYYY");
+            let dto = moment(to).format("MM/DD/YYYY");
+            let salesReport = await db.get().collection(collection.ORDER_COLLECTION).aggregate([
+                {
+                    $match: {
+                        date: {
+                            $gte: dfrom,
+                            $lte: dto
+                        }
                     }
-                 }
-              },
-              {
-                 $project: {
-                    totalAmount: 1,
-                    paymentMethod: 1,
-                    status: 1,
-                    date: 1,
-                    _id: 1
-  
-                 }
-              }
-           ]).toArray()
-           resolve(salesReport)
+                },
+                {
+                    $project: {
+                        totalAmount: 1,
+                        paymentMethod: 1,
+                        status: 1,
+                        date: 1,
+                        _id: 1
+
+                    }
+                }
+            ]).toArray()
+            resolve(salesReport)
         })
-  
-     },
-  
+
+    },
+    createOffer: (id, price, discount) => {
+        let offerPrice = price - (price * discount) / 100
+        return new Promise(async (resolve, reject) => {
+            let offers = await db.get().collection(collection.PRODUCT_COLLECTOION)
+                .updateOne({ _id: objectId(id) },
+                    {
+                        $set: {
+                            Offer: discount,
+                            Price: offerPrice,
+                            ActualPrice: price
+                        }
+                    })
+
+            resolve(offers)
+        })
+    },
+    catOffer: (catname, catdiscount) => {
+        return new Promise(async (resolve, reject) => {
+            let products = await db.get().collection(PRODUCT_COLLECTOION).find({ Category: catname }).toArray()
+            let length = products.length
+
+            for (i = 0; i < length; i++) {
+                if (products[i].ActualPrice) {
+                    let disrate = products[i].ActualPrice - (products[i].ActualPrice * catdiscount) / 100
+                    let updated = db.get().collection(PRODUCT_COLLECTOION).updateOne({ _id: objectId(products[i]._id) }, {
+                        $set: {
+                            Offer: catdiscount,
+                            ActualPrice: products[i].ActualPrice,
+                            Price: disrate
+                        }
+                    })
+                } else {
+                    let disrate = products[i].Price - (products[i].Price * catdiscount) / 100
+                    let updated = db.get().collection(PRODUCT_COLLECTOION).updateOne({ _id: objectId(products[i]._id) }, {
+                        $set: {
+                            Offer: catdiscount,
+                            ActualPrice: products[i].Price,
+                            Price: disrate
+                        }
+                    })
+                }
+            }
+            resolve(products)
+        })
+    }
+
 }

@@ -58,6 +58,10 @@
 						{{#if emailExist}}
 						<p style="color: red;">Email already exist</p>
 						{{/if}}
+						<div class="wrap-input100 validate-input">
+							<input type="text" name="referal" id="referal" placeholder="Enter the referal code" />
+							<h5 style="color:seagreen;">leave this column if you don't have a referal</h5>
+						</div>
 						<input type="email" name="Email" id="Email" placeholder="Email Address" />
 						<input type="number" name="Mobile" id="Mobile" placeholder="Mobile Number" />
 						<input type="password" name="Password" id="Password" placeholder="Password" />
@@ -171,7 +175,7 @@
 			success: (response) => {
 				if (response) {
 					window.location.href = ('/')
-				}else{
+				} else {
 					$('#showErrOTP').show()
 				}
 			}

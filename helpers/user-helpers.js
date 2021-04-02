@@ -6,7 +6,7 @@ const { response, checkout } = require('../app')
 const { ORDER_COLLECTION } = require('../config/collection')
 const Razorpay = require('razorpay')
 const { resolve } = require('path')
-const moment=require('moment')
+const moment = require('moment')
 var instance = new Razorpay({
     key_id: 'rzp_test_XyxrCNSUqYCkHE',
     key_secret: 'HbS57r59yrx2Yh45EPbN1afg',
@@ -14,18 +14,40 @@ var instance = new Razorpay({
 
 module.exports = {
     doSignup: (userData) => {
-        return new Promise(async (resolve, reject) => {
-            let emailExist = await db.get().collection(collection.USER_COLLECTION).findOne({ Email: userData.Email })
-            if (!emailExist) {
-                userData.Password = await bcrypt.hash(userData.Password, 10)
-                db.get().collection(collection.USER_COLLECTION).insertOne(userData).then((data) => {
-                    resolve(data.ops[0])
-                })
-            } else {
-                reject()
-            }
-            console.log(userData);
-        })
+
+        // let userReferalCode = userData.referal;
+        // return new Promise(async (resolve, reject) => {
+        //     if (userReferalCode) {
+        //         db.get().collection(USER_COLLECTION).updateOne({ referalcode: userReferalCode }, {
+        //             $inc: {
+        //                 credits: 1
+        //             }
+        //         })
+        //     }
+
+            return new Promise(async (resolve, reject) => {
+                let emailExist = await db.get().collection(collection.USER_COLLECTION).findOne({ Email: userData.Email })
+                if (!emailExist) {
+                    userData.Password = await bcrypt.hash(userData.Password, 10)
+                    db.get().collection(collection.USER_COLLECTION).insertOne(
+                        // {
+                        //     Name: userData.Name,
+                        //     Username: userData.Username,
+                        //     Email: userData.Email,
+                        //     Mobile: userData.Mobile,
+                        //     Password: userData.Password,
+                        //     status: false,
+                        //     referalcode: referalcode
+                        // }
+                    ).then((data) => {
+                        resolve(data.ops[0])
+                    })
+                } else {
+                    reject()
+                }
+                console.log(userData);
+            })
+        // })
     },
     doLogin: (userData) => {
         return new Promise(async (resolve, reject) => {
@@ -336,7 +358,7 @@ module.exports = {
                 products: products,
                 totalAmount: total,
                 status: status,
-                date:moment(new Date).format('L')
+                date: moment(new Date).format('L')
             }
 
             db.get().collection(collection.ORDER_COLLECTION).insertOne(orderObj).then((response) => {
@@ -472,11 +494,11 @@ module.exports = {
     },
     editAddress: (AddressId) => {
         return new Promise((resolve, reject) => {
-            let address = db.get().collection(collection.ADDRESS_COLLECTION).findOne({ _id:objectId(AddressId) })
+            let address = db.get().collection(collection.ADDRESS_COLLECTION).findOne({ _id: objectId(AddressId) })
             resolve(address)
         })
     },
-    updateAddress:(Id,Address)=>{
+    updateAddress: (Id, Address) => {
         return new Promise((resolve, reject) => {
             db.get().collection(collection.ADDRESS_COLLECTION)
                 .updateOne({ _id: objectId(Id) }, {

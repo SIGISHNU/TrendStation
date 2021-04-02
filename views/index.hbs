@@ -14,7 +14,14 @@
 										alt="" />
 									<img src="../images/product-details/new.jpg" class="newarrival"
 										style="height: 20px; width: 35px;" alt="" />
-									<h2 class="price" id="price">₹{{this.Price}}</h2>
+									{{#if this.ActualPrice}}
+									<del>
+										<h4 class="price" id="price">₹{{this.ActualPrice}}</h4>
+									</del>
+									<h4 class="offerprice" id="offerprice">₹{{this.Price}}</h4>
+									{{else}}
+									<h4 class="offerprice" id="offerprice">₹{{this.Price}}</h4>
+									{{/if}}
 									<p class="name" id="name">{{this.Name}}</p>
 									<p class="category" id="category">{{this.Category}}</p>
 									<button class="btn btn-default add-to-cart" onclick="addToCart('{{this._id}}')">Add
@@ -23,7 +30,7 @@
 							</div>
 							<div class="choose">
 								<a style="margin-left: 30%;" href="/productDetails/{{this._id}}">
-								<i class="fa fa-eye"></i>View Product</a>
+									<i class="fa fa-eye"></i>View Product</a>
 							</div>
 						</div>
 					</div>
