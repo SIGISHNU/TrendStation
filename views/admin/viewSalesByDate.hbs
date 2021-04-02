@@ -63,7 +63,12 @@
 
 <script>
     $(document).ready(function () {
-        $('#view-reports').DataTable();
+        $('#view-reports').DataTable({
+            dom: 'Bfrtip',
+            buttons: [
+                'copy', 'csv', 'excel', 'pdf', 'print'
+            ]
+        });
     });
 </script>
 
