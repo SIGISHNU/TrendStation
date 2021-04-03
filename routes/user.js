@@ -72,11 +72,14 @@ router.post('/signup', (req, res) => {
   console.log(req.body);
   let referalcodeis = referal.generate({ length: 8, count: 1 })
   let referalcode = referalcodeis[0]
-  userHelpers.doSignup(req.body).then((response) => {
+  userHelpers.doSignup(req.body,referalcode).then((response) => {
     console.log(response);
     req.session.userLoggedIn = true
     req.session.user = response
     res.redirect('/')
+  }).catch(() => {
+    req.session.emailExist = true
+    res.redirect('/login')
   })
 });
 

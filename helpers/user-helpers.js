@@ -14,11 +14,11 @@ var instance = new Razorpay({
 });
 
 module.exports = {
-    doSignup: (userData) => {
-        let referalcode = userData.referal;
+    doSignup: (userData,referalcode) => {
+        let userReferalCode = userData.referal;
         return new Promise(async (resolve, reject) => {
-            if (referalcode) {
-                db.get().collection(collection.USER_COLLECTION).updateOne({ referalcode: referalcode },
+            if (userReferalCode) {
+                db.get().collection(collection.USER_COLLECTION).updateOne({ referalcode: userReferalCode },
                     {
                         $inc: {
                             credits: 1
