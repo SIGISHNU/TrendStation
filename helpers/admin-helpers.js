@@ -272,7 +272,6 @@ module.exports = {
                             ActualPrice: price
                         }
                     })
-
             resolve(offers)
         })
     },
@@ -304,6 +303,30 @@ module.exports = {
             }
             resolve(products)
         })
-    }
-
+    },
+    viewOffers: () => {
+        return new Promise((resolve, reject) => {
+            db.get().collection(PRODUCT_COLLECTOION).find({ Offer: { $exists: true } }).toArray().then((products) => {
+                resolve(products)
+            })
+        })
+    },
+    deleteOffer: (prodId) => {
+        return new Promise(async (resolve, reject) => {
+            let product = await db.get().collection(PRODUCT_COLLECTOION).findOne({ _id: objectId(prodId) })
+            let Price = product.ActualPrice
+            db.get().collection(PRODUCT_COLLECTOION).updateOne({ _id: objectId(prodId) }, {
+                $set: {
+                    Price: Price
+                }
+            })
+            db.get().collection(PRODUCT_COLLECTOION).updateOne({ _id: objectId(prodId) }, {
+                $unset: {
+                    Offer: 1,
+                    ActualPrice: 1
+                }
+            })
+            resolve()
+        })
+    },
 }

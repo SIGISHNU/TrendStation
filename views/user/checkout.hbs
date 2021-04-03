@@ -95,7 +95,7 @@
 									<h6 class="my-0">Discount in (%)</h6>
 									<small class="text-muted">discount applied in percentage</small>
 								</div>
-								<span class="text-muted" id="discountprice">{{d}}</span>
+								<span class="text-muted" id="discountprice">{{Offer}}</span>
 							</li>
 							<li class="list-group-item d-flex justify-content-between lh-condensed">
 								<div>
@@ -122,11 +122,9 @@
 
 						<div class="input-group">
 							<input type="text" value="{{userfound._id}}" style="display:none;" id="input-user">
-							<input type="text" class="form-control" id="input-coupon" name="coupon"
-								placeholder="Promo code">
-							<div class="input-group-append">
-								<button type="coupon" id="coupon-code" onclick="applyCoupon()"
-									class="btn btn-info">Reedem code</button>
+							<input type="text" class="form-control" id="input-coupon" name="coupon" placeholder="Promo code">
+							<div class="input-group-append" style="margin-top: 10%;">
+								<button type="coupon" id="coupon-code" onclick="applyCoupon()" class="btn btn-info" style="color: rgb(24, 3, 12);">Reedem code</button>
 							</div>
 							<p id="success" style="display: none; color: red;"><strong>*suucess coupon
 									applied</strong></p>
@@ -145,7 +143,7 @@
 				<h5>{{this.Name}}</h5>
 				<h5>{{this.Phone}}</h5>
 				<h5>{{this.Email}}, {{this.Country}}, {{this.State}}, Pin - {{this.Pincode}}</h5>
-				<button type="submit" class="btn btn-info text-dark"
+				<button type="submit" class="btn btn-success"
 					onclick="changeAddress('{{this.Name}}','{{this.Phone}}','{{this.Email}}','{{this.Country}}','{{this.State}}','{{this.Pincode}}')"
 					style="font-weight: bolder;">Use this Address</button>
 			</div>

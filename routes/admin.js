@@ -257,21 +257,34 @@ router.post('/findReportbyDate', verifyLogin, (req, res) => {
 });
 
 router.post('/createDiscount', (req, res) => {
-  let id=req.body.proId
-  let price=req.body.proPrice
-  let discount=req.body.proDiscount
-  adminHelpers.createOffer(id,price,discount).then((response) => {
+  let id = req.body.proId
+  let price = req.body.proPrice
+  let discount = req.body.proDiscount
+  adminHelpers.createOffer(id, price, discount).then((response) => {
     console.log(response)
     res.redirect('/viewProduct')
   })
 })
 
-router.post('/catDiscount',(req,res)=>{
-  let catName=req.body.catName
-  let catDiscount=req.body.catDiscount
-  adminHelpers.catOffer(catName,catDiscount).then((response) => {
+router.post('/catDiscount', (req, res) => {
+  let catName = req.body.catName
+  let catDiscount = req.body.catDiscount
+  adminHelpers.catOffer(catName, catDiscount).then((response) => {
     console.log(response)
     res.redirect('/viewCategory')
+  })
+})
+
+router.get('/viewOffer', verifyLogin, async (req, res) => {
+  adminHelpers.viewOffers().then((data) => {
+    res.render('admin/view-offer', { admin: true, data })
+  })
+})
+
+router.get('/deleteOffer/:id', verifyLogin, (req, res) => {
+  let proId = req.params.id
+  adminHelpers.deleteOffer(proId).then((data) => {
+    res.redirect('/ViewOffer')
   })
 })
 
