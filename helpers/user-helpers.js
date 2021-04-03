@@ -4,6 +4,7 @@ const bcrypt = require('bcrypt')
 var objectId = require('mongodb').ObjectID
 const { response, checkout } = require('../app')
 const { ORDER_COLLECTION } = require('../config/collection')
+
 const Razorpay = require('razorpay')
 const { resolve } = require('path')
 const moment = require('moment')
@@ -14,40 +15,39 @@ var instance = new Razorpay({
 
 module.exports = {
     doSignup: (userData) => {
-
-        // let userReferalCode = userData.referal;
-        // return new Promise(async (resolve, reject) => {
-        //     if (userReferalCode) {
-        //         db.get().collection(USER_COLLECTION).updateOne({ referalcode: userReferalCode }, {
-        //             $inc: {
-        //                 credits: 1
-        //             }
-        //         })
-        //     }
-
-            return new Promise(async (resolve, reject) => {
-                let emailExist = await db.get().collection(collection.USER_COLLECTION).findOne({ Email: userData.Email })
-                if (!emailExist) {
-                    userData.Password = await bcrypt.hash(userData.Password, 10)
-                    db.get().collection(collection.USER_COLLECTION).insertOne(
-                        // {
-                        //     Name: userData.Name,
-                        //     Username: userData.Username,
-                        //     Email: userData.Email,
-                        //     Mobile: userData.Mobile,
-                        //     Password: userData.Password,
-                        //     status: false,
-                        //     referalcode: referalcode
-                        // }
-                    ).then((data) => {
-                        resolve(data.ops[0])
+        let referalcode = userData.referal;
+        return new Promise(async (resolve, reject) => {
+            if (referalcode) {
+                db.get().collection(collection.USER_COLLECTION).updateOne({ referalcode: referalcode },
+                    {
+                        $inc: {
+                            credits: 1
+                        }
                     })
-                } else {
-                    reject()
-                }
-                console.log(userData);
-            })
-        // })
+            }
+            let Coupon = await db.get().collection(collection.COUPON_COLLECTION).findOne({ status: true })
+            let emailExist = await db.get().collection(collection.USER_COLLECTION).findOne({ Email: userData.Email })
+            if (!emailExist) {
+                userData.Password = await bcrypt.hash(userData.Password, 10)
+                db.get().collection(collection.USER_COLLECTION).insertOne(
+                    {
+                        Name: userData.Name,
+                        Username: userData.Username,
+                        Email: userData.Email,
+                        Mobile: userData.Mobile,
+                        Password: userData.Password,
+                        status: false,
+                        referalcode: referalcode,
+                        coupon: Coupon
+                    }
+                ).then((data) => {
+                    resolve(data.ops[0])
+                })
+            } else {
+                reject()
+            }
+            console.log(userData);
+        })
     },
     doLogin: (userData) => {
         return new Promise(async (resolve, reject) => {

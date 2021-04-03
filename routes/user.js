@@ -48,7 +48,7 @@ router.get('/', verifyBlock, async (req, res) => {
   let category = await adminHelpers.getAllCategory(req.params.id)
   adminHelpers.getAllProducts().then((products) => {
     console.log(products)
-    res.render('index', { user, products, userPage, category, cartCount})
+    res.render('index', { user, products, userPage, category, cartCount })
   })
 });
 
@@ -70,16 +70,13 @@ router.get('/login', async (req, res) => {
 
 router.post('/signup', (req, res) => {
   console.log(req.body);
-  // let referalcodeis = referal.generate({ length: 8, count: 1 })
-  // let referalcode = referalcodeis[0]
+  let referalcodeis = referal.generate({ length: 8, count: 1 })
+  let referalcode = referalcodeis[0]
   userHelpers.doSignup(req.body).then((response) => {
     console.log(response);
     req.session.userLoggedIn = true
     req.session.user = response
     res.redirect('/')
-  }).catch(() => {
-    req.session.emailExist = true
-    res.redirect('/login')
   })
 });
 

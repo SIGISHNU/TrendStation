@@ -5,6 +5,7 @@ const { response } = require('express')
 var objectId = require('mongodb').ObjectID
 const moment = require('moment')
 const { PRODUCT_COLLECTOION } = require('../config/collection')
+const { COUPON_COLLECTION } = require('../config/collection')
 module.exports = {
     getAllUsers: () => {
         return new Promise(async (resolve, reject) => {
@@ -279,7 +280,7 @@ module.exports = {
     },
     catOffer: (catname, catdiscount, from, to) => {
         return new Promise(async (resolve, reject) => {
-            let products = await db.get().collection(PRODUCT_COLLECTOION).find({ Category: catname }).toArray()
+            let products = await db.get().collection(collection.PRODUCT_COLLECTOION).find({ Category: catname }).toArray()
             let length = products.length
 
             for (i = 0; i < length; i++) {
@@ -296,7 +297,7 @@ module.exports = {
                 //     })
                 // } else {
                 let disrate = products[i].Price - (products[i].Price * catdiscount) / 100
-                let updated = db.get().collection(PRODUCT_COLLECTOION).updateOne({ _id: objectId(products[i]._id) }, {
+                let updated = db.get().collection(collection.PRODUCT_COLLECTOION).updateOne({ _id: objectId(products[i]._id) }, {
                     $set: {
                         Offer: catdiscount,
                         ActualPrice: products[i].Price,
@@ -312,7 +313,7 @@ module.exports = {
     },
     viewOffers: () => {
         return new Promise((resolve, reject) => {
-            db.get().collection(PRODUCT_COLLECTOION).find({ Offer: { $exists: true } }).toArray().then((products) => {
+            db.get().collection(collection.PRODUCT_COLLECTOION).find({ Offer: { $exists: true } }).toArray().then((products) => {
                 resolve(products)
             })
         })
@@ -321,12 +322,12 @@ module.exports = {
         return new Promise(async (resolve, reject) => {
             let product = await db.get().collection(PRODUCT_COLLECTOION).findOne({ _id: objectId(prodId) })
             let Price = product.ActualPrice
-            db.get().collection(PRODUCT_COLLECTOION).updateOne({ _id: objectId(prodId) }, {
+            db.get().collection(collection.PRODUCT_COLLECTOION).updateOne({ _id: objectId(prodId) }, {
                 $set: {
                     Price: Price
                 }
             })
-            db.get().collection(PRODUCT_COLLECTOION).updateOne({ _id: objectId(prodId) }, {
+            db.get().collection(collection.PRODUCT_COLLECTOION).updateOne({ _id: objectId(prodId) }, {
                 $unset: {
                     Offer: 1,
                     ActualPrice: 1,
@@ -335,6 +336,29 @@ module.exports = {
                 }
             })
             resolve()
+        })
+    },
+    createCoupons: (offer, coupon) => {
+        return new Promise(async (resolve, reject) => {
+            db.get().collection(collection.COUPON_COLLECTION).insertOne({ Offer: offer, Coupon: coupon, status: true }).then((result) => {
+                resolve(result)
+            })
+        })
+    },
+
+    getcoupon: () => {
+        return new Promise(async (resolve, reject) => {
+
+            db.get().collection(collection.COUPON_COLLECTION).find().toArray().then((result) => {
+                resolve(result)
+            })
+        })
+    },
+    deactivateCoupon: (couponId) => {
+        return new Promise(async (resolve, reject) => {
+            db.get().collection(collection.COUPON_COLLECTION).removeOne({ _id: objectId(couponId) }).then((result) => {
+                resolve(result)
+            })
         })
     },
 }

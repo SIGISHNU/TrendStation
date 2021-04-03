@@ -5,6 +5,7 @@ const { ReplSet } = require('mongodb');
 const session = require('express-session');
 var router = express.Router();
 var base64ToImage = require('base64-to-image');
+const voucher_codes = require('voucher-code-generator');
 const verifyLogin = (req, res, next) => {
   res.header('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
   let admin = req.session.adminloggedIn
@@ -260,9 +261,9 @@ router.post('/createDiscount', (req, res) => {
   let id = req.body.proId
   let price = req.body.proPrice
   let discount = req.body.proDiscount
-  let from=req.body.ValidFrom
-  let to=req.body.ValidTo
-  adminHelpers.createOffer(id, price, discount,from,to).then((response) => {
+  let from = req.body.ValidFrom
+  let to = req.body.ValidTo
+  adminHelpers.createOffer(id, price, discount, from, to).then((response) => {
     console.log(response)
     res.redirect('/viewProduct')
   })
@@ -271,9 +272,9 @@ router.post('/createDiscount', (req, res) => {
 router.post('/catDiscount', (req, res) => {
   let catName = req.body.catName
   let catDiscount = req.body.catDiscount
-  let from=req.body.ValidFrom
-  let to=req.body.ValidTo
-  adminHelpers.catOffer(catName, catDiscount,from,to).then((response) => {
+  let from = req.body.ValidFrom
+  let to = req.body.ValidTo
+  adminHelpers.catOffer(catName, catDiscount, from, to).then((response) => {
     console.log(response)
     res.redirect('/viewCategory')
   })
@@ -289,6 +290,39 @@ router.get('/deleteOffer/:id', verifyLogin, (req, res) => {
   let proId = req.params.id
   adminHelpers.deleteOffer(proId).then((data) => {
     res.redirect('/ViewOffer')
+  })
+})
+
+router.get('/viewCoupon', verifyLogin, (req, res) => {
+  adminHelpers.getcoupon().then((coupons) => {
+    res.render('admin/view-coupon', { admin: true, coupons })
+  })
+})
+
+router.get('/createCoupon', verifyLogin, (req, res) => {
+  res.render('admin/create-coupon', { admin: true })
+})
+
+router.get('/generate-couponCode', verifyLogin, (req, res) => {
+  let voucher = voucher_codes.generate({
+    length: 8,
+    count: 1
+  })
+  let voucherCode = voucher[0]
+  res.send(voucherCode)
+})
+
+router.post('/createCoupon', async (req, res) => {
+  let coupon = req.body.coupon
+  let offer = req.body.offer
+  await adminHelpers.createCoupons(offer, coupon).then(() => {
+    res.redirect('/viewCoupon')
+  })
+})
+
+router.get('/delete-coupon/:id', async (req, res) => {
+  await adminHelpers.deactivateCoupon(req.params.id).then(() => {
+    res.redirect('/viewCoupon')
   })
 })
 
