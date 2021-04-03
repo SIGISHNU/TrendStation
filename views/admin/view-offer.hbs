@@ -30,6 +30,8 @@
                                         <th style="font-weight: bolder;">Image</th>
                                         <th style="font-weight: bolder;">Category</th>
                                         <th style="font-weight: bolder;">Discount(%)</th>
+                                        <th style="font-weight: bolder;">Valid From</th>
+                                        <th style="font-weight: bolder;"> Valid To</th>
                                         <th style="font-weight: bolder;"> Actual Amount</th>
                                         <th style="font-weight: bolder;"> After Discount Amount</th>
                                         <th style="font-weight: bolder;"> Delete</th>
@@ -45,9 +47,13 @@
                                                 src="product-images/{{this._id}}1.jpg" alt=""></td>
                                         <td>{{this.Category}}</td>
                                         <td>{{this.Offer}}%</td>
+                                        <td>{{this.ValidFrom}}</td>
+                                        <td>{{this.ValidTo}}</td>
                                         <td>{{this.ActualPrice}}</td>
                                         <td>{{this.Price}}</td>
-                                        <td><a href="/deleteOffer/{{this._id}}" class="btn btn-danger" onclick="return confirm('Are you want to delete {{this.Name}}')">Delete</a></td>
+                                        <td><a href="/deleteOffer/{{this._id}}" class="btn btn-danger"
+                                                onclick="return confirm('Are you want to delete {{this.Name}}')">Delete</a>
+                                        </td>
                                     </tr>
                                     {{/each}}
                                 </tbody>

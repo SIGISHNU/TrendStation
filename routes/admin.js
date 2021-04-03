@@ -260,7 +260,9 @@ router.post('/createDiscount', (req, res) => {
   let id = req.body.proId
   let price = req.body.proPrice
   let discount = req.body.proDiscount
-  adminHelpers.createOffer(id, price, discount).then((response) => {
+  let from=req.body.ValidFrom
+  let to=req.body.ValidTo
+  adminHelpers.createOffer(id, price, discount,from,to).then((response) => {
     console.log(response)
     res.redirect('/viewProduct')
   })
@@ -269,7 +271,9 @@ router.post('/createDiscount', (req, res) => {
 router.post('/catDiscount', (req, res) => {
   let catName = req.body.catName
   let catDiscount = req.body.catDiscount
-  adminHelpers.catOffer(catName, catDiscount).then((response) => {
+  let from=req.body.ValidFrom
+  let to=req.body.ValidTo
+  adminHelpers.catOffer(catName, catDiscount,from,to).then((response) => {
     console.log(response)
     res.redirect('/viewCategory')
   })

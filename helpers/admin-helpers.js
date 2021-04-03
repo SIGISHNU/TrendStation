@@ -260,7 +260,7 @@ module.exports = {
         })
 
     },
-    createOffer: (id, price, discount) => {
+    createOffer: (id, price, discount, from, to) => {
         let offerPrice = price - (price * discount) / 100
         return new Promise(async (resolve, reject) => {
             let offers = await db.get().collection(collection.PRODUCT_COLLECTOION)
@@ -269,37 +269,43 @@ module.exports = {
                         $set: {
                             Offer: discount,
                             Price: offerPrice,
-                            ActualPrice: price
+                            ActualPrice: price,
+                            ValidFrom: from,
+                            ValidTo: to
                         }
                     })
             resolve(offers)
         })
     },
-    catOffer: (catname, catdiscount) => {
+    catOffer: (catname, catdiscount, from, to) => {
         return new Promise(async (resolve, reject) => {
             let products = await db.get().collection(PRODUCT_COLLECTOION).find({ Category: catname }).toArray()
             let length = products.length
 
             for (i = 0; i < length; i++) {
-                if (products[i].ActualPrice) {
-                    let disrate = products[i].ActualPrice - (products[i].ActualPrice * catdiscount) / 100
-                    let updated = db.get().collection(PRODUCT_COLLECTOION).updateOne({ _id: objectId(products[i]._id) }, {
-                        $set: {
-                            Offer: catdiscount,
-                            ActualPrice: products[i].ActualPrice,
-                            Price: disrate
-                        }
-                    })
-                } else {
-                    let disrate = products[i].Price - (products[i].Price * catdiscount) / 100
-                    let updated = db.get().collection(PRODUCT_COLLECTOION).updateOne({ _id: objectId(products[i]._id) }, {
-                        $set: {
-                            Offer: catdiscount,
-                            ActualPrice: products[i].Price,
-                            Price: disrate
-                        }
-                    })
-                }
+                // if (products[i].ActualPrice) {
+                //     let disrate = products[i].ActualPrice - (products[i].ActualPrice * catdiscount) / 100
+                //     let updated = db.get().collection(PRODUCT_COLLECTOION).updateOne({ _id: objectId(products[i]._id) }, {
+                //         $set: {
+                //             Offer: catdiscount,
+                //             ActualPrice: products[i].ActualPrice,
+                //             Price: disrate,
+                //             ValidFrom: from,
+                //             ValidTo: to
+                //         }
+                //     })
+                // } else {
+                let disrate = products[i].Price - (products[i].Price * catdiscount) / 100
+                let updated = db.get().collection(PRODUCT_COLLECTOION).updateOne({ _id: objectId(products[i]._id) }, {
+                    $set: {
+                        Offer: catdiscount,
+                        ActualPrice: products[i].Price,
+                        Price: disrate,
+                        ValidFrom: from,
+                        ValidTo: to
+                    }
+                })
+                // }
             }
             resolve(products)
         })
@@ -323,7 +329,9 @@ module.exports = {
             db.get().collection(PRODUCT_COLLECTOION).updateOne({ _id: objectId(prodId) }, {
                 $unset: {
                     Offer: 1,
-                    ActualPrice: 1
+                    ActualPrice: 1,
+                    ValidFrom: 1,
+                    ValidTo: 1
                 }
             })
             resolve()
