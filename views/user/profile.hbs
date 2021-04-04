@@ -177,10 +177,17 @@
                                         <p class="m-b-10 f-w-600">My Referal Code</p>
                                         <h6 class="text-muted f-w-400">{{profile.referalcode}}</h6>
                                     </div>
+                                    {{#if profile.credits}}
                                     <div class="col-sm-6">
                                         <p class="m-b-10 f-w-600">My Credits</p>
-                                        <h6 class="text-muted f-w-400">{{profile.credit}}</h6>
+                                        <h6 class="text-muted f-w-400">{{profile.credits}}</h6>
                                     </div>
+                                    {{else}}
+                                    <div class="col-sm-6">
+                                        <p class="m-b-10 f-w-600">My Credits</p>
+                                        <h6 class="text-muted f-w-400">0</h6>
+                                    </div>
+                                    {{/if}}
                                 </div>
                                 <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600"> My Address</h6>
                                 <div class="row">

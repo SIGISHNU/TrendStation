@@ -1,43 +1,39 @@
-<section id="cart_items">
-    <div class="container">
-        <div class="breadcrumbs">
-            <ol class="breadcrumb">
-                <li><a href="/">Home</a></li>
-                <li class="active">View Orders</li>
-            </ol>
-        </div>
-        <div class="table-responsive cart_info" style="margin-bottom: 18%;">
-            <table class="table table-condensed">
-                <thead>
-                    <tr class="cart_menu">
-                        <td>Date</td>
-                        <td>Address</td>
-                        <td>Pincode</td>
-                        <td>Phone Number</td>
-                        <td>Price</td>
-                        <td>Payment</td>
-                        <td>Status</td>
-                        <td></td>
-                    </tr>
-                </thead>
-                <tbody>
-                    {{#each orders}}
-                    <tr>
-                        <td>{{this.date}}</td>
-                        <td>{{this.deliveryDetails.Country}}
-                            {{this.deliveryDetails.State}}</td>
-                        <td>{{this.deliveryDetails.Pincode}}</td>
-                        <td>{{this.deliveryDetails.Phone}}</td>
-                        <td>{{this.totalAmount}}</td>
-                        <td>{{this.paymentMethod}}</td>
-                        <td>{{this.status}}</td>
-                        <td>
-                            <a href="/view-order-products/{{this._id}}" class="btn btn-info"> View Products</a>
-                        </td>
-                    </tr>
-                    {{/each}}
-                </tbody>
-            </table>
+<div class="container">
+    <div class="row">
+        <div class="ml-auto mr-auto" style="margin-top: 5%; margin-bottom: 32%;">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <td>Date</td>
+                            <td>Address</td>
+                            <td>Pincode</td>
+                            <td>Phone Number</td>
+                            <td>Price</td>
+                            <td>Payment</td>
+                            <td>Status</td>
+                            <td></td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each orders}}
+                        <tr>
+                            <td>{{this.date}}</td>
+                            <td>{{this.deliveryDetails.Country}}
+                                {{this.deliveryDetails.State}}</td>
+                            <td>{{this.deliveryDetails.Pincode}}</td>
+                            <td>{{this.deliveryDetails.Phone}}</td>
+                            <td>{{this.totalAmount}}</td>
+                            <td>{{this.paymentMethod}}</td>
+                            <td>{{this.status}}</td>
+                            <td>
+                                <a href="/view-order-products/{{this._id}}" class="btn btn-info"> View Products</a>
+                            </td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
-</section>
+</div>

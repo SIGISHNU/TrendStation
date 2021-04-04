@@ -14,7 +14,7 @@ var instance = new Razorpay({
 });
 
 module.exports = {
-    doSignup: (userData,referalcode) => {
+    doSignup: (userData, referalcode) => {
         let userReferalCode = userData.referal;
         return new Promise(async (resolve, reject) => {
             if (userReferalCode) {
@@ -514,6 +514,63 @@ module.exports = {
                     resolve()
                 })
         })
-    }
+    },
+    getCoupons: (user) => {
+        return new Promise(async (resolve, reject) => {
+            let res = await db.get().collection(collection.USER_COLLECTION).findOne({ _id: objectId(user) })
+            resolve(res)
+        })
+    },
+    verifyCoupon: (coupon, user) => {
+        console.log("hello", user);
+        return new Promise(async (resolve, reject) => {
+            let response = {}
+            let couponfound = await db.get().collection(collection.COUPON_COLLECTION).findOne({ Coupon: coupon })
+            if (couponfound) {
+                if (couponfound.status) {
+                    response.status = 0
+                    db.get().collection(collection.COUPON_COLLECTION).updateOne({ Coupon: coupon }, {
+                        $set: {
+
+                            status: false
+                        }
+                    })
+                    db.get().collection(collection.USER_COLLECTION).updateOne({ _id: objectId(user) }, {
+                        $unset: {
+                            Coupon: 1
+                        }
+                    })
+                    response.offer = parseInt(couponfound.Offer)
+                    resolve(response)
+                }
+                else {
+                    response.status = 2
+                    resolve(response)
+                }
+            }
+            else {
+                response.status = 1
+                resolve(response)
+            }
+        })
+    },
+    countcredits: (user) => {
+        return new Promise(async (resolve, reject) => {
+            let counter = await db.get().collection(collection.USER_COLLECTION).findOne({ _id: objectId(user) }, { credits: 1 })
+            if (counter) {
+                resolve(counter)
+                console.log(counter);
+            }
+        })
+    },
+    removeCredits: (user) => {
+        return new Promise(async (resolve, reject) => {
+            let remove = db.get().collection(collection.USER_COLLECTION).updateOne({ _id: objectId(user) }, {
+                $set: {
+                    credits: 0
+                }
+            })
+        })
+    },
 }
 

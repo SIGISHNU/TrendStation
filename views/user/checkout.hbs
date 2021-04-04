@@ -15,6 +15,7 @@
 							<label>Name</label>
 							<input type="text" class="form-control" id="name" name="Name" placeholder=" Name">
 						</div>
+						<input type="text"  name="offerId" id="offerId" hidden>
 						<div class="form-group col-sm-6">
 							<label>Phone Number</label>
 							<input type="number" class="form-control" id="phoneNumber" name="Phone"
@@ -37,7 +38,7 @@
 							<label>Pin Code</label>
 							<input type="number" class="form-control" id="pincode" name="Pincode"
 								placeholder=" Enter Pincode">
-							<input type="text" name="UserId" id="" value="{{user._id}}" hidden>
+							<input type="text" name="UserId" id="" value="{{user._id}}">
 						</div><br>
 						<div class="form-group">
 							<h4><b>Payment Method</b></h4>
@@ -79,62 +80,63 @@
 						</div><br>
 						<div class="mt-5" name="paypal" id="paypal-button-container"> </div>
 					</> --}}
-
-					<div class="col-md-4 order-md-2 mb-4">
-						<ul class="list-group mb-3">
-							<li class="list-group-item d-flex justify-content-between lh-condensed">
-								<div>
-									<h6 class="my-0">Discount from Referal Credits</h6>
-									<small class="text-muted">Discount from referal credits</small>
-								</div>
-								{{#if credits}} <span class="text-muted">₹{{credits}}</span>{{else}}<span
-									class="text-muted">₹0</span>{{/if}}
-							</li>
-							<li class="list-group-item d-flex justify-content-between lh-condensed">
-								<div>
-									<h6 class="my-0">Discount in (%)</h6>
-									<small class="text-muted">discount applied in percentage</small>
-								</div>
-								<span class="text-muted" id="discountprice">{{Offer}}</span>
-							</li>
-							<li class="list-group-item d-flex justify-content-between lh-condensed">
-								<div>
-									<h6 class="my-0">Actual price</h6>
-									<small class="text-muted">price without discount</small>
-								</div>
-								<span class="text-muted">₹
-									{{total}}</span>
-							</li>
-
-							<li class="list-group-item d-flex justify-content-between bg-light">
-								<div class="text-success">
-									<h6 class="my-0">Voucher Code discount </h6>
-									<small>voucher-discount</small>
-								</div>
-								<span class="text-success" id="voucher-discount"> </span>
-							</li>
-
-							<li class="list-group-item d-flex justify-content-between">
-								<span>Total (Rupees)</span>
-								<strong id="grandTotal">{{total}}</strong>
-							</li>
-						</ul>
-
-						<div class="input-group">
-							<input type="text" value="{{userfound._id}}" style="display:none;" id="input-user">
-							<input type="text" class="form-control" id="input-coupon" name="coupon" placeholder="Promo code">
-							<div class="input-group-append" style="margin-top: 10%;">
-								<button type="coupon" id="coupon-code" onclick="applyCoupon()" class="btn btn-info" style="color: rgb(24, 3, 12);">Reedem code</button>
-							</div>
-							<p id="success" style="display: none; color: red;"><strong>*suucess coupon
-									applied</strong></p>
-							<p id="used" style="display: none; color: red;"><strong>*coupon is alreadey used cannot
-									apply</strong></p>
-							<p id="invalid" style="display: none; color: red;"><strong>*invalid coupon try the
-									correct couopon code</strong></p>
-						</div>
-					</div>
 				</form>
+				<div class="col-md-4 order-md-2 mb-4">
+					<ul class="list-group mb-3">
+						<li class="list-group-item d-flex justify-content-between lh-condensed">
+							<div>
+								<h6 class="my-0">Discount from Referal Credits</h6>
+								<small class="text-muted">Discount from referal credits</small>
+							</div>
+							{{#if credits}} <span class="text-muted">₹{{credits}}</span>{{else}}<span
+								class="text-muted">₹0</span>{{/if}}
+						</li>
+						<li class="list-group-item d-flex justify-content-between lh-condensed">
+							<div>
+								<h6 class="my-0">Discount in (%)</h6>
+								<small class="text-muted">discount applied in percentage</small>
+							</div>
+							<span class="text-muted" id="discountprice">{{Offer}}</span>
+						</li>
+						<li class="list-group-item d-flex justify-content-between lh-condensed">
+							<div>
+								<h6 class="my-0">Actual price</h6>
+								<small class="text-muted">price without discount</small>
+							</div>
+							<span class="text-muted">₹
+								{{total}}</span>
+						</li>
+
+						<li class="list-group-item d-flex justify-content-between bg-light">
+							<div class="text-success">
+								<h6 class="my-0">Voucher Code discount </h6>
+								<small>voucher-discount</small>
+							</div>
+							<span class="text-success" id="voucher-discount"> </span>
+						</li>
+
+						<li class="list-group-item d-flex justify-content-between">
+							<span>Total (Rupees)</span>
+							<strong id="grandTotal">{{total}}</strong>
+						</li>
+					</ul>
+
+					<div class="input-group">
+						<input type="text" value="{{user._id}}" style="display:none;" id="input-user">
+						<input type="text" class="form-control" id="input-coupon" name="coupon"
+							placeholder="Promo code">
+						<div class="input-group-append" style="margin-top: 10%;">
+							<button type="coupon" id="coupon-code" onclick="applyCoupon()" class="btn btn-info"
+								style="color: rgb(24, 3, 12);">Reedem code</button>
+						</div>
+						<p id="success" style="display: none; color: red;"><strong>*suucess coupon
+								applied</strong></p>
+						<p id="used" style="display: none; color: red;"><strong>*coupon is alreadey used cannot
+								apply</strong></p>
+						<p id="invalid" style="display: none; color: red;"><strong>*invalid coupon try the
+								correct couopon code</strong></p>
+					</div>
+				</div>
 			</div>
 			<hr>
 			{{#each address}}
@@ -196,6 +198,56 @@
 		document.getElementById('state').value = State
 		document.getElementById('pincode').value = Pincode
 	}
+</script>
+
+<script>
+	function applyCoupon() {
+		console.log('ividund')
+		let coupon = $('#input-coupon').val()
+		let user = $('#input-user').val()
+		console.log("couponhere", coupon)
+		$.ajax({
+			url: '/verifyCoupon',
+			method: 'POST',
+			data: {
+				coupon,
+				user
+			},
+			success: (response) => {
+
+				if (response.status == 0) {
+
+					$('#success').show()
+					$('#used').hide()
+					$('#invalid').hide()
+					let totalAmount = document.getElementById('grandTotal').innerHTML
+					let discountPrice = totalAmount * (100 - response.offer) / 100
+
+
+					document.getElementById('grandTotal').innerHTML = discountPrice
+					document.getElementById('voucher-discount').innerHTML = discountPrice
+					document.getElementById('discountprice').innerHTML = response.offer
+
+					$('#offerId').val(response.offer)
+					console.log('@@@@@@@@@@', discountPrice)
+
+
+				}
+				else if (response.status == 2) {
+					$('#used').show()
+					$('#success').hide()
+					$('#invalid').hide()
+				}
+				else if (response.status == 1) {
+					$('#invalid').show()
+					$('#used').hide()
+					$('#success').hide()
+				}
+			}
+
+		})
+	}
+
 </script>
 
 <script>

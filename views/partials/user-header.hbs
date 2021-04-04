@@ -51,13 +51,13 @@
 						<class class="nav navbar-nav">
 							{{#if user}}
 							<li><a href="/profile"><i class="fa fa-user"></i>{{user.Name}}</a></li>
-							{{else}}
-							<li><a href="/login"><i class="fa fa-user"></i> Account</a></li>
-							{{/if}}
 							<li><a href="/orders"><i class="fa fa-crosshairs"></i> Orders</a></li>
-							<li><a href="/cart"><i class="fa fa-shopping-cart"></i> Cart<span
-										class="badge badge-success" id="cart-count">{{cartCount}}</span></a></li>
-							{{#if user}}
+							<li>
+								<a href="/cart"><i class="fa fa-shopping-cart"></i> Cart
+									<span class="badge badge-success" id="cart-count">{{cartCount}}</span>
+								</a>
+							</li>
+							<li><a href="/MyCoupons"><i class="fa fa-tag"></i>My Coupons</a></li>
 							<li><a href="/logout"><i class="fa fa-unlock"></i> Logout</a></li>
 							{{else}}
 							<li><a href="/login"><i class="fa fa-lock"></i> Login</a></li>
@@ -90,9 +90,10 @@
 							<li><a href="/" class="active">Home</a></li>
 							<li class="dropdown"><a href="#">Shop<i class="fa fa-angle-down"></i></a>
 								<ul role="menu" class="sub-menu">
+									{{#if user}}
 									<li><a href="/orders">Orders</a></li>
 									<li><a href="/cart">Cart</a></li>
-									{{#if user}}
+									<li><a href="/MyCoupons">My Coupons</a></li>
 									<li><a href="/logout">Logout</a></li>
 									{{else}}
 									<li><a href="/login">Login</a></li>

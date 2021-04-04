@@ -262,7 +262,7 @@ module.exports = {
 
     },
     createOffer: (id, price, discount, from, to) => {
-        let offerPrice = price - (price * discount) / 100
+        let offerPrice = parseInt(price - (price * discount) / 100)
         return new Promise(async (resolve, reject) => {
             let offers = await db.get().collection(collection.PRODUCT_COLLECTOION)
                 .updateOne({ _id: objectId(id) },
@@ -284,18 +284,6 @@ module.exports = {
             let length = products.length
 
             for (i = 0; i < length; i++) {
-                // if (products[i].ActualPrice) {
-                //     let disrate = products[i].ActualPrice - (products[i].ActualPrice * catdiscount) / 100
-                //     let updated = db.get().collection(PRODUCT_COLLECTOION).updateOne({ _id: objectId(products[i]._id) }, {
-                //         $set: {
-                //             Offer: catdiscount,
-                //             ActualPrice: products[i].ActualPrice,
-                //             Price: disrate,
-                //             ValidFrom: from,
-                //             ValidTo: to
-                //         }
-                //     })
-                // } else {
                 let disrate = products[i].Price - (products[i].Price * catdiscount) / 100
                 let updated = db.get().collection(collection.PRODUCT_COLLECTOION).updateOne({ _id: objectId(products[i]._id) }, {
                     $set: {
@@ -306,7 +294,6 @@ module.exports = {
                         ValidTo: to
                     }
                 })
-                // }
             }
             resolve(products)
         })
@@ -321,7 +308,7 @@ module.exports = {
     deleteOffer: (prodId) => {
         return new Promise(async (resolve, reject) => {
             let product = await db.get().collection(PRODUCT_COLLECTOION).findOne({ _id: objectId(prodId) })
-            let Price = product.ActualPrice
+            let Price = parseInt(product.ActualPrice)
             db.get().collection(collection.PRODUCT_COLLECTOION).updateOne({ _id: objectId(prodId) }, {
                 $set: {
                     Price: Price
@@ -336,6 +323,37 @@ module.exports = {
                 }
             })
             resolve()
+        })
+    },
+    expireOffer: () => {
+        return new Promise(async (resolve, reject) => {
+            let allProducts = await db.get().collection(collection.PRODUCT_COLLECTOION).find().toArray()
+            let length = allProducts.length
+            for (let i = 0; i < length; i++) {
+                if (allProducts[i].Offer) {
+
+                    let current_date = moment(new Date()).format("MM/DD/YYYY");
+
+                    current_date = Date.parse(current_date)
+                    let valid_date = Date.parse(allProducts[i].ValidTo)
+
+                    console.log(current_date, valid_date);
+                    if (current_date > valid_date) {
+                        db.get().collection(collection.PRODUCT_COLLECTOION).updateOne({ _id: objectId(allProducts[i]._id) }, {
+                            $set: {
+                                Price: parseInt(allProducts[i].ActualPrice)
+                            },
+                            $unset: {
+                                Offer: 1,
+                                ActualPrice: 1,
+                                ValidFrom: 1,
+                                ValidTo: 1
+                            }
+                        })
+                    }
+                }
+            }
+
         })
     },
     createCoupons: (offer, coupon) => {
@@ -361,4 +379,5 @@ module.exports = {
             })
         })
     },
+    
 }

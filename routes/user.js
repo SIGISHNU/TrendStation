@@ -42,6 +42,7 @@ router.get('/', verifyBlock, async (req, res) => {
   console.log(req.session.user)
   let userPage = true
   let cartCount = null
+  adminHelpers.expireOffer()
   if (user) {
     cartCount = await userHelpers.getCartCount(req.session.user._id)
   }
@@ -72,7 +73,7 @@ router.post('/signup', (req, res) => {
   console.log(req.body);
   let referalcodeis = referal.generate({ length: 8, count: 1 })
   let referalcode = referalcodeis[0]
-  userHelpers.doSignup(req.body,referalcode).then((response) => {
+  userHelpers.doSignup(req.body, referalcode).then((response) => {
     console.log(response);
     req.session.userLoggedIn = true
     req.session.user = response
@@ -191,9 +192,14 @@ router.get('/place-order', verifyBlock, verifyLogin, async (req, res) => {
     cartCount = await userHelpers.getCartCount(req.session.user._id)
   }
   let total = await userHelpers.getTotalAmount(req.session.user._id)
+  let creditCount = await userHelpers.countcredits(req.session.user._id)
+  let credits = creditCount.credits * 10
+  if (creditCount.credits) {
+    total = total - (user.credits * 10)
+  }
   let address = await userHelpers.getAddress(req.session.user._id)
   let category = await adminHelpers.getAllCategory(req.params.id)
-  res.render('user/checkout', { user, userPage, total, cartCount, address, category })
+  res.render('user/checkout', { user, userPage, total, cartCount, address, category, credits })
 });
 
 router.get('/add-address', verifyLogin, verifyBlock, async (req, res) => {
@@ -225,7 +231,7 @@ router.get('/add-user-address', verifyLogin, verifyBlock, async (req, res) => {
 
 router.post('/add-user-address', (req, res) => {
   userHelpers.addAddress(req.body).then((address) => {
-    res.redirect('/user-profile')
+    res.redirect('/profile')
   })
 });
 
@@ -250,21 +256,36 @@ router.post('/edit-user-address/:id', (req, res) => {
 
 router.post('/place-order', async (req, res) => {
   console.log(req.body.userId);
-  let products = await userHelpers.getCartProductList(req.body.UserId)
-  let totalPrice = await userHelpers.getTotalAmount(req.body.UserId)
-  userHelpers.placeOrder(req.body, products, totalPrice).then((orderId) => {
-    console.log(req.body)
-    if (req.body['Payment'] === 'COD') {
-      res.json({ codSuccess: true })
-    } else if (req.body['Payment'] === "PAYPAL") {
-      res.json({ paypal: true, total: parseInt(totalPrice / 70), orderId })
-    } else {
-      userHelpers.genarateRazorpay(orderId, totalPrice).then((response) => {
-        res.json(response)
-      })
+  let user = req.session.user
+    let products = await userHelpers.getCartProductList(req.body.UserId)
+    let totalPrice = await userHelpers.getTotalAmount(req.body.UserId)
+
+    let discount = req.body.offerId
+    console.log('111111111111111',discount);
+    if (discount) {
+      totalPrice = totalPrice * (100 - discount) / 100
     }
-  })
-  console.log(req.body);
+
+    let creditCount = await userHelpers.countcredits(user._id)
+    if (creditCount.credits) {
+      totalPrice = totalPrice - (user.credits * 10)
+      userHelpers.removeCredits(user._id)
+      console.log("totalil ninn credit minused", totalPrice);
+    }
+
+    userHelpers.placeOrder(req.body, products, totalPrice).then((orderId) => {
+      console.log(req.body)
+      if (req.body['Payment'] === 'COD') {
+        res.json({ codSuccess: true })
+      } else if (req.body['Payment'] === "PAYPAL") {
+        res.json({ paypal: true, total: parseInt(totalPrice / 70), orderId })
+      } else {
+        userHelpers.genarateRazorpay(orderId, totalPrice).then((response) => {
+          res.json(response)
+        })
+      }
+    })
+    console.log(req.body);
 });
 
 router.get('/order-success', verifyLogin, verifyBlock, async (req, res) => {
@@ -395,7 +416,7 @@ router.get('/edit-profile', verifyLogin, verifyBlock, async (req, res) => {
   }
   let category = await adminHelpers.getAllCategory(req.params.id)
   let profile = await userHelpers.userProfile(req.session.user._id)
-  res.render('user/edit-profile', { user, userPage, cartCount, category, profile })
+  res.render('user/profile', { user, userPage, cartCount, category, profile })
 });
 
 router.get('/profile', verifyLogin, verifyBlock, async (req, res) => {
@@ -410,5 +431,26 @@ router.get('/profile', verifyLogin, verifyBlock, async (req, res) => {
   let address = await userHelpers.getAddress(req.session.user._id)
   res.render('user/profile', { user, userPage, cartCount, category, address, profile })
 });
+
+router.get('/MyCoupons', verifyLogin, verifyBlock, async (req, res) => {
+  let user = req.session.user
+  let userPage = true
+  let cartCount = null
+  if (user) {
+    cartCount = await userHelpers.getCartCount(req.session.user._id)
+  }
+  let category = await adminHelpers.getAllCategory(req.params.id)
+  let coup = await userHelpers.getCoupons(req.session.user._id)
+  res.render('user/mycoupons', { user, userPage, cartCount, category, coup })
+})
+
+router.post('/verifyCoupon', (req, res) => {
+  let coupon = req.body.coupon
+  let user = req.body.user
+  console.log("dey ith ivid undo", req.body)
+  userHelpers.verifyCoupon(coupon, user).then((response) => {
+    res.json(response)
+  })
+})
 
 module.exports = router;

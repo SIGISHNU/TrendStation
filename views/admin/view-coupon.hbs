@@ -42,10 +42,10 @@
                                         <td></td>
                                         <td>{{this.Offer}}%</td>
                                         <td>{{this.Coupon}}</td>
-                                        <td> {{#if this.status}} Valid {{else}}Expired! {{/if}}</td>
+                                        <td> {{this.status}}</td>
                                         <td>
                                             <a href="/delete-coupon/{{this._id}}">
-                                                <button class="btn btn-danger">Deactivate</button>
+                                                <button class="btn btn-danger" onclick="return confirm('Are you want to delete {{this.Coupon}}')">Delete</button>
                                             </a>
                                         </td>
                                     </tr>

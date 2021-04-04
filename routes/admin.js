@@ -259,8 +259,8 @@ router.post('/findReportbyDate', verifyLogin, (req, res) => {
 
 router.post('/createDiscount', (req, res) => {
   let id = req.body.proId
-  let price = req.body.proPrice
-  let discount = req.body.proDiscount
+  let price = parseInt(req.body.proPrice)
+  let discount = parseInt(req.body.proDiscount)
   let from = req.body.ValidFrom
   let to = req.body.ValidTo
   adminHelpers.createOffer(id, price, discount, from, to).then((response) => {
@@ -271,7 +271,7 @@ router.post('/createDiscount', (req, res) => {
 
 router.post('/catDiscount', (req, res) => {
   let catName = req.body.catName
-  let catDiscount = req.body.catDiscount
+  let catDiscount = parseInt(req.body.catDiscount)
   let from = req.body.ValidFrom
   let to = req.body.ValidTo
   adminHelpers.catOffer(catName, catDiscount, from, to).then((response) => {

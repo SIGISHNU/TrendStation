@@ -1,0 +1,38 @@
+<div class="container">
+    <div class="row">
+        <div class="ml-auto mr-auto" style="margin-top: 5%; margin-bottom: 29%;">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th class="text-center">#</th>
+                            <th>Coupon Code</th>
+                            <th>Discount</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#if coup.coupon}}
+                        <tr>
+                            <td class="text-center">1</td>
+                            <td>{{coup.coupon.Coupon}}</td>
+                            <td>{{coup.coupon.Offer}}%</td>
+                            <td>{{#if coup.coupon.status}} Valid{{else}}Expired{{/if}}</td>
+                        </tr>
+                        {{/if}}
+                        {{#if coupArray}}
+                        {{#each coupArray}}
+                        <tr>
+                            <td class="text-center">1</td>
+                            <td>{{this.Coupon}}dd</td>
+                            <td>{{this.Offer}}%</td>
+                            <td>{{#if this.status}} Valid{{else}}Expired{{/if}}</td>
+                        </tr>
+                        {{/each}}
+                        {{/if}}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
