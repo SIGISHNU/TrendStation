@@ -28,6 +28,10 @@
 	<link rel="apple-touch-icon-precomposed" sizes="114x114" href="../images/ico/apple-touch-icon-114-precomposed.png">
 	<link rel="apple-touch-icon-precomposed" sizes="72x72" href="../images/ico/apple-touch-icon-72-precomposed.png">
 	<link rel="apple-touch-icon-precomposed" href="../images/ico/apple-touch-icon-57-precomposed.png">
+	
+	<link rel="stylesheet"
+		href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css">
+	<link rel="stylesheet" href="https://unpkg.com/filepond/dist/filepond.min.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 	<script
@@ -70,52 +74,3 @@
 	</div>
 	</div>
 	<!--/header-middle-->
-
-	<div class="header-bottom">
-		<!--header-bottom-->
-		<div class="container">
-			<div class="row">
-				<div class="col-sm-9">
-					<div class="navbar-header">
-						<button type="button" class="navbar-toggle" data-toggle="collapse"
-							data-target=".navbar-collapse">
-							<span class="sr-only">Toggle navigation</span>
-							<span class="icon-bar"></span>
-							<span class="icon-bar"></span>
-							<span class="icon-bar"></span>
-						</button>
-					</div>
-					<div class="mainmenu pull-left">
-						<ul class="nav navbar-nav collapse navbar-collapse">
-							<li><a href="/" class="active">Home</a></li>
-							<li class="dropdown"><a href="#">Shop<i class="fa fa-angle-down"></i></a>
-								<ul role="menu" class="sub-menu">
-									{{#if user}}
-									<li><a href="/orders">Orders</a></li>
-									<li><a href="/cart">Cart</a></li>
-									<li><a href="/MyCoupons">My Coupons</a></li>
-									<li><a href="/logout">Logout</a></li>
-									{{else}}
-									<li><a href="/login">Login</a></li>
-									{{/if}}
-								</ul>
-							</li>
-							<li class="dropdown"><a href="#">Category<i class="fa fa-angle-down"></i></a>
-								<ul role="menu" class="sub-menu">
-									{{#each category}}
-									<li><a href="/category/{{this._id}}">{{this.Category}}</a></li>
-									{{/each}}
-								</ul>
-							</li>
-						</ul>
-					</div>
-				</div>
-
-				<div class="col-sm-3 pull-right">
-					<input type="text" id="myFilter" class="form-control" onkeyup="myFunction()"
-						placeholder="Search here...">
-				</div>
-			</div>
-		</div>
-		<!--/header-bottom-->
-		</header>	

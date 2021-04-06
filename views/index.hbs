@@ -1,3 +1,51 @@
+
+<div class="header-bottom">
+	<!--header-bottom-->
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-9">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+						<span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+				</div>
+				<div class="mainmenu pull-left">
+					<ul class="nav navbar-nav collapse navbar-collapse">
+						<li><a href="/" class="active">Home</a></li>
+						<li class="dropdown"><a href="#">Shop<i class="fa fa-angle-down"></i></a>
+							<ul role="menu" class="sub-menu">
+								{{#if user}}
+								<li><a href="/orders">Orders</a></li>
+								<li><a href="/cart">Cart</a></li>
+								<li><a href="/MyCoupons">My Coupons</a></li>
+								<li><a href="/logout">Logout</a></li>
+								{{else}}
+								<li><a href="/login">Login</a></li>
+								{{/if}}
+							</ul>
+						</li>
+						<li class="dropdown"><a href="#">Category<i class="fa fa-angle-down"></i></a>
+							<ul role="menu" class="sub-menu">
+								{{#each category}}
+								<li><a href="/category/{{this._id}}">{{this.Category}}</a></li>
+								{{/each}}
+							</ul>
+						</li>
+					</ul>
+				</div>
+			</div>
+
+			<div class="col-sm-3 pull-right">
+				<input type="text" id="myFilter" class="form-control" onkeyup="myFunction()"
+					placeholder="Search here...">
+			</div>
+		</div>
+	</div>
+</div>
+<!--/header-bottom-->
 <section>
 	<div class="container" style="margin-bottom: 31%;">
 		<div class="row">
@@ -6,7 +54,7 @@
 					<!--features_items-->
 					<h2 class="title text-center">New Items</h2>
 					{{#each products}}
-					<div class="col-sm-3 myProd">
+					<div class="col-sm-3 myProd" style="height: 50rem;">
 						<div class="product-image-wrapper">
 							<div class="single-products  product-item">
 								<div class="product-info text-center" id="product-info">
@@ -26,20 +74,13 @@
 									{{/if}}
 									<p class="name" id="name">{{this.Name}}</p>
 									<p class="category" id="category">{{this.Category}}</p>
-									<button class="btn btn-default add-to-cart" onclick="addToCart('{{this._id}}')">Add
+									<button class="btn btn-success add-to-cart" onclick="addToCart('{{this._id}}')">Add
 										to Cart</button>
 								</div>
-							</div>
-							<div class="choose">
-								<a style="margin-left: 30%;" href="/productDetails/{{this._id}}">
-									<i class="fa fa-eye"></i>View Product</a>
 							</div>
 						</div>
 					</div>
 					{{/each}}
-					{{!-- <div class="noItems" style="display: none;">
-						<h5 class="text-center">No Item Matches for your Search</h5>
-					</div> --}}
 				</div>
 			</div>
 		</div>

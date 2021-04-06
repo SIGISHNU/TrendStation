@@ -1,8 +1,8 @@
-<section id="cart_items">
+<section id="cart_items" style="margin-bottom: 8rem;">
     <div class="container">
-        <div class="shopper-informations" style="margin-top: 6%;">
+        <div class="shopper-informations">
             <div class="header">
-                <p class="lead">Add Address</p>
+                <p class="lead" style="margin-top: 8rem;">Add Address</p>
             </div>
             <div class="row">
                 <div class="col-sm-8">
@@ -52,10 +52,14 @@
             $("#add-address").validate({
                 rules: {
                     Name: {
-                        required: true
+                        required: true,
+                        minlength: 3
                     },
                     Phone: {
-                        required: true
+                        required: true,
+                        number: true,
+                        minlength: 10,
+                        maxlength: 10
                     },
                     Email: {
                         required: true
@@ -67,7 +71,10 @@
                         required: true
                     },
                     Pincode: {
-                        required: true
+                        required: true,
+                        number: true,
+                        minlength: 6,
+                        maxlength: 6
                     }
                 }
             });

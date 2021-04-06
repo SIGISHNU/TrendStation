@@ -58,35 +58,14 @@
 								<label><input type="radio" name="Payment" value="PAYPAL"> Paypal</label>
 							</span>
 						</div>
-						<div>
+						{{!-- <div>
 							<a class="btn btn-warning text-dark" href="/add-address">Add New Address</a>
 							<button type="submit" class="btn btn-success text-dark">Continue to Payment</button>
 						</div><br>
-						<div class="mt-5" name="paypal" id="paypal-button-container"> </div>
+						<div class="mt-5" name="paypal" id="paypal-button-container"> </div> --}}
 					</div>
-					{{!-- < class="col-sm-4">
-						<h3>Your Bill Summary</h3>
-						<table class="table table-condensed total-result">
-							<tr>
-								<td>Cart Sub Total</td>
-								<td>₹{{total}}</td>
-							</tr>
-							<tr class="shipping-cost">
-								<td>Shipping Cost</td>
-								<td>Free</td>
-							</tr>
-							<tr>
-								<td>Total</td>
-								<td><span>₹{{total}}</span></td>
-							</tr>
-						</table><br><br>
-						<div>
-							<a class="btn btn-warning text-dark" href="/add-address">Add New Address</a>
-							<button type="submit" class="btn btn-success text-dark">Continue to Payment</button>
-						</div><br>
-						<div class="mt-5" name="paypal" id="paypal-button-container"> </div>
-					</> --}}
-				</form>
+					{{!--
+				</form> --}}
 				<div class="col-md-4 order-md-2 mb-4">
 					<ul class="list-group mb-3">
 						<li class="list-group-item d-flex justify-content-between lh-condensed">
@@ -131,10 +110,15 @@
 						<input type="text" value="{{user._id}}" style="display:none;" id="input-user">
 						<input type="text" class="form-control" id="input-coupon" name="coupon"
 							placeholder="Promo code">
-						<div class="input-group-append" style="margin-top: 10%;">
-							<button type="coupon" id="coupon-code" onclick="applyCoupon()" class="btn btn-info"
-								style="color: rgb(24, 3, 12);">Reedem code</button>
+						<div class="input-group-append" style="margin-top: 7%;">
+							<a type="coupon" id="coupon-code" onclick="applyCoupon()" class="btn btn-info"
+								style="color: rgb(24, 3, 12);">Reedem code</a>
 						</div>
+						<div style="margin-top: 7%;">
+							<a class="btn btn-warning text-dark" href="/add-address">Add New Address</a>
+							<button type="submit" class="btn btn-success text-dark">Continue to Payment</button>
+						</div><br>
+						<div class="mt-5" name="paypal" id="paypal-button-container"> </div>
 						<p id="success" style="display: none; color: red;"><strong>*suucess coupon
 								applied</strong></p>
 						<p id="used" style="display: none; color: red;"><strong>*coupon is alreadey used cannot
@@ -143,6 +127,7 @@
 								correct couopon code</strong></p>
 					</div>
 				</div>
+				<form>
 			</div>
 		</div>
 	</div><br><br>
@@ -155,13 +140,16 @@
 			$("#checkout").validate({
 				rules: {
 					Name: {
-						required: true
+						required: true,
+						minlength: 3
 					},
 					Phone: {
-						required: true
+						required: true,
+						number:true
 					},
 					Email: {
-						required: true
+						required: true,
+						email:true
 					},
 					Country: {
 						required: true
@@ -170,10 +158,13 @@
 						required: true
 					},
 					Pincode: {
-						required: true
+						required: true,
+						minlength:6,
+						maxlength:6
 					},
 					Payment: {
-						required: true
+						required: true,
+
 					}
 				}
 			});
@@ -247,7 +238,7 @@
 		e.preventDefault()
 		$.ajax({
 			url: '/place-order',
-			method: 'post',
+			method: 'POST',
 			data: $('#checkout').serialize(),
 			success: (response) => {
 				alert(response)

@@ -133,6 +133,24 @@
         transition: all 0.3s ease-in-out
     }
 </style>
+<style>
+    .filepond--drop-label {
+        color: #4c4e53;
+    }
+
+    .filepond--label-action {
+        text-decoration-color: #babdc0;
+    }
+
+    .filepond--panel-root {
+        background-color: #edf0f4;
+    }
+
+    .filepond--root {
+        width: 170px;
+        margin: 0 auto;
+    }
+</style>
 <div class="page-content page-container" id="page-content">
     <div class="padding">
         <div class="row container d-flex justify-content-center">
@@ -142,8 +160,8 @@
                         <div class="col-sm-4 bg-c-lite-green user-profile">
                             <div class="card-block text-center text-white">
                                 <div class="m-b-25">
-                                    <img src="https://img.icons8.com/bubbles/100/000000/user.png" class="img-radius"
-                                        alt="User-Profile-Image">
+                                    <input type="file" class="filepond" name="filepond"
+                                        accept="image/png, image/jpeg, image/gif" />
                                 </div>
                                 <h6 class="f-w-600">{{profile.Name}}</h6>
                                 <p>@{{profile.Username}}</p>
@@ -190,20 +208,19 @@
                                     {{/if}}
                                 </div>
                                 <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600"> My Address</h6>
-                                    {{#each address}}
-                                    <div class="col-sm-3">
-                                        <p class="m-b-10 f-w-600">Address</p>
-                                        <h6 class="text-muted f-w-400">{{this.Name}}</h6>
-                                        <h6 class="text-muted f-w-400">{{this.Email}}</h6>
-                                        <h6 class="text-muted f-w-400">{{this.Phone}}</h6>
-                                        <h6 class="text-muted f-w-400">{{this.Country}}</h6>
-                                        <h6 class="text-muted f-w-400">{{this.State}}</h6>
-                                        <h6 class="text-muted f-w-400">{{this.Pincode}}</h6>
-                                        <a href="/edit-user-address/{{this._id}}" class="btn btn-success">Edit
-                                            Address</a>
-                                    </div>
-                                    {{/each}}
-                                </div> 
+                                {{#each address}}
+                                <div class="col-sm-6" style="margin-bottom: 4%; margin-top: 2%;">
+                                    <p class="m-b-10 f-w-600">Your Address</p>
+                                    <h5 class="text-muted f-w-400">{{this.Name}}</h5>
+                                    <h5 class="text-muted f-w-400">{{this.Phone}}</h5>
+                                    <h5 class="text-muted f-w-400">{{this.Email}}</h5>
+                                    <h5 class="text-muted f-w-400">{{this.Country}}, {{this.State}},{{this.Pincode}}
+                                    </h5>
+                                    <a href="/edit-user-address/{{this._id}}" class="btn btn-success">Edit
+                                        Address</a>
+                                </div>
+                                {{/each}}
+                                <hr>
                             </div>
                         </div>
                     </div>
@@ -212,3 +229,59 @@
         </div>
     </div>
 </div>
+
+
+<script src="https://unpkg.com/filepond-plugin-file-encode/dist/filepond-plugin-file-encode.min.js"></script>
+<script
+    src="https://unpkg.com/filepond-plugin-file-validate-type/dist/filepond-plugin-file-validate-type.min.js"></script>
+<script
+    src="https://unpkg.com/filepond-plugin-image-exif-orientation/dist/filepond-plugin-image-exif-orientation.min.js"></script>
+<script src="https://unpkg.com/filepond-plugin-image-crop/dist/filepond-plugin-image-crop.min.js"></script>
+<script src="https://unpkg.com/filepond-plugin-image-resize/dist/filepond-plugin-image-resize.min.js"></script>
+<script src="https://unpkg.com/filepond-plugin-image-transform/dist/filepond-plugin-image-transform.min.js"></script>
+<script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.js"></script>
+<script src="https://unpkg.com/filepond/dist/filepond.min.js"></script>
+<script>
+    /*
+We need to register the required plugins to do image manipulation and previewing.
+*/
+    FilePond.registerPlugin(
+        // encodes the file as base64 data
+        FilePondPluginFileEncode,
+
+        // validates files based on input type
+        FilePondPluginFileValidateType,
+
+        // corrects mobile image orientation
+        FilePondPluginImageExifOrientation,
+
+        // previews the image
+        FilePondPluginImagePreview,
+
+        // crops the image to a certain aspect ratio
+        FilePondPluginImageCrop,
+
+        // resizes the image to fit a certain size
+        FilePondPluginImageResize,
+
+        // applies crop and resize information on the client
+        FilePondPluginImageTransform
+    );
+
+    // Select the file input and use create() to turn it into a pond
+    // in this example we pass properties along with the create method
+    // we could have also put these on the file input element itself
+    FilePond.create(
+        document.querySelector('input'),
+        {
+            labelIdle: `Drag & Drop your picture or <span class="filepond--label-action">Browse</span>`,
+            imagePreviewHeight: 170,
+            imageCropAspectRatio: '1:1',
+            imageResizeTargetWidth: 200,
+            imageResizeTargetHeight: 200,
+            stylePanelLayout: 'compact circle',
+            styleLoadIndicatorPosition: 'center bottom',
+            styleButtonRemoveItemPosition: 'center bottom'
+        }
+    );
+</script>
