@@ -209,7 +209,8 @@ router.get('/add-address', verifyLogin, verifyBlock, async (req, res) => {
     cartCount = await userHelpers.getCartCount(req.session.user._id)
   }
   let category = await adminHelpers.getAllCategory(req.params.id)
-  res.render('user/add-address', { user, userPage, cartCount, category })
+  let profile = await userHelpers.userProfile(req.session.user._id)
+  res.render('user/add-address', { user, userPage, cartCount, category, profile })
 });
 
 router.post('/add-address', async (req, res) => {
@@ -250,42 +251,42 @@ router.post('/edit-user-address/:id', (req, res) => {
   let id = req.params.id
   console.log(id);
   userHelpers.updateAddress(id, req.body).then(() => {
-    res.redirect('/user-profile');
+    res.redirect('/profile');
   })
 })
 
 router.post('/place-order', async (req, res) => {
   console.log(req.body.userId);
   let user = req.session.user
-    let products = await userHelpers.getCartProductList(req.body.UserId)
-    let totalPrice = await userHelpers.getTotalAmount(req.body.UserId)
+  let products = await userHelpers.getCartProductList(req.body.UserId)
+  let totalPrice = await userHelpers.getTotalAmount(req.body.UserId)
 
-    let discount = req.body.offerId
-    console.log('111111111111111',discount);
-    if (discount) {
-      totalPrice = totalPrice * (100 - discount) / 100
+  let discount = req.body.offerId
+  console.log('111111111111111', discount);
+  if (discount) {
+    totalPrice = totalPrice * (100 - discount) / 100
+  }
+
+  let creditCount = await userHelpers.countcredits(user._id)
+  if (creditCount.credits) {
+    totalPrice = totalPrice - (user.credits * 10)
+    userHelpers.removeCredits(user._id)
+    console.log("totalil ninn credit minused", totalPrice);
+  }
+
+  userHelpers.placeOrder(req.body, products, totalPrice).then((orderId) => {
+    console.log(req.body)
+    if (req.body['Payment'] === 'COD') {
+      res.json({ codSuccess: true })
+    } else if (req.body['Payment'] === "PAYPAL") {
+      res.json({ paypal: true, total: parseInt(totalPrice / 70), orderId })
+    } else {
+      userHelpers.genarateRazorpay(orderId, totalPrice).then((response) => {
+        res.json(response)
+      })
     }
-
-    let creditCount = await userHelpers.countcredits(user._id)
-    if (creditCount.credits) {
-      totalPrice = totalPrice - (user.credits * 10)
-      userHelpers.removeCredits(user._id)
-      console.log("totalil ninn credit minused", totalPrice);
-    }
-
-    userHelpers.placeOrder(req.body, products, totalPrice).then((orderId) => {
-      console.log(req.body)
-      if (req.body['Payment'] === 'COD') {
-        res.json({ codSuccess: true })
-      } else if (req.body['Payment'] === "PAYPAL") {
-        res.json({ paypal: true, total: parseInt(totalPrice / 70), orderId })
-      } else {
-        userHelpers.genarateRazorpay(orderId, totalPrice).then((response) => {
-          res.json(response)
-        })
-      }
-    })
-    console.log(req.body);
+  })
+  console.log(req.body);
 });
 
 router.get('/order-success', verifyLogin, verifyBlock, async (req, res) => {
@@ -407,18 +408,6 @@ router.post('/verify-otp', async (req, res) => {
     })
 });
 
-router.get('/edit-profile', verifyLogin, verifyBlock, async (req, res) => {
-  let user = req.session.user
-  let userPage = true
-  let cartCount = null
-  if (user) {
-    cartCount = await userHelpers.getCartCount(req.session.user._id)
-  }
-  let category = await adminHelpers.getAllCategory(req.params.id)
-  let profile = await userHelpers.userProfile(req.session.user._id)
-  res.render('user/profile', { user, userPage, cartCount, category, profile })
-});
-
 router.get('/profile', verifyLogin, verifyBlock, async (req, res) => {
   let user = req.session.user
   let userPage = true
@@ -431,6 +420,42 @@ router.get('/profile', verifyLogin, verifyBlock, async (req, res) => {
   let address = await userHelpers.getAddress(req.session.user._id)
   res.render('user/profile', { user, userPage, cartCount, category, address, profile })
 });
+
+router.get('/edit-profile', verifyLogin, verifyBlock, async (req, res) => {
+  let user = req.session.user
+  let userPage = true
+  let cartCount = null
+  if (user) {
+    cartCount = await userHelpers.getCartCount(req.session.user._id)
+  }
+  let category = await adminHelpers.getAllCategory(req.params.id)
+  let profile = await userHelpers.userProfile(req.session.user._id)
+  res.render('user/edit-profile', { user, userPage, cartCount, category, profile, 'currentPassErr': req.session.currentPassErr })
+  req.session.currentPassErr = false
+});
+
+router.post('/edit-profile/:id', (req, res) => {
+  let id = req.params.id
+  console.log(id);
+  userHelpers.updateUser(id, req.body).then(() => {
+    res.redirect('/profile');
+  })
+});
+
+router.post('/updatePassword', (req, res) => {
+  let currentPass = req.body.CurrentPassword
+  let password = req.body.Password
+  let user = req.session.user._id
+  console.log(user)
+  userHelpers.changePassword(currentPass, password, user).then((response) => {
+    if (response.status) {
+      res.redirect('/profile')
+    } else {
+      req.session.currentPassErr = true
+      res.redirect('/edit-profile')
+    }
+  })
+})
 
 router.get('/MyCoupons', verifyLogin, verifyBlock, async (req, res) => {
   let user = req.session.user

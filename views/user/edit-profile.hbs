@@ -1,10 +1,10 @@
 <div class="container">
-    <div class="card col-md-6">
+    <div class="card col-md-8">
         <div class="header">
             <p class="lead">Edit Profile</p>
         </div>
         <div class="body ml-5">
-            <form class="form-auth-small" id="user-profile" action="" method="post">
+            <form class="form-auth-small" id="user-profile" action="/edit-profile/{{profile._id}}" method="post">
                 <div class="form-group">
                     <label>Name</label>
                     <input type="text" class="form-control" value="{{profile.Name}}" name="Name" placeholder="Name">
@@ -30,7 +30,41 @@
             </form>
         </div>
     </div>
-
+    <div class="card col-md-4">
+        <div class="header">
+            <p class="lead">Change Password</p>
+        </div>
+        <div class="body ml-5">
+            <form class="form-auth-small" action="updatePassword" method="post">
+                <div class="form-group">
+                    <label>Current Password</label>
+                    <input type="password" class="form-control" name="CurrentPassword" id="CurrentPass"
+                        placeholder="Current Password">
+                </div>
+                <div class="form-group">
+                    <label>New Password</label>
+                    <input type="password" class="form-control" id="Password" name="NewPassword"
+                        placeholder="New Password">
+                </div>
+                <div class="form-group">
+                    <label>Confirm Password</label>
+                    <input type="password" class="form-control" id="CPassword" name="ConfirmPassword"
+                        placeholder="Confirm Password">
+                </div>
+                <div id="showErrPwd"></div>
+                {{#if currentPassErr}}
+                <span style="color: red;"><strong>**Invalid current password**</strong></span>
+                {{/if}}
+                {{!-- <p id="invalid" style="display: none; color: red;"><strong>**Invalid current password**</strong>
+                </p> --}}
+                <div>
+                    <button type="submit" id="changePass" class="btn btn-success">Update
+                        Password</button>
+                </div><br><br><br>
+            </form>
+        </div>
+    </div>
+</div>
 <script>
     $(document).ready(() => {
         $("#user-profile").validate({
@@ -52,4 +86,41 @@
             }
         });
     });
+
+    $('#CPassword').keyup(function () {
+        console.log("hiii")
+        var Password = $('#Password').val();
+        var CPassword = $('#CPassword').val();
+        if (CPassword != Password) {
+            $('#showErrPwd').html('**Password are not matching**');
+            $('#showErrPwd').css('color', 'red');
+            return false;
+        } else {
+            $('#showErrPwd').html('');
+            return true;
+        }
+    });
+
+    function changePassword() {
+        let currentpassword = $('#CurrentPass').val()
+        let password = $('#Password').val()
+        $.ajax({
+            url: '/updatePassword',
+            method: 'POST',
+            data: {
+                currentpassword,
+                password
+            },
+            success: (response) => {
+
+                if (response.status) {
+                    $('#invalid').hide()
+                } else {
+                    $('#invalid').show()
+                }
+            }
+
+        })
+    }
+
 </script>

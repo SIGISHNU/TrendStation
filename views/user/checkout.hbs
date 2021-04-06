@@ -1,11 +1,17 @@
 <section id="cart_items">
 	<div class="container">
-		<div class="breadcrumbs">
-			<ol class="breadcrumb">
-				<li><a href="">Home</a></li>
-				<li class="active">Check out</li>
-			</ol>
+		{{#each address}}
+		<div class="col-sm-6" style="margin-bottom: 4%; margin-top: 2%;">
+			<h3 style="color:darkblue;">Your Address</h3>
+			<h5>{{this.Name}}</h5>
+			<h5>{{this.Phone}}</h5>
+			<h5>{{this.Email}}, {{this.Country}}, {{this.State}}, Pin - {{this.Pincode}}</h5>
+			<button type="submit" class="btn btn-success"
+				onclick="changeAddress('{{this.Name}}','{{this.Phone}}','{{this.Email}}','{{this.Country}}','{{this.State}}','{{this.Pincode}}')"
+				style="font-weight: bolder;">Use this Address</button>
 		</div>
+		{{/each}}
+		<hr>
 
 		<div class="shopper-informations">
 			<div class="row">
@@ -15,7 +21,7 @@
 							<label>Name</label>
 							<input type="text" class="form-control" id="name" name="Name" placeholder=" Name">
 						</div>
-						<input type="text"  name="offerId" id="offerId" hidden>
+						<input type="text" name="offerId" id="offerId" hidden>
 						<div class="form-group col-sm-6">
 							<label>Phone Number</label>
 							<input type="number" class="form-control" id="phoneNumber" name="Phone"
@@ -38,7 +44,7 @@
 							<label>Pin Code</label>
 							<input type="number" class="form-control" id="pincode" name="Pincode"
 								placeholder=" Enter Pincode">
-							<input type="text" name="UserId" id="" value="{{user._id}}">
+							<input type="text" name="UserId" id="" value="{{user._id}}" hidden>
 						</div><br>
 						<div class="form-group">
 							<h4><b>Payment Method</b></h4>
@@ -138,21 +144,7 @@
 					</div>
 				</div>
 			</div>
-			<hr>
-			{{#each address}}
-			<div class="col-sm-6">
-				<h3 style="color:darkblue;">Your Address</h3>
-				<h5>{{this.Name}}</h5>
-				<h5>{{this.Phone}}</h5>
-				<h5>{{this.Email}}, {{this.Country}}, {{this.State}}, Pin - {{this.Pincode}}</h5>
-				<button type="submit" class="btn btn-success"
-					onclick="changeAddress('{{this.Name}}','{{this.Phone}}','{{this.Email}}','{{this.Country}}','{{this.State}}','{{this.Pincode}}')"
-					style="font-weight: bolder;">Use this Address</button>
-			</div>
-			{{/each}}
 		</div>
-	</div>
-	</div>
 	</div><br><br>
 </section>
 <!--/#cart_items-->

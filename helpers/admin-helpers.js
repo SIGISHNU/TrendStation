@@ -284,16 +284,29 @@ module.exports = {
             let length = products.length
 
             for (i = 0; i < length; i++) {
-                let disrate = products[i].Price - (products[i].Price * catdiscount) / 100
-                let updated = db.get().collection(collection.PRODUCT_COLLECTOION).updateOne({ _id: objectId(products[i]._id) }, {
-                    $set: {
-                        Offer: catdiscount,
-                        ActualPrice: products[i].Price,
-                        Price: disrate,
-                        ValidFrom: from,
-                        ValidTo: to
-                    }
-                })
+                if (products[i].ActualPrice) {
+                    let disrate = products[i].ActualPrice - (products[i].ActualPrice * catdiscount) / 100
+                    let updated = db.get().collection(collection.PRODUCT_COLLECTOION).updateOne({ _id: objectId(products[i]._id) }, {
+                        $set: {
+                            Offer: catdiscount,
+                            ActualPrice: products[i].ActualPrice,
+                            Price: disrate,
+                            ValidFrom: from,
+                            ValidTo: to
+                        }
+                    })
+                } else {
+                    let disrate = products[i].Price - (products[i].Price * catdiscount) / 100
+                    let updated = db.get().collection(collection.PRODUCT_COLLECTOION).updateOne({ _id: objectId(products[i]._id) }, {
+                        $set: {
+                            Offer: catdiscount,
+                            ActualPrice: products[i].Price,
+                            Price: disrate,
+                            ValidFrom: from,
+                            ValidTo: to
+                        }
+                    })
+                }
             }
             resolve(products)
         })
@@ -379,5 +392,5 @@ module.exports = {
             })
         })
     },
-    
+
 }

@@ -2,34 +2,33 @@
     <div class="container">
         <div class="row">
             <div class="col-sm-12 padding-right">
-                <div class="features_items">
+                <div class="features_items" id="MyItems">
                     <!--features_items-->
                     <h2 class="title text-center">{{Category.Category}}</h2>
                     {{#each product}}
-                    <div class="col-sm-3">
+                    <div class="col-sm-3 myProd">
                         <div class="product-image-wrapper">
-                            <div class="single-products">
-                                <div class="productinfo text-center">
-                                    <img style="width: 180px; height:250px;" src="/product-images/{{this._id}}1.jpg"
+                            <div class="single-products product-item">
+                                <div class="productinfo text-center" id="product-info">
+                                    <img style="width: 15rem; height:23rem;" src="/product-images/{{this._id}}1.jpg"
                                         alt="" />
-                                    <h2>₹{{this.Price}}</h2>
-                                    <p>{{this.Name}}</p>
-                                    <p>{{this.Category}}</p>
+                                    {{#if this.ActualPrice}}
+                                    <del>
+                                        <h4 class="price" id="price">₹{{this.ActualPrice}}</h4>
+                                    </del>
+                                    <h4 class="offerprice" id="offerprice">₹{{this.Price}}</h4>
+                                    {{else}}
+                                    <h4 class="offerprice" id="offerprice">₹{{this.Price}}</h4>
+                                    {{/if}}
+                                    <p class="name" id="name">{{this.Name}}</p>
+                                    <p class="category" id="category">{{this.Category}}</p>
                                     <button class="btn btn-default add-to-cart" onclick="addToCart('{{this._id}}')">Add
                                         to Cart</button>
                                 </div>
-                                <div class="product-overlay">
-                                    <div class="overlay-content">
-                                        <h2>₹{{this.Price}}</h2>
-                                        <p>{{this.Name}}</p>
-                                        <p>{{this.Category}}</p>
-                                        <button class="btn btn-default add-to-cart"
-                                            onclick="addToCart('{{this._id}}')">Add to Cart</button>
-                                    </div>
-                                </div>
                             </div>
                             <div class="choose">
-                                <a href="/productDetails/{{this._id}}" style="margin-left: 30%;"><i class="fa fa-eye"></i>View Product</a>
+                                <a href="/productDetails/{{this._id}}" style="margin-left: 30%;"><i
+                                        class="fa fa-eye"></i>View Product</a>
                             </div>
                         </div>
                     </div>
@@ -39,3 +38,29 @@
         </div>
     </div>
 </section>
+
+<script>
+    function myFunction() {
+        var input, filter, cards, cardContainer, p, title, i;
+        input = document.getElementById("myFilter");
+        filter = input.value.toUpperCase();
+        cardContainer = document.getElementById("MyItems");
+        cards = cardContainer.getElementsByClassName("product-item");
+        myProd = document.getElementsByClassName("myProd")
+        console.log('input' + input)
+        console.log('filter' + filter)
+        console.log('cardContainer' + cardContainer)
+        console.log('cards' + cards)
+
+
+        for (i = 0; i < cards.length; i++) {
+            title = cards[i].querySelector(".product-info p.name");
+            console.log('title' + title)
+            if (title.innerText.toUpperCase().indexOf(filter) > -1) {
+                myProd[i].style.display = "";
+            } else {
+                myProd[i].style.display = "none";
+            }
+        }
+    }
+</script>

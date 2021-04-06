@@ -49,6 +49,37 @@ module.exports = {
             console.log(userData);
         })
     },
+
+
+    changePassword: (currentPass, Password,userId) => {
+        return new Promise(async (resolve, reject) => {
+            let response = {}
+            let user = await db.get().collection(collection.USER_COLLECTION).findOne({ _id:objectId(userId) })
+            console.log(user)
+            bcrypt.compare(currentPass, user.Password).then(async (status) => {
+                if (status) {
+                    console.log('password valid');
+                    response.user = user
+                    response.status = true
+                    if (response.status) {
+                        password = await bcrypt.hash(user.Password, 10)
+                        db.get().collection(collection.USER_COLLECTION).updateOne({ _id:objectId(userId) },
+                            {
+                                $set: {
+                                    Password: password
+                                }
+                            })
+                    }
+                    resolve(response)
+                } else {
+                    console.log('password Invalid');
+                    resolve({ status: false })
+                }
+            })
+        })
+    },
+
+
     doLogin: (userData) => {
         return new Promise(async (resolve, reject) => {
             let loginStatus = false
@@ -501,18 +532,35 @@ module.exports = {
     updateAddress: (Id, Address) => {
         return new Promise((resolve, reject) => {
             db.get().collection(collection.ADDRESS_COLLECTION)
-                .updateOne({ _id: objectId(Id) }, {
-                    $set: {
-                        Name: Address.Name,
-                        Phone: Address.Phone,
-                        Email: Address.Email,
-                        Country: Address.Country,
-                        State: Address.State,
-                        Pincode: Address.Pincode
-                    }
-                }).then((response) => {
-                    resolve()
-                })
+                .updateOne({ _id: objectId(Id) },
+                    {
+                        $set: {
+                            Name: Address.Name,
+                            Phone: Address.Phone,
+                            Email: Address.Email,
+                            Country: Address.Country,
+                            State: Address.State,
+                            Pincode: Address.Pincode
+                        }
+                    }).then((response) => {
+                        resolve()
+                    })
+        })
+    },
+    updateUser: (Id, userData) => {
+        return new Promise((resolve, reject) => {
+            db.get().collection(collection.USER_COLLECTION)
+                .updateOne({ _id: objectId(Id) },
+                    {
+                        $set: {
+                            Name: userData.Name,
+                            Username: userData.Username,
+                            Email: userData.Email,
+                            Mobile: userData.Mobile
+                        }
+                    }).then((response) => {
+                        resolve()
+                    })
         })
     },
     getCoupons: (user) => {
