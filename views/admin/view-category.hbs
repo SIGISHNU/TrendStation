@@ -69,15 +69,32 @@
                                                         </button>
                                                     </div>
                                                     <div class="modal-body">
-                                                        <form action="/catDiscount" method="POST">
+                                                        <form action="/catDiscount" method="POST"
+                                                            class="needs-validation" novalidate>
                                                             <div class="form-group">
-                                                                <input type="text" class="form-control" name="catName" value="{{this.Category}}" placeholder="Category" hidden>
+                                                                <input type="text" class="form-control" name="catName"
+                                                                    value="{{this.Category}}" placeholder="Category"
+                                                                    hidden>
                                                                 <label>Discount Percentage</label>
-                                                                <input type="number" class="form-control" name="catDiscount" placeholder="Discount Percentage">
+                                                                <input type="number" class="form-control"
+                                                                    name="catDiscount" placeholder="Discount Percentage"
+                                                                    required>
+                                                                <div class="invalid-feedback">
+                                                                    Please enter a valid number
+                                                                </div>
                                                                 <label>Valid From</label>
-                                                                <input type="date" id="datepicker" class="form-control" name="ValidFrom" placeholder="Valid From">
-                                                                 <label>Valid To</label>
-                                                                <input type="date" id="datepicker2" class="form-control" name="ValidTo" placeholder="Valid To">
+                                                                <input type="date" id="datepicker" class="form-control"
+                                                                    name="ValidFrom" placeholder="Valid From"
+                                                                    onchange="handler(event)" required>
+                                                                <div class="invalid-feedback">
+                                                                    Please enter a valid date
+                                                                </div>
+                                                                <label>Valid To</label>
+                                                                <input type="date" id="datepicker2" class="form-control"
+                                                                    name="ValidTo" placeholder="Valid To" required>
+                                                            </div>
+                                                            <div class="invalid-feedback">
+                                                                Please enter a valid date
                                                             </div>
                                                             <button type="submit" id="createDiscount"
                                                                 class="btn btn-warning save">Create Offer</button>
@@ -94,20 +111,57 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+</div>
 
-            <script>
-                $(document).ready(function () {
-                    $('#view-category').DataTable();
-                });
-            </script>
+<style>
+    .css-serial {
+        counter-reset: serial-number;
+    }
 
-            <style>
-                .css-serial {
-                    counter-reset: serial-number;
-                }
+    .css-serial td:first-child:before {
+        counter-increment: serial-number;
+        content: counter(serial-number);
+    }
 
-                .css-serial td:first-child:before {
-                    counter-increment: serial-number;
-                    content: counter(serial-number);
-                }
-            </style>
+    .invalid-feedback input:required:invalid {
+        background: #BE4C54;
+    }
+</style>
+
+<script>
+    $(document).ready(function () {
+        $('#view-category').DataTable();
+    });
+</script>
+
+
+<script>
+    function handler(e) {
+        var first = e.target.value
+        console.log('1111111111111111111', first)
+        document.getElementById('datepicker2').min = first
+    }
+</script>
+
+
+<script>
+    (function () {
+        'use strict';
+        window.addEventListener('load', function () {
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            var forms = document.getElementsByClassName('needs-validation');
+            // Loop over them and prevent submission
+            var validation = Array.prototype.filter.call(forms, function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (form.checkValidity() === false) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        }, false);
+    })();
+</script>

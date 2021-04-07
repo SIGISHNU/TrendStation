@@ -23,8 +23,9 @@
                     <div class="container">
                         <form method="POST" action="/findReportbyDate">
                             <label>From Date</label>
-                            <input type="date" id="fromDate" name="fromDate">
-                            To Date <input type="Date" id="toDate" name="toDate">
+                            <input type="date" id="fromDate" name="fromDate" onchange="handler(event)">
+                            <label>To Date</label>
+                            <input type="Date" id="toDate" name="toDate">
                             <button type="submit" id="button">search</button>
                         </form>
                     </div>
@@ -70,6 +71,14 @@
             ]
         });
     });
+</script>
+
+<script>
+    function handler(e) {
+        var first = e.target.value
+        console.log('1111111111111111111', first)
+        document.getElementById('toDate').min = first
+    }
 </script>
 
 <style>

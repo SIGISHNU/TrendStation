@@ -17,7 +17,8 @@
                 </div>
                 <div class="form-group">
                     <label for="signin-password" class="control-label sr-only">Password</label>
-                    <input type="password" class="form-control" name="Password" id="signin-password" placeholder="Password">
+                    <input type="password" class="form-control" name="Password" id="signin-password"
+                        placeholder="Password">
                     {{#if adminpassErr}}
                     <p style="color: red;">Password doesn't match</p>
                     {{/if}}
@@ -28,20 +29,18 @@
     </div>
 
     <script>
-        $(document).ready(function(){
-            $(document).ready(() => {
-			$("#admin-login").validate({
-				rules: {
-					Email: {
-						required: true,
-						email: true
-					},
-					Password: {
-						required: true,
-						password: true
-					}
-				}
-			});
-		});
-        })
+        $(document).ready(() => {
+            $("#admin-login").validate({
+                rules: {
+                    Email: {
+                        required: true,
+                        email: true
+                    },
+                    Password: {
+                        required: true,
+                        password: true
+                    }
+                }
+            });
+        });
     </script>

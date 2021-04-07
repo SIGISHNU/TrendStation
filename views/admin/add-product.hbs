@@ -32,8 +32,9 @@
                             <div class="col-md-5">
                                 <span class="btn vd_btn vd_bg-green fileinput-button">
                                     <!-- The file input field used as target for the file upload widget -->
-                                    <input type="file" accept="image/*" name="image1"
-                                        id="fileupload1" class="js-photo-upload" onchange="viewImage1(event)" onclick="firstImage()" required>
+                                    <input type="file" accept="image/*" name="image1" id="fileupload1"
+                                        class="js-photo-upload" onchange="viewImage1(event)" onclick="firstImage()"
+                                        required>
                                 </span>
                             </div>
                             <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
@@ -122,33 +123,31 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.0.0/cropper.min.js"></script>
 
 <script>
-    $(document).ready(function () {
-        $(document).ready(() => {
-            $("#add-product").validate({
-                rules: {
-                    Name: {
-                        required: true
-                    },
-                    Category: {
-                        required: true
-                    },
-                    Description: {
-                        required: true
-                    },
-                    Image1: {
-                        required: true
-                    },
-                    Image2: {
-                        required: true
-                    },
-                    Image3: {
-                        required: true
-                    },
-                    Price: {
-                        required: true
-                    }
+    $(document).ready(() => {
+        $("#add-product").validate({
+            rules: {
+                Name: {
+                    required: true
+                },
+                Category: {
+                    required: true
+                },
+                Description: {
+                    required: true
+                },
+                Image1: {
+                    required: true
+                },
+                Image2: {
+                    required: true
+                },
+                Image3: {
+                    required: true
+                },
+                Price: {
+                    required: true
                 }
-            });
+            }
         });
     });
 </script>

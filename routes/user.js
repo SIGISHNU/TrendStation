@@ -442,6 +442,14 @@ router.post('/edit-profile/:id', (req, res) => {
   })
 });
 
+router.post('/profileUpload/:id',(req,res)=>{
+  console.log(req.files.image);
+  let id=req.params.id
+  let image=req.files.image
+  image.mv('./public/userImages/'+id+'.jpg')
+  res.redirect('/profile')
+});
+
 router.post('/updatePassword', (req, res) => {
   let currentPass = req.body.CurrentPassword
   let password = req.body.Password

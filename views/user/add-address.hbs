@@ -47,37 +47,35 @@
 <!--/#cart_items-->
 
 <script>
-    $(document).ready(function () {
-        $(document).ready(() => {
-            $("#add-address").validate({
-                rules: {
-                    Name: {
-                        required: true,
-                        minlength: 3
-                    },
-                    Phone: {
-                        required: true,
-                        number: true,
-                        minlength: 10,
-                        maxlength: 10
-                    },
-                    Email: {
-                        required: true
-                    },
-                    Country: {
-                        required: true
-                    },
-                    State: {
-                        required: true
-                    },
-                    Pincode: {
-                        required: true,
-                        number: true,
-                        minlength: 6,
-                        maxlength: 6
-                    }
+    $(document).ready(() => {
+        $("#add-address").validate({
+            rules: {
+                Name: {
+                    required: true,
+                    minlength: 3
+                },
+                Phone: {
+                    required: true,
+                    number: true,
+                    minlength: 10,
+                    maxlength: 10
+                },
+                Email: {
+                    required: true
+                },
+                Country: {
+                    required: true
+                },
+                State: {
+                    required: true
+                },
+                Pincode: {
+                    required: true,
+                    number: true,
+                    minlength: 6,
+                    maxlength: 6
                 }
-            });
+            }
         });
     });
 </script>

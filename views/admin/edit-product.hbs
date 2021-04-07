@@ -126,33 +126,31 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.0.0/cropper.min.js"></script>
 
     <script>
-        $(document).ready(function () {
-            $(document).ready(() => {
-                $("#edit-product").validate({
-                    rules: {
-                        Name: {
-                            required: true
-                        },
-                        Category: {
-                            required: true
-                        },
-                        Description: {
-                            required: true
-                        },
-                        Image1: {
-                            required: true
-                        },
-                        Image2: {
-                            required: true
-                        },
-                        Image3: {
-                            required: true
-                        },
-                        Price: {
-                            required: true
-                        }
+        $(document).ready(() => {
+            $("#edit-product").validate({
+                rules: {
+                    Name: {
+                        required: true
+                    },
+                    Category: {
+                        required: true
+                    },
+                    Description: {
+                        required: true
+                    },
+                    Image1: {
+                        required: true
+                    },
+                    Image2: {
+                        required: true
+                    },
+                    Image3: {
+                        required: true
+                    },
+                    Price: {
+                        required: true
                     }
-                });
+                }
             });
         });
     </script>
@@ -215,164 +213,164 @@
     </script>
 
     <script>
-            function secondImage() {
-                let result = document.querySelector('.result'),
-                    save = document.querySelector('.save'),
-                    cropped = document.querySelector('.img2Disp'),
-                    upload = document.querySelector('#fileupload2'),
-                    cropper = '';
-                upload.addEventListener('change', (e) => {
-                    if (e.target.files.length) {
-                        // start file reader
-                        const reader = new FileReader();
-                        reader.onload = (e) => {
-                            if (e.target.result) {
-                                // create new image
-                                $("#exampleModalCenter").modal("show");
-                                let img = document.createElement('img');
-                                img.id = 'image';
-                                img.src = e.target.result
-                                // clean result before
-                                result.innerHTML = '';
-                                // append new image
-                                result.appendChild(img);
-                                // init cropper
-                                cropper = new Cropper(img, {
-                                    viewMode: 2,
-                                    aspectRatio: 5 / 7,
-                                    autoCropArea: 1,
-                                    cropBoxResizable: false,
-                                    crop: function (e) {
-                                        console.log(e.detail.x);
-                                        console.log(e.detail.y);
-                                    }
+        function secondImage() {
+            let result = document.querySelector('.result'),
+                save = document.querySelector('.save'),
+                cropped = document.querySelector('.img2Disp'),
+                upload = document.querySelector('#fileupload2'),
+                cropper = '';
+            upload.addEventListener('change', (e) => {
+                if (e.target.files.length) {
+                    // start file reader
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        if (e.target.result) {
+                            // create new image
+                            $("#exampleModalCenter").modal("show");
+                            let img = document.createElement('img');
+                            img.id = 'image';
+                            img.src = e.target.result
+                            // clean result before
+                            result.innerHTML = '';
+                            // append new image
+                            result.appendChild(img);
+                            // init cropper
+                            cropper = new Cropper(img, {
+                                viewMode: 2,
+                                aspectRatio: 5 / 7,
+                                autoCropArea: 1,
+                                cropBoxResizable: false,
+                                crop: function (e) {
+                                    console.log(e.detail.x);
+                                    console.log(e.detail.y);
+                                }
 
-                                });
-                            }
-                        };
-                        reader.readAsDataURL(e.target.files[0]);
-                    }
-                });
-                save.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    // get result to data uri
-                    let imgSrc = cropper.getCroppedCanvas({
-                        width: 300 // img disp value
-                    }).toDataURL();
-                    $("#exampleModalCenter").modal("hide");
-                    console.log('src', imgSrc)
-                    cropped.src = imgSrc;
-                    console.log('imagee', imgSrc)
-                    $("#imageBase64Data2").val(imgSrc);
-                    var base = document.getElementById('imageBase64Data2').value
-                    console.log(base)
-                });
-            }
-    </script>
-
-    <script>
-            function thirdImage() {
-                let result = document.querySelector('.result'),
-                    save = document.querySelector('.save'),
-                    cropped = document.querySelector('.img3Disp'),
-                    upload = document.querySelector('#fileupload3'),
-                    cropper = '';
-                upload.addEventListener('change', (e) => {
-                    if (e.target.files.length) {
-                        // start file reader
-                        const reader = new FileReader();
-                        reader.onload = (e) => {
-                            if (e.target.result) {
-                                // create new image
-                                $("#exampleModalCenter").modal("show");
-                                let img = document.createElement('img');
-                                img.id = 'image';
-                                img.src = e.target.result
-                                // clean result before
-                                result.innerHTML = '';
-                                // append new image
-                                result.appendChild(img);
-                                // init cropper
-                                cropper = new Cropper(img, {
-                                    viewMode: 2,
-                                    aspectRatio: 5 / 7,
-                                    autoCropArea: 1,
-                                    cropBoxResizable: false,
-                                    crop: function (e) {
-                                        console.log(e.detail.x);
-                                        console.log(e.detail.y); r
-                                    }
-
-                                });
-                            }
-                        };
-                        reader.readAsDataURL(e.target.files[0]);
-                    }
-                });
-                save.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    // get result to data uri
-                    let imgSrc = cropper.getCroppedCanvas({
-                        width: 300 // img disp value
-                    }).toDataURL();
-                    $("#exampleModalCenter").modal("hide");
-                    console.log('src', imgSrc)
-                    cropped.src = imgSrc;
-                    console.log('imagee', imgSrc)
-                    $("#imageBase64Data3").val(imgSrc);
-                    var base = document.getElementById('imageBase64Data3').value
-                    console.log(base)
-                });
-            }
-    </script>
-
-    <script>
-            function viewImage1(event) {
-                document.getElementById('img1Disp').src = URL.createObjectURL(event.target.files[0])
-                let file = event.target.files[0].name
-                let filename = file.split('.').pop()
-                if (filename == 'jpeg' || filename == 'png' || filename == 'jpg') {
-                    $('#add-product-button').show()
-                    $('#not-img1-error').hide()
-                    $('#img1Disp').show()
-                } else {
-                    $('#not-img1-error').show()
-                    $('#add-product-button').hide()
-                    $('#img1Disp').hide()
+                            });
+                        }
+                    };
+                    reader.readAsDataURL(e.target.files[0]);
                 }
-            }
+            });
+            save.addEventListener('click', (e) => {
+                e.preventDefault();
+                // get result to data uri
+                let imgSrc = cropper.getCroppedCanvas({
+                    width: 300 // img disp value
+                }).toDataURL();
+                $("#exampleModalCenter").modal("hide");
+                console.log('src', imgSrc)
+                cropped.src = imgSrc;
+                console.log('imagee', imgSrc)
+                $("#imageBase64Data2").val(imgSrc);
+                var base = document.getElementById('imageBase64Data2').value
+                console.log(base)
+            });
+        }
     </script>
 
     <script>
-            function viewImage2(event) {
-                document.getElementById('img2Disp').src = URL.createObjectURL(event.target.files[0])
-                let file = event.target.files[0].name
-                let filename = file.split('.').pop()
-                if (filename == 'jpeg' || filename == 'png' || filename == 'jpg') {
-                    $('#add-product-button').show()
-                    $('#not-img2-error').hide()
-                    $('#img2Disp').show()
-                } else {
-                    $('#not-img2-error').show()
-                    $('#add-product-button').hide()
-                    $('#img2Disp').hide()
+        function thirdImage() {
+            let result = document.querySelector('.result'),
+                save = document.querySelector('.save'),
+                cropped = document.querySelector('.img3Disp'),
+                upload = document.querySelector('#fileupload3'),
+                cropper = '';
+            upload.addEventListener('change', (e) => {
+                if (e.target.files.length) {
+                    // start file reader
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        if (e.target.result) {
+                            // create new image
+                            $("#exampleModalCenter").modal("show");
+                            let img = document.createElement('img');
+                            img.id = 'image';
+                            img.src = e.target.result
+                            // clean result before
+                            result.innerHTML = '';
+                            // append new image
+                            result.appendChild(img);
+                            // init cropper
+                            cropper = new Cropper(img, {
+                                viewMode: 2,
+                                aspectRatio: 5 / 7,
+                                autoCropArea: 1,
+                                cropBoxResizable: false,
+                                crop: function (e) {
+                                    console.log(e.detail.x);
+                                    console.log(e.detail.y); r
+                                }
+
+                            });
+                        }
+                    };
+                    reader.readAsDataURL(e.target.files[0]);
                 }
-            }
+            });
+            save.addEventListener('click', (e) => {
+                e.preventDefault();
+                // get result to data uri
+                let imgSrc = cropper.getCroppedCanvas({
+                    width: 300 // img disp value
+                }).toDataURL();
+                $("#exampleModalCenter").modal("hide");
+                console.log('src', imgSrc)
+                cropped.src = imgSrc;
+                console.log('imagee', imgSrc)
+                $("#imageBase64Data3").val(imgSrc);
+                var base = document.getElementById('imageBase64Data3').value
+                console.log(base)
+            });
+        }
     </script>
 
     <script>
-            function viewImage3(event) {
-                document.getElementById('img3Disp').src = URL.createObjectURL(event.target.files[0])
-                let file = event.target.files[0].name
-                let filename = file.split('.').pop()
-                if (filename == 'jpeg' || filename == 'png' || filename == 'jpg') {
-                    $('#add-product-button').show()
-                    $('#not-img3-error').hide()
-                    $('#img3Disp').show()
-                } else {
-                    $('#not-img3-error').show()
-                    $('#add-product-button').hide()
-                    $('#img3Disp').hide()
-                }
+        function viewImage1(event) {
+            document.getElementById('img1Disp').src = URL.createObjectURL(event.target.files[0])
+            let file = event.target.files[0].name
+            let filename = file.split('.').pop()
+            if (filename == 'jpeg' || filename == 'png' || filename == 'jpg') {
+                $('#add-product-button').show()
+                $('#not-img1-error').hide()
+                $('#img1Disp').show()
+            } else {
+                $('#not-img1-error').show()
+                $('#add-product-button').hide()
+                $('#img1Disp').hide()
             }
+        }
+    </script>
+
+    <script>
+        function viewImage2(event) {
+            document.getElementById('img2Disp').src = URL.createObjectURL(event.target.files[0])
+            let file = event.target.files[0].name
+            let filename = file.split('.').pop()
+            if (filename == 'jpeg' || filename == 'png' || filename == 'jpg') {
+                $('#add-product-button').show()
+                $('#not-img2-error').hide()
+                $('#img2Disp').show()
+            } else {
+                $('#not-img2-error').show()
+                $('#add-product-button').hide()
+                $('#img2Disp').hide()
+            }
+        }
+    </script>
+
+    <script>
+        function viewImage3(event) {
+            document.getElementById('img3Disp').src = URL.createObjectURL(event.target.files[0])
+            let file = event.target.files[0].name
+            let filename = file.split('.').pop()
+            if (filename == 'jpeg' || filename == 'png' || filename == 'jpg') {
+                $('#add-product-button').show()
+                $('#not-img3-error').hide()
+                $('#img3Disp').show()
+            } else {
+                $('#not-img3-error').show()
+                $('#add-product-button').hide()
+                $('#img3Disp').hide()
+            }
+        }
     </script>

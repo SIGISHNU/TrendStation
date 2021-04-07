@@ -23,8 +23,9 @@
                     <div class="container">
                         <form method="POST" action="/findReportbyDate">
                             <label>From Date</label>
-                            <input type="date" id="fromDate" name="fromDate">
-                            To Date <input type="Date" id="toDate" name="toDate">
+                            <input type="date" id="fromDate" name="fromDate" onchange="handler(event)">
+                            To Date 
+                            <input type="Date" id="toDate" name="toDate">
                             <button type="submit" id="button">search</button>
                         </form>
                     </div>
@@ -46,6 +47,7 @@
         </div>
     </div>
 </div>
+
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
 <script>
@@ -102,3 +104,12 @@ var mixedChart = new Chart(ctx, {
     options: options
 });
 </script>
+
+<script>
+    function handler(e) {
+        var first = e.target.value
+        console.log('1111111111111111111', first)
+        document.getElementById('toDate').min = first
+    }
+</script>
+

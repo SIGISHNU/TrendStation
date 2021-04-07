@@ -45,12 +45,12 @@
                     </div>
                     <div class="form-group">
                         <label>New Password</label>
-                        <input type="password" class="form-control" id="Password" name="NewPassword"
+                        <input type="password" class="form-control" id="Password" name="Password"
                             placeholder="New Password">
                     </div>
                     <div class="form-group">
                         <label>Confirm Password</label>
-                        <input type="password" class="form-control" id="CPassword" name="ConfirmPassword"
+                        <input type="password" class="form-control" id="CPassword" name="CPassword"
                             placeholder="Confirm Password">
                     </div>
                     <div id="showErrPwd"></div>
@@ -67,82 +67,82 @@
     </div>
 </div>
 <script>
-    $("#user-profile").validate({
-        rules: {
-            Name: {
-                required: true,
-                minlength: 3
-            },
-            Username: {
-                required: true,
-                minlength: 3
-            },
-            Email: {
-                required: true,
-                email: true
-            },
-            Mobile: {
-                required: true,
-                number: true,
-                minlength: 10,
-                maxlength: 10
-            }
-        }
-    });
-
-    $("#update-password").validate({
-        rules: {
-            CurrentPassword: {
-                required: true,
-                minlength: 5
-            },
-            Password: {
-                required: true,
-                minlength: 5
-            },
-            CPassword: {
-                required: true,
-                minlength: 5
-            }
-        }
-    });
-
-
-
-    $('#CPassword').keyup(function () {
-        console.log("hiii")
-        var Password = $('#Password').val();
-        var CPassword = $('#CPassword').val();
-        if (CPassword != Password) {
-            $('#showErrPwd').html('**Password are not matching**');
-            $('#showErrPwd').css('color', 'red');
-            return false;
-        } else {
-            $('#showErrPwd').html('');
-            return true;
-        }
-    });
-
-    function changePassword() {
-        let currentpassword = $('#CurrentPass').val()
-        let password = $('#Password').val()
-        $.ajax({
-            url: '/updatePassword',
-            method: 'POST',
-            data: {
-                currentpassword,
-                password
-            },
-            success: (response) => {
-
-                if (response.status) {
-                    $('#invalid').hide()
-                } else {
-                    $('#invalid').show()
+    $(document).ready(() => {
+        $("#user-profile").validate({
+            rules: {
+                Name: {
+                    required: true,
+                    minlength: 3
+                },
+                Username: {
+                    required: true,
+                    minlength: 3
+                },
+                Email: {
+                    required: true,
+                    email: true
+                },
+                Mobile: {
+                    required: true,
+                    number: true,
+                    minlength: 10,
+                    maxlength: 10
                 }
             }
+        });
 
-        })
-    }
+        $("#update-password").validate({
+            rules: {
+                CurrentPassword: {
+                    required: true,
+                    minlength: 5
+                },
+                Password: {
+                    required: true,
+                    minlength: 5
+                },
+                CPassword: {
+                    required: true,
+                    minlength: 5
+                }
+            }
+        });
+
+        $('#CPassword').keyup(function () {
+            console.log("hiii")
+            var Password = $('#Password').val();
+            var CPassword = $('#CPassword').val();
+            if (CPassword != Password) {
+                $('#showErrPwd').html('**Password are not matching**');
+                $('#showErrPwd').css('color', 'red');
+                return false;
+            } else {
+                $('#showErrPwd').html('');
+                return true;
+            }
+        });
+
+        function changePassword() {
+            let currentpassword = $('#CurrentPass').val()
+            let password = $('#Password').val()
+            $.ajax({
+                url: '/updatePassword',
+                method: 'POST',
+                data: {
+                    currentpassword,
+                    password
+                },
+                success: (response) => {
+
+                    if (response.status) {
+                        $('#invalid').hide()
+                    } else {
+                        $('#invalid').show()
+                    }
+                }
+
+            })
+        }
+    })
 
 </script>

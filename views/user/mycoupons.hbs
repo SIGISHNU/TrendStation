@@ -98,15 +98,15 @@
                             
                             <td scope="row" data-label="Coupon Code">{{coup.coupon.Coupon}}</td>
                             <td data-label="Discount">{{coup.coupon.Offer}}%</td>
-                            <td data-label="Status">{{#if coup.coupon.status}} Valid{{else}}Expired{{/if}}</td>
+                            <td data-label="Status">{{coup.coupon.status}}</td>
                         </tr>
                         {{/if}}
                         {{#if coupArray}}
                         {{#each coupArray}}
                         <tr>
-                            <td scope="row" data-label="Coupon Code">{{this.Coupon}}dd</td>
+                            <td scope="row" data-label="Coupon Code">{{this.Coupon}}</td>
                             <td data-label="Discount">{{this.Offer}}%</td>
-                            <td data-label="Status">{{#if this.status}} Valid{{else}}Expired{{/if}}</td>
+                            <td data-label="Status">{{#if this.$status}} Valid{{else}}Expired{{/if}}</td>
                         </tr>
                         {{/each}}
                         {{/if}}

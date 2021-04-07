@@ -10,29 +10,33 @@
                     <form id="edit-user-address" action="/edit-user-address/{{address._id}}" method="post">
                         <div class="form-group col-sm-6">
                             <label>Name</label>
-                            <input type="text" class="form-control" id="Name" value="{{address.Name}}" name="Name" placeholder=" Name">
+                            <input type="text" class="form-control" id="Name" value="{{address.Name}}" name="Name"
+                                placeholder=" Name">
                         </div>
                         <div class="form-group col-sm-6">
                             <label>Phone Number</label>
-                            <input type="number" class="form-control" id="phoneNumber" value="{{address.Phone}}" name="Phone"
-                                placeholder="Phone Number">
+                            <input type="number" class="form-control" id="phoneNumber" value="{{address.Phone}}"
+                                name="Phone" placeholder="Phone Number">
                         </div>
                         <div class="form-group col-sm-6">
                             <label>Email</label>
                             <input type="email" class="form-control" id="email" value="{{address.Email}}" name="Email"
-                                placeholder=" Email Address" >
+                                placeholder=" Email Address">
                         </div>
                         <div class="form-group col-sm-6">
                             <label>Country</label>
-                            <input type="text" class="form-control" id="country" value="{{address.Country}}" name="Country" placeholder=" Country">
+                            <input type="text" class="form-control" id="country" value="{{address.Country}}"
+                                name="Country" placeholder=" Country">
                         </div>
                         <div class="form-group col-sm-6">
                             <label>State</label>
-                            <input type="text" class="form-control" id="state" name="State" value="{{address.State}}" placeholder=" State">
+                            <input type="text" class="form-control" id="state" name="State" value="{{address.State}}"
+                                placeholder=" State">
                         </div>
                         <div class="form-group col-sm-6">
                             <label>Pin Code</label>
-                            <input type="number" class="form-control" id="pincode" name="Pincode" value="{{address.Pincode}}" placeholder=" Enter Pincode">
+                            <input type="number" class="form-control" id="pincode" name="Pincode"
+                                value="{{address.Pincode}}" placeholder=" Enter Pincode">
                         </div><br>
                         <button type="submit" class="btn btn-success">Edit Address</button>
                     </form>
@@ -44,31 +48,29 @@
 <!--/#cart_items-->
 
 <script>
-    $(document).ready(function () {
-        $(document).ready(() => {
-            $("#edit-user-address").validate({
-                rules: {
-                    Name: {
-                        required: true
-                    },
-                    Phone: {
-                        required: true
+    $(document).ready(() => {
+        $("#edit-user-address").validate({
+            rules: {
+                Name: {
+                    required: true
+                },
+                Phone: {
+                    required: true
 
-                    },
-                    Email: {
-                        required: true
-                    },
-                    Country: {
-                        required: true
-                    },
-                    State: {
-                        required: true
-                    },
-                    Pincode: {
-                        required: true
-                    }
+                },
+                Email: {
+                    required: true
+                },
+                Country: {
+                    required: true
+                },
+                State: {
+                    required: true
+                },
+                Pincode: {
+                    required: true
                 }
-            });
+            }
         });
     });
 </script>
