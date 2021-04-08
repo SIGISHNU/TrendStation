@@ -51,19 +51,21 @@ module.exports = {
     },
 
 
-    changePassword: (currentPass, Password,userId) => {
+    changePassword: (currentPass, Password, userId) => {
         return new Promise(async (resolve, reject) => {
             let response = {}
-            let user = await db.get().collection(collection.USER_COLLECTION).findOne({ _id:objectId(userId) })
+            let user = await db.get().collection(collection.USER_COLLECTION).findOne({ _id: objectId(userId) })
             console.log(user)
             bcrypt.compare(currentPass, user.Password).then(async (status) => {
                 if (status) {
                     console.log('password valid');
                     response.user = user
+                    console.log(response.user)
                     response.status = true
                     if (response.status) {
-                        password = await bcrypt.hash(user.Password, 10)
-                        db.get().collection(collection.USER_COLLECTION).updateOne({ _id:objectId(userId) },
+                        password = await bcrypt.hash(Password, 10)
+                        console.log('1111111111111111',password)
+                        db.get().collection(collection.USER_COLLECTION).updateOne({ _id: objectId(userId) },
                             {
                                 $set: {
                                     Password: password

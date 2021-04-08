@@ -38,7 +38,7 @@
             </div>
 
             <div class="col-sm-3 pull-right">
-                <input type="text" id="myFilter" class="form-control" onkeyup="myFunction()"
+                <input type="text" id="myFilter" class="form-control" onkeyup="mySearch()"
                     placeholder="Search here...">
             </div>
         </div>
@@ -53,10 +53,10 @@
                     <!--features_items-->
                     <h2 class="title text-center">{{Category.Category}}</h2>
                     {{#each product}}
-                    <div class="col-sm-3 myProd" style="height: 50rem;">
+                    <div class="col-sm-3 myProd" style="min-height: 45rem;">
                         <div class="product-image-wrapper">
                             <div class="single-products product-item">
-                                <div class="productinfo text-center" id="product-info">
+                                <div class="product-info text-center" id="product-info">
                                     <a href="/productDetails/{{this._id}}">
                                         <img style="width: 15rem; height:23rem;" src="/product-images/{{this._id}}1.jpg"
                                             alt="" />
@@ -85,7 +85,7 @@
 </section>
 
 <script>
-    function myFunction() {
+    function mySearch() {
         var input, filter, cards, cardContainer, p, title, i;
         input = document.getElementById("myFilter");
         filter = input.value.toUpperCase();

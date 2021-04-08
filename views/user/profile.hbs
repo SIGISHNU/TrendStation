@@ -148,16 +148,16 @@
                                             <div class="image-upload">
                                                 <label for="kuppi">
                                                     <img id="look" src="../userImages/{{profile._id}}.jpg"
-                                                        style="width: 100px; height: 100;" class="img-radius" alt="">
+                                                        style="width: 100px; height: 100; border: 5px black;" class="img-radius" alt="">
                                                     <button style="display: none; margin-left: 4rem; margin-top: 1rem;"
                                                         id="button" class="ml-4">
                                                         <i style=" color: rgb(22, 134, 199);" class="fa fa-upload"></i>
                                                     </button>
                                                 </label>
-                                                <div class="btn btn-success">
-                                                <input onchange="profileUpload('{{profile._id}}')" id="kuppi"
-                                                    name="image" type="file" accept="image/*" hidden/>
-                                                </div>
+                                                {{!-- <div class="btn btn-success"> --}}
+                                                <input onchange="profileUpload('{{profile._id}}')" id="kuppi" style="display: none;"
+                                                    name="image" type="file" accept="image/*" />
+                                                {{!-- </div> --}}
                                             </div>
                                         </form>
                                         <h6 class="f-w-600">{{profile.Name}}</h6>

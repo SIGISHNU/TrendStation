@@ -450,12 +450,12 @@ router.post('/profileUpload/:id',(req,res)=>{
   res.redirect('/profile')
 });
 
-router.post('/updatePassword', (req, res) => {
+router.post('/updatePassword/:id', (req, res) => {
   let currentPass = req.body.CurrentPassword
   let password = req.body.Password
-  let user = req.session.user._id
-  console.log(user)
-  userHelpers.changePassword(currentPass, password, user).then((response) => {
+  let userId = req.params.id
+  console.log(userId)
+  userHelpers.changePassword(currentPass, password, userId).then((response) => {
     if (response.status) {
       res.redirect('/profile')
     } else {

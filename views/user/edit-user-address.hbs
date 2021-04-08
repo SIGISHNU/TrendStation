@@ -52,11 +52,14 @@
         $("#edit-user-address").validate({
             rules: {
                 Name: {
-                    required: true
+                    required: true,
+                    minlength: 3
                 },
                 Phone: {
-                    required: true
-
+                    required: true,
+                    number: true,
+                    minlength: 10,
+                    maxlength: 10
                 },
                 Email: {
                     required: true
@@ -68,7 +71,10 @@
                     required: true
                 },
                 Pincode: {
-                    required: true
+                    required: true,
+                    number: true,
+                    minlength: 6,
+                    maxlength: 6
                 }
             }
         });

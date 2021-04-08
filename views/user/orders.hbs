@@ -83,7 +83,8 @@
 
 <div class="container">
     <div class="row">
-        <div class="ml-auto mr-auto" style="margin-top: 5%; margin-bottom: 32%;">
+        <div class="ml-auto mr-auto" style="margin-top: 5rem; margin-bottom: 22rem;">
+            {{#if orders}}
             <div class="table-responsive">
                 <table class="table">
                     <thead>
@@ -119,6 +120,9 @@
                     </tbody>
                 </table>
             </div>
+            {{else}}
+            <h2 class="text-center" style="margin-top: 25rem;">You Still Not Order Anything</h2>
+            {{/if}}
         </div>
     </div>
 </div>

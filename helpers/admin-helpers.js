@@ -366,7 +366,6 @@ module.exports = {
                     }
                 }
             }
-
         })
     },
     createCoupons: (offer, coupon) => {
@@ -376,7 +375,6 @@ module.exports = {
             })
         })
     },
-
     getcoupon: () => {
         return new Promise(async (resolve, reject) => {
 

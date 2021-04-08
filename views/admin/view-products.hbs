@@ -81,7 +81,7 @@
                                                     </div>
                                                     <div class="modal-body">
                                                         <form action="/createDiscount" method="POST"
-                                                            class="needs-validation" novalidate>
+                                                            class="needs-validation">
                                                             <div class="form-group">
                                                                 <input type="text" class="form-control" name="proId"
                                                                     value="{{this._id}}" placeholder="Product Id"
@@ -97,24 +97,24 @@
                                                                 {{/if}}
                                                                 <label>Discount Percentage</label>
                                                                 <input type="number" class="form-control"
-                                                                    name="proDiscount" placeholder="Discount Percentage"
-                                                                    required>
-                                                                <div class="invalid-feedback">
+                                                                    name="proDiscount" maxlength="2"
+                                                                    placeholder="Discount Percentage" required>
+                                                                {{!-- <div class="invalid-feedback">
                                                                     Please enter a valid number
-                                                                </div>
+                                                                </div> --}}
                                                                 <label>Valid From</label>
                                                                 <input type="date" id="datepicker" class="form-control"
                                                                     name="ValidFrom" placeholder="Valid From"
                                                                     onchange="handler(event)" required>
-                                                                <div class="invalid-feedback">
+                                                                {{!-- <div class="invalid-feedback">
                                                                     Please enter a valid date
-                                                                </div>
+                                                                </div> --}}
                                                                 <label>Valid To</label>
                                                                 <input type="date" id="datepicker2" class="form-control"
                                                                     name="ValidTo" placeholder="Valid To" required>
-                                                                <div class="invalid-feedback">
+                                                                {{!-- <div class="invalid-feedback">
                                                                     Please enter a valid date
-                                                                </div>
+                                                                </div> --}}
                                                             </div>
                                                             <button type="submit" id="createDiscount"
                                                                 class="btn btn-warning save">Create Offer</button>
@@ -141,13 +141,47 @@
     });
 </script>
 
+{{!--
 <script>
+    $(document).ready(() => {
+        $("#product-offer").validate({
+            rules: {
+                proDiscount: {
+                    required: true,
+                    maxlength: 2
+                },
+                ValidFrom: {
+                    required: true
+                },
+                ValidTo: {
+                    required: true
+                }
+            }
+        });
+    });
+</script> --}}
+
+<script>
+    $(function () {
+        var dtToday = new Date();
+        var month = dtToday.getMonth() + 1;
+        var day = dtToday.getDate();
+        var year = dtToday.getFullYear();
+        if (month < 10)
+            month = '0' + month.toString();
+        if (day < 10)
+            day = '0' + day.toString();
+        var maxDate = year + '-' + month + '-' + day;
+        $('#datepicker').attr('min', maxDate);
+        $('#datepicker2').attr('min', maxDate);
+    });
+
     function handler(e) {
         var first = e.target.value
-        console.log('1111111111111111111', first)
         document.getElementById('datepicker2').min = first
     }
 </script>
+
 
 <style>
     .css-serial {
@@ -158,12 +192,10 @@
         counter-increment: serial-number;
         content: counter(serial-number);
     }
-
-    .invalid input:required:invalid {
-        background: red;
-    }
 </style>
 
+
+{{!--
 <script>
     (function () {
         'use strict';
@@ -182,4 +214,9 @@
             });
         }, false);
     })();
-</script>
+
+    .invalid input: required: invalid {
+        background: red;
+    }
+
+</script> --}}
