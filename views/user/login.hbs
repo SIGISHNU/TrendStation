@@ -66,7 +66,9 @@
 						<input type="number" name="Mobile" id="Mobile" placeholder="Mobile Number" />
 						<input type="password" name="Password" id="Password" placeholder="Password" />
 						<input type="password" name="CPassword" id="CPassword" placeholder="Confirm Password" />
-						<div id="showErrPwd"></div>
+						<div id="showErrPwd" style="display: none;">
+							<p style="color: red;">OTP is not Valid</p>
+						</div>
 						<button type="submit" class="btn btn-default">Signup</button>
 					</form>
 				</div>
@@ -167,6 +169,7 @@
 	$('#butt2').click((e) => {
 		e.preventDefault()
 		let OTP = $('#OTP').val()
+		console.log('11111111111111111111111111',OTP)
 		$.ajax({
 			url: '/verify-otp',
 			method: 'post',
@@ -174,10 +177,11 @@
 				OTP
 			},
 			success: (response) => {
-				if (response) {
+				if (response.otp) {
 					window.location.href = ('/')
 				} else {
 					$('#showErrOTP').show()
+					
 				}
 			}
 		})

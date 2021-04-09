@@ -70,7 +70,7 @@
                                                     </div>
                                                     <div class="modal-body">
                                                         <form action="/catDiscount" method="POST"
-                                                            class="needs-validation" novalidate>
+                                                            class="needs-validation">
                                                             <div class="form-group">
                                                                 <input type="text" class="form-control" name="catName"
                                                                     value="{{this.Category}}" placeholder="Category"
@@ -79,23 +79,23 @@
                                                                 <input type="number" class="form-control"
                                                                     name="catDiscount" placeholder="Discount Percentage"
                                                                     required>
-                                                                <div class="invalid-feedback">
+                                                                {{!-- <div class="invalid-feedback">
                                                                     Please enter a valid number
-                                                                </div>
+                                                                </div> --}}
                                                                 <label>Valid From</label>
                                                                 <input type="date" id="datepicker" class="form-control"
                                                                     name="ValidFrom" placeholder="Valid From"
                                                                     onchange="handler(event)" required>
-                                                                <div class="invalid-feedback">
+                                                                {{!-- <div class="invalid-feedback">
                                                                     Please enter a valid date
-                                                                </div>
+                                                                </div> --}}
                                                                 <label>Valid To</label>
                                                                 <input type="date" id="datepicker2" class="form-control"
                                                                     name="ValidTo" placeholder="Valid To" required>
                                                             </div>
-                                                            <div class="invalid-feedback">
+                                                            {{!-- <div class="invalid-feedback">
                                                                 Please enter a valid date
-                                                            </div>
+                                                            </div> --}}
                                                             <button type="submit" id="createDiscount"
                                                                 class="btn btn-warning save">Create Offer</button>
                                                         </form>
@@ -146,7 +146,7 @@
 </script>
 
 
-<script>
+{{!-- <script>
     (function () {
         'use strict';
         window.addEventListener('load', function () {
@@ -164,4 +164,4 @@
             });
         }, false);
     })();
-</script>
+</script> --}}

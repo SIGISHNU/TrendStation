@@ -6,15 +6,19 @@
 			<section class="content">
 				<article class="demo-area">
 					<div class="col-md-2">
-						<a href=""><img src="../product-images/{{product._id}}1.jpg" class="img-responsive" style="width: 9rem; height: 15rem; float: left;"
-								id="img1" alt=""></a>
-						<a href=""><img src="../product-images/{{product._id}}2.jpg" class="img-responsive" style="width: 9rem; height: 15rem; float: left;"
-								id="img2" alt=""></a>
-						<a href=""><img src="../product-images/{{product._id}}3.jpg" class="img-responsive" style="width: 9rem; height: 15rem; float: left;"
-								id="img3" alt=""></a>
+						<img src="../product-images/{{product._id}}1.jpg"
+							onclick="showImage('../product-images/{{product._id}}1.jpg');" data-pin-nopin="true"
+							class="img-responsive" style="width: 9rem; height: 15rem; float: left;" id="img1" alt="">
+						<img src="../product-images/{{product._id}}2.jpg"
+							onclick="showImage('../product-images/{{product._id}}2.jpg');" data-pin-nopin="true"
+							class="img-responsive" style="width: 9rem; height: 15rem; float: left;" id="img2" alt="">
+						<img src="../product-images/{{product._id}}3.jpg"
+							onclick="showImage('../product-images/{{product._id}}3.jpg');" data-pin-nopin="true"
+							class="img-responsive" style="width: 9rem; height: 15rem; float: left;" id="img3" alt="">
 					</div>
 					<div class="col-md-4">
-						<img class="demo-trigger img-reponsive" src="../product-images/{{product._id}}1.jpg" style="width: 30rem; height: auto;"
+						<img class="demo-trigger img-reponsive" src="../product-images/{{product._id}}1.jpg"
+							style="width: 30rem; height: auto;" id="currentImg"
 							data-zoom="../product-images/{{product._id}}1.jpg">
 					</div>
 					<div class="detail col-md-6">
@@ -119,4 +123,13 @@
 		paneContainer: paneContainer,
 		inlinePane: false,
 	});
+</script>
+
+<script type="text/javascript">
+
+	function showImage(imgPath) {
+		var curImage = document.getElementById('currentImg');
+		curImage.src = imgPath;
+	}
+
 </script>

@@ -162,7 +162,15 @@
 </script> --}}
 
 <script>
-    $(function () {
+
+    function handler(e) {
+        var first = e.target.value
+        document.getElementById('datepicker2').min = first
+    }
+</script>
+
+{{!-- <script>
+        $(function () {
         var dtToday = new Date();
         var month = dtToday.getMonth() + 1;
         var day = dtToday.getDate();
@@ -175,12 +183,7 @@
         $('#datepicker').attr('min', maxDate);
         $('#datepicker2').attr('min', maxDate);
     });
-
-    function handler(e) {
-        var first = e.target.value
-        document.getElementById('datepicker2').min = first
-    }
-</script>
+</script> --}}
 
 
 <style>

@@ -8,6 +8,7 @@ var router = express.Router();
 const config = require('../config/config');
 const client = require('twilio')(config.accountSID, config.authToken);
 const referal = require('voucher-code-generator');
+const TrustedComms = require('twilio/lib/rest/preview/TrustedComms');
 let phone
 const verifyLogin = (req, res, next) => {
   res.header('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
@@ -379,8 +380,9 @@ router.post('/send-otp', async (req, res) => {
 
 router.post('/verify-otp', async (req, res) => {
   console.log(req.body.OTP);
-  OTP = req.body.OTP
+  let OTP = req.body.OTP
   console.log(OTP)
+  console.log(phone)
   client
     .verify
     .services(config.serviceID)
@@ -389,20 +391,26 @@ router.post('/verify-otp', async (req, res) => {
       to: '+91' + phone,
       code: OTP
     }).then(async (data) => {
-      console.log(data);
-      let user = await userHelpers.OtpLog(phone)
-      console.log(user);
-      if (user) {
-        response.data = data
-        response.otp = true
-        response.user = user
-        req.session.userLoggedIn = true
-        console.log(req.session.userLoggedIn)
-        req.session.user = response.user
-        res.json({ response })
+      console.log(data, "ggggggggggggggggggg");
+      if (data.status =='approved') {
+        let user = await userHelpers.OtpLog(phone)
+        console.log(user, "hhh");
+        if (user) {
+          let response={}
+          response.data = data,
+          response.otp = true,
+          response.user = user,
+          req.session.userLoggedIn = true
+          console.log(req.session.userLoggedIn)
+          req.session.user = response.user
+          res.json(response)
+        } else {
+          res.json({ phone:true })
+        }
       } else {
-        res.json({ response })
+        res.json(response)
       }
+
     }).catch((err) => {
       console.log(err)
     })
@@ -442,11 +450,11 @@ router.post('/edit-profile/:id', (req, res) => {
   })
 });
 
-router.post('/profileUpload/:id',(req,res)=>{
+router.post('/profileUpload/:id', (req, res) => {
   console.log(req.files.image);
-  let id=req.params.id
-  let image=req.files.image
-  image.mv('./public/userImages/'+id+'.jpg')
+  let id = req.params.id
+  let image = req.files.image
+  image.mv('./public/userImages/' + id + '.jpg')
   res.redirect('/profile')
 });
 
