@@ -24,7 +24,7 @@
                         <form method="POST" action="/findReportbyDate">
                             <label>From Date</label>
                             <input type="date" id="fromDate" name="fromDate" onchange="handler(event)">
-                            To Date 
+                            To Date
                             <input type="Date" id="toDate" name="toDate">
                             <button type="submit" id="button">search</button>
                         </form>
@@ -88,21 +88,21 @@
         }
     }
 });
-var mixedChart = new Chart(ctx, {
-    data: {
-        datasets: [{
-            type: 'bar',
-            label: 'Bar Dataset',
-            data: [10, 20, 30, 40]
-        }, {
-            type: 'line',
-            label: 'Line Dataset',
-            data: [50, 50, 50, 50],
-        }],
-        labels: ['January', 'February', 'March', 'April']
-    },
-    options: options
-});
+    var mixedChart = new Chart(ctx, {
+        data: {
+            datasets: [{
+                type: 'bar',
+                label: 'Bar Dataset',
+                data: [10, 20, 30, 40]
+            }, {
+                type: 'line',
+                label: 'Line Dataset',
+                data: [50, 50, 50, 50],
+            }],
+            labels: ['January', 'February', 'March', 'April']
+        },
+        options: options
+    });
 </script>
 
 <script>
@@ -113,3 +113,19 @@ var mixedChart = new Chart(ctx, {
     }
 </script>
 
+<script>
+
+    $(function () {
+        var dtToday = new Date();
+        var month = dtToday.getMonth() + 1;
+        var day = dtToday.getDate();
+        var year = dtToday.getFullYear();
+        if (month < 10)
+            month = '0' + month.toString();
+        if (day < 10)
+            day = '0' + day.toString();
+        var maxDate = year + '-' + month + '-' + day;
+        $('#fromDate').attr('min', maxDate);
+        $('#toDate').attr('min', maxDate);
+    });
+</script>

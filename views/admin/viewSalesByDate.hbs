@@ -68,7 +68,15 @@
             dom: 'Bfrtip',
             buttons: [
                 'copy', 'csv', 'excel', 'pdf', 'print'
-            ]
+            ],
+            drawCallback: function () {
+                var hasRows = this.api().rows({ filter: 'applied' }).data().length > 0;
+                $('.buttons-copy')[0].style.visibility = hasRows ? 'visible' : 'hidden'
+                $('.buttons-csv')[0].style.visibility = hasRows ? 'visible' : 'hidden'
+                $('.buttons-excel')[0].style.visibility = hasRows ? 'visible' : 'hidden'
+                $('.buttons-pdf')[0].style.visibility = hasRows ? 'visible' : 'hidden'
+                $('.buttons-print')[0].style.visibility = hasRows ? 'visible' : 'hidden'
+            }
         });
     });
 </script>
@@ -91,3 +99,20 @@
         content: counter(serial-number);
     }
 </style>
+
+
+<script>
+    $(function () {
+        var dtToday = new Date();
+        var month = dtToday.getMonth() + 1;
+        var day = dtToday.getDate();
+        var year = dtToday.getFullYear();
+        if (month < 10)
+            month = '0' + month.toString();
+        if (day < 10)
+            day = '0' + day.toString();
+        var maxDate = year + '-' + month + '-' + day;
+        $('#fromDate').attr('min', maxDate);
+        $('#toDate').attr('min', maxDate);
+    });
+</script>
