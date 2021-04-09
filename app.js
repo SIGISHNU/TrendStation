@@ -11,6 +11,7 @@ var app = express();
 var fileUpload = require('express-fileupload')
 var session = require('express-session');
 var db = require('./config/connection');
+const dotenv = require('dotenv').config()
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
@@ -54,7 +55,8 @@ app.use('/', adminRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
-  next(createError(404));
+  // next(createError(404));
+  res.status(404).send('<h1>404 Page Not Found</h1>')
 });
 
 // error handler
