@@ -132,6 +132,15 @@
         -webkit-transition: all 0.3s ease-in-out;
         transition: all 0.3s ease-in-out
     }
+
+    #profilepic{
+    padding: 1rem;
+    margin-left: 11rem;
+    background: rgb(14, 226, 138); 
+    display: table;
+    color: #fff;
+     }
+
 </style>
 <div class="page-content page-container" id="page-content">
     <div class="padding">
@@ -154,8 +163,10 @@
                                                         <i style=" color: rgb(22, 134, 199);" class="fa fa-upload"></i>
                                                     </button>
                                                 </label>
+                                                <label id="profilepic" class="btn"> Profile Photo <i style=" color: rgb(22, 134, 199);" class="fa fa-upload"></i>
                                                 <input onchange="profileUpload('{{profile._id}}')" id="kuppi"
-                                                    style="display: none;" name="image" type="file" accept="image/*" />
+                                                    style="display: none;" size="60" name="image" type="file" accept="image/*" />
+                                                </label>
                                             </div>
 
 
@@ -289,10 +300,12 @@
 </script>
 
 
-{{!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+{{!--
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.0.0/cropper.min.js"></script> --}}
 
-{{!-- <script>
+{{!--
+<script>
     function firstImage() {
         let result = document.querySelector('.result'),
             save = document.querySelector('.save'),
