@@ -82,24 +82,26 @@
 </style>
 <div class="container">
     <div class="row">
-        <div class="ml-auto mr-auto" style="margin-top: 6rem; margin-bottom: 37rem;">
+        <div class="ml-auto mr-auto" style="margin-top: 6rem; margin-bottom: 21rem;">
             <div class="table-responsive">
                 <table class="table">
                     <thead>
+                        {{#if coup.coupon}}
                         <tr>
                             <th scope="col">Coupon Code</th>
                             <th scope="col">Discount</th>
                             <th scope="col">Status</th>
                         </tr>
+                        {{/if}}
                     </thead>
                     <tbody>
                         {{#if coup.coupon}}
                         <tr>
-                            
                             <td scope="row" data-label="Coupon Code">{{coup.coupon.Coupon}}</td>
                             <td data-label="Discount">{{coup.coupon.Offer}}%</td>
-                            <td data-label="Status">{{coup.coupon.status}}</td>
                         </tr>
+                        {{else}}
+                        <h2 class="text-center" style="margin-top: 25rem;">You don't have Coupons</h2>
                         {{/if}}
                         {{#if coupArray}}
                         {{#each coupArray}}
