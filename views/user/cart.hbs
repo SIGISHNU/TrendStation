@@ -158,7 +158,7 @@
 			method: 'post',
 			success: (response) => {
 				if (response.removeProduct) {
-					alert("Product removed from cart")
+					return confirm("Product removed from cart")
 					location.reload()
 				} else {
 					console.log(response)
@@ -182,7 +182,7 @@
 			method: 'post',
 			success: (response) => {
 				if (response.removeProduct) {
-					confirm('Are you want to delete {{this.Name}}')
+					return confirm('Are you want to delete {{this.Name}}')
 					location.reload()
 				}
 			}
