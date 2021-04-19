@@ -133,14 +133,13 @@
         transition: all 0.3s ease-in-out
     }
 
-    #profilepic{
-    padding: 1rem;
-    margin-left: 11rem;
-    background: rgb(14, 226, 138); 
-    display: table;
-    color: #fff;
-     }
-
+    #profilepic {
+        padding: 1rem;
+        margin-left: 11rem;
+        background: rgb(14, 226, 138);
+        display: table;
+        color: #fff;
+    }
 </style>
 <div class="page-content page-container" id="page-content">
     <div class="padding">
@@ -154,31 +153,35 @@
                                     <div>
                                         <form method="POST" enctype="multipart/form-data"
                                             action="/profileUpload/{{profile._id}}">
-                                            <div class="image-upload">
-                                                <label for="kuppi">
-                                                    <img id="look" src="../userImages/{{profile._id}}.jpg"
-                                                        style="width: 10rem;" class="img-radius" alt="">
-                                                    <button style="display: none; margin-left: 4rem; margin-top: 1rem;"
-                                                        id="button" class="ml-4">
-                                                        <i style=" color: rgb(22, 134, 199);" class="fa fa-upload"></i>
-                                                    </button>
-                                                </label>
-                                                <label id="profilepic" class="btn"> Profile Photo <i style=" color: rgb(22, 134, 199);" class="fa fa-upload"></i>
-                                                <input onchange="profileUpload('{{profile._id}}')" id="kuppi"
-                                                    style="display: none;" size="60" name="image" type="file" accept="image/*" />
-                                                </label>
-                                            </div>
-
-
-
-                                            {{!-- <div class="row mt-2">
+                                            <div class="row mt-2">
                                                 <div class="col-md-5">
+                                                    <div class="col-md-3" style="margin-left: 12rem;">
+                                                        <img src="../userImages/{{profile._id}}.jpg"
+                                                            style="width: 10rem;" alt="" id="img1Disp"
+                                                            class="img1Disp img-radius" />
+                                                        <textarea name="imageBase64Data1" id="imageBase64Data1"
+                                                            cols="30" rows="10" hidden></textarea>
+                                                        <h6 id="not-img1-error"
+                                                            style="color: rgb(163, 24, 24);display: none;">!! Please
+                                                            upload a image !!
+                                                        </h6>
+                                                        <button
+                                                            style="display: none; margin-left: 4rem; margin-top: 1rem;"
+                                                            id="button" class="ml-4">
+                                                            <i style=" color: rgb(22, 134, 199);"
+                                                                class="fa fa-upload"></i>
+                                                        </button>
+                                                    </div>
                                                     <span class="btn vd_btn vd_bg-green fileinput-button">
                                                         <!-- The file input field used as target for the file upload widget -->
-                                                        <input type="file" accept="image/*" name="image1"
-                                                            id="fileupload1" class="js-photo-upload"
-                                                            onchange="viewImage1(event)" onclick="firstImage()"
-                                                            required>
+                                                        <label id="profilepic" class="btn mt-5"> Profile Photo <i
+                                                                style=" color: rgb(22, 134, 199);"
+                                                                class="fa fa-upload"></i>
+                                                            <input type="file" accept="image/*" name="image1"
+                                                                id="fileupload1" class="js-photo-upload"
+                                                                onchange="viewImage1(event)" onclick="firstImage()"
+                                                                style="display: none;" size="50" required>
+                                                        </label>
                                                     </span>
                                                 </div>
                                                 <div class="modal fade" id="exampleModalCenter" tabindex="-1"
@@ -201,26 +204,13 @@
                                                                 <button type="button" class="btn btn-secondary"
                                                                     data-dismiss="modal">Close</button>
                                                                 <button type="button" id="load"
-                                                                    class="btn btn-primary save">Save
+                                                                    class="btn btn-success save">Save
                                                                     changes</button>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
-
-                                                <h6 id="not-img1-error" style="color: rgb(163, 24, 24);display: none;">
-                                                    !! Please upload a
-                                                    image !!</h6>
-                                                <div class="col-md-3">
-                                                    <img src="" style="width: 60px;display:none" alt="product image"
-                                                        id="img1Disp" class="img1Disp" />
-                                                    <textarea name="imageBase64Data1" id="imageBase64Data1" cols="30"
-                                                        rows="10" hidden></textarea>
-                                                </div>
-                                            </div> --}}
-
-
-
+                                            </div>
                                         </form>
                                         <h6 class="f-w-600">{{profile.Name}}</h6>
                                         <p>@{{profile.Username}}</p>
@@ -292,19 +282,13 @@
     </div>
 </div>
 
-<script>
-    function profileUpload(id) {
-        document.getElementById('look').src = URL.createObjectURL(event.target.files[0])
-        document.getElementById('button').style.display = 'block'
-    }
-</script>
 
 
-{{!--
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.0.0/cropper.min.js"></script> --}}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.0.0/cropper.min.js"></script>
 
-{{!--
+
 <script>
     function firstImage() {
         let result = document.querySelector('.result'),
@@ -330,7 +314,7 @@
                         // init cropper
                         cropper = new Cropper(img, {
                             viewMode: 2,
-                            aspectRatio: 5 / 7,
+                            aspectRatio: 7 / 7,
                             autoCropArea: 1,
                             cropBoxResizable: false,
                             crop: function (e) {
@@ -371,10 +355,11 @@
             $('#add-product-button').show()
             $('#not-img1-error').hide()
             $('#img1Disp').show()
+            $('#button').show()
         } else {
             $('#not-img1-error').show()
             $('#add-product-button').hide()
             $('#img1Disp').hide()
         }
     }
-</script> --}}
+</script>

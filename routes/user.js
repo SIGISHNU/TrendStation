@@ -5,6 +5,7 @@ const adminHelpers = require('../helpers/admin-helpers');
 const { ReplSet } = require('mongodb');
 const session = require('express-session');
 var router = express.Router();
+var base64ToImage = require('base64-to-image');
 const config = require('../config/config');
 const client = require('twilio')(config.accountSID, config.authToken);
 const referal = require('voucher-code-generator');
@@ -392,20 +393,20 @@ router.post('/verify-otp', async (req, res) => {
       code: OTP
     }).then(async (data) => {
       console.log(data, "ggggggggggggggggggg");
-      if (data.status =='approved') {
+      if (data.status == 'approved') {
         let user = await userHelpers.OtpLog(phone)
         console.log(user, "hhh");
         if (user) {
-          let response={}
+          let response = {}
           response.data = data,
-          response.otp = true,
-          response.user = user,
-          req.session.userLoggedIn = true
+            response.otp = true,
+            response.user = user,
+            req.session.userLoggedIn = true
           console.log(req.session.userLoggedIn)
           req.session.user = response.user
           res.json(response)
         } else {
-          res.json({ phone:true })
+          res.json({ phone: true })
         }
       } else {
         res.json(response)
@@ -451,10 +452,13 @@ router.post('/edit-profile/:id', (req, res) => {
 });
 
 router.post('/profileUpload/:id', (req, res) => {
-  console.log(req.files.image);
   let id = req.params.id
-  let image = req.files.image
-  image.mv('./public/userImages/' + id + '.jpg')
+  console.log(id,'idddddddddddddddddddddddddddd')
+
+  var base64Str1 = req.body.imageBase64Data1
+  var path = "./public/userImages/";
+  var optionalObj = { fileName: id, type: "jpg" };
+  base64ToImage(base64Str1, path, optionalObj);
   res.redirect('/profile')
 });
 
